@@ -1,0 +1,6 @@
+.additionalСontent {
+    display: flex;
+    width: calc(100%/3);
+    height: 100vh;
+    /*background-color: #ff0000;*/
+}

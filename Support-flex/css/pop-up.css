@@ -1,0 +1,100 @@
+/* Pop-up */
+@keyframes moving {
+    100% {transform: rotate(360deg);}
+}
+
+.pop-up-wrapper {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100vw;
+    height: 100vh;
+}
+
+.pop-up {
+    -webkit-box-shadow: 0px 0px 17px 5px rgba(0, 0, 0, 0.8);
+    box-shadow: 0px 0px 17px 5px rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-flow: column;
+    background-color: #353e50;
+    width: 30%;
+    border-radius: 3px;
+    overflow: hidden;
+    color: #EAEAEA;
+}
+
+.pop-up .top {
+    background-color: #272e3b;
+    height: 20px;
+    padding-left: 10px;
+    display: flex;
+    align-items: center;
+}
+.input_div {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.pop-up .message {
+    padding: 15px 25px;
+    display: flex;
+    align-items: center;
+    margin-left: -15px;
+}
+
+.pop-up .message img {
+    height: 45px;
+    width: 45px;
+    margin-right: 5px;
+    animation: moving 700ms infinite linear;
+}
+.pop-up .bottom {
+    flex-wrap: wrap;
+    display: flex;
+    justify-content: flex-end;
+    background-color: #272e3b;
+}
+.pop-up .bottom .button {
+    width: auto;
+    height: auto;
+    padding: 2px 10px;
+    margin: 5px;
+}
+
+
+.button {
+    user-select: none;
+    border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #EAEAEA;
+    width: 162px;
+    height: 50px;
+    background-color: #4c5b98;
+    transition: background-color 0.1s;
+    border: none;
+}
+
+.button:hover {
+    cursor: pointer;
+    background-color: #5e6ca5;
+}
+
+.button:active {
+    background-color: #EAEAEA;
+    color: #5e6ca5;
+}
+.pop-up-input {
+    height: 20px;
+    border-radius: 3px;
+    outline: none;
+    background-color: #2a3849;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: #EAEAEA;
+    padding: 0px 5px;
+}

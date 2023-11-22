@@ -1,0 +1,306 @@
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 400px) {
+  div.wrapCover {
+    width: 250px;
+  }
+  div.controlDown {
+    padding: 0;
+  }
+}
+@media (max-width: 300px) {
+  div.wrapCover {
+    width: 200px;
+  }
+}
+@media (max-width: 200px) {
+  div.wrapCover {
+    width: 100px;
+  }
+}
+
+.wrapPlayerBlock {
+  position: relative;
+  height: 100vh;
+  width: calc(100% / 3);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.player {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 90%;
+  transition: 1s;
+  margin-bottom: 50px;
+}
+
+.trackHeader {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 25px;
+}
+.trackHeaderBack {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.metaData {
+  width: 100%;
+  height: 70px;
+  overflow: hidden;
+}
+
+.title {
+  display: block;
+  width: fit-content;
+  font-size: 25px;
+  margin: 0 auto;
+  white-space: nowrap;
+  transition: 1s;
+  --surplus: 0;
+}
+
+.artist {
+  display: block;
+  width: fit-content;
+  font-size: 20px;
+  margin: 0 auto;
+  white-space: nowrap;
+  transition: 1s;
+  --surplus: 0;
+}
+
+.titleBack {
+  display: block;
+  width: fit-content;
+  font-size: 25px;
+  margin: 0 auto;
+  white-space: nowrap;
+  transition: 1s;
+  --surplus: 0;
+}
+
+.artistBack {
+  display: block;
+  width: fit-content;
+  font-size: 20px;
+  margin: 0 auto;
+  white-space: nowrap;
+  opacity: 0;
+  transition: 1s;
+  --surplus: 0;
+}
+
+.wrapCover {
+  width: 300px;
+  margin-top: 35%;
+}
+
+.coverBack {
+  width: 100%;
+  box-shadow: 0px 0px 91px 34px rgba(0, 0, 0, 0.69);
+  transition: 1s;
+}
+
+.cover {
+  width: 100%;
+  box-shadow: 0px 0px 91px 34px rgba(0, 0, 0, 0.69);
+  transition: 1s;
+}
+
+.playerBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  color: aliceblue;
+  z-index: 250;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.backPlayerBlock {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  z-index: -50;
+  align-items: center;
+}
+
+.wrapControl {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.controlUp {
+  display: flex;
+}
+
+.buttonPlayPause {
+  width: 40px;
+  height: 40px;
+  margin: 0 10px 0 10px;
+}
+
+.controlDown {
+  width: 100%;
+  padding: 0 20px 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.wrapVolume {
+  width: 150px;
+  height: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.wrapVolumeButton {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  z-index: 100;
+}
+
+.wrapVolumeLevelControl {
+  position: relative;
+  left: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60%;
+  width: 100px;
+  background-color: #fafafa;
+  opacity: 0;
+  border-radius: 10px;
+  padding-right: 17px;
+  padding-left: 5px;
+  transition: 500ms;
+}
+
+.volumeLevelControl {
+  width: 100px;
+}
+
+.playerHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 25px;
+}
+
+.wrapPlayerHeader {
+  display: flex;
+  align-items: center;
+}
+
+.wrapListeners {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 15px;
+}
+
+.titleBack.anim_ {
+  animation-name: tickerTitle;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+.title.anim_ {
+  animation-name: tickerTitle;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.artistBack.anim_ {
+  animation-name: tickerArtist;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+.artist.anim_ {
+  animation-name: tickerArtist;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes tickerTitle {
+  0% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  2% {
+    opacity: 1;
+  }
+  15% {
+    transform: translateX(0);
+  }
+  90% {
+    transform: translateX(var(--surplus));
+  }
+  95%{
+    opacity: 1;
+    transition: 0s;
+    animation-duration: 0s;
+  }
+  99% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(var(--surplus));
+  }
+}
+@keyframes tickerArtist {
+  0% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  2% {
+    opacity: 1;
+  }
+  15% {
+    transform: translateX(0);
+  }
+  90% {
+    transform: translateX(var(--surplus));
+  }
+  95%{
+    opacity: 1;
+    transition: 0s;
+    animation-duration: 0s;
+  }
+  99% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(var(--surplus));
+  }
+}

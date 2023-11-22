@@ -1,0 +1,261 @@
+﻿let bodyElement = document.querySelector("body")
+let audioObj = new Audio()
+let buttonAppleMusicElement = document.querySelector(".buttonAppleMusic")
+let buttonPlayPauseElement = document.querySelector(".buttonPlayPause")
+let buttonVolumeElement = document.querySelector(".buttonVolume")
+let VolumeLevelControlElement = document.querySelector(".volumeLevelControl")
+let wrapVolumeButton = document.querySelector(".wrapVolumeButton")
+let wrapVolumeLevelControl = document.querySelector(".wrapVolumeLevelControl")
+let wrapVolume = document.querySelector(".wrapVolume")
+let coverElement = document.querySelector(".cover")
+let coverBackElement = document.querySelector(".coverBack")
+let titleElement = document.querySelector(".title")
+let artistAlbumElement = document.querySelector(".artist")
+let titleBackElement = document.querySelector(".titleBack")
+let artistAlbumBackElement = document.querySelector(".artistBack")
+let listenersElement = document.querySelector(".listeners")
+let playTimeInterval = setInterval(() => {}, 0)
+let dataTitleSend = {}
+let coverSrc = "https://support-flex.ru/src/image/Default%20cover.PNG"
+let title = "Station - Support Flex"
+let AppleMusicLink = "off"
+let state = "off"
+let tracName = title.split(" - ")
+let buttonPlayPauseLock = false
+let volumeLevelHideLock = true
+let resizeOn = false
+let volumeLevel = 1
+let VolumeLevelNotMute = 1
+let listeners = 0
+let iteration = 0
+
+
+wrapVolume.addEventListener("mouseleave", volumeLevelHide)
+wrapVolumeButton.addEventListener("mouseenter", volumeLevelAppeared)
+VolumeLevelControlElement.addEventListener("mousemove", volumeLevelControl)
+VolumeLevelControlElement.addEventListener("click", volumeLevelControl)
+buttonPlayPauseElement.addEventListener("click", buttonPlayPause)
+buttonVolumeElement.addEventListener("click", volume)
+buttonVolumeElement.addEventListener("dblclick", volumeLevelComfort)
+buttonAppleMusicElement.addEventListener('click', AppleMusic)
+
+function buttonPlayPause() {
+    if (buttonPlayPauseLock === false) {
+        get()
+        if (audioObj.paused === true) {
+            play()
+        } else {
+            pause()
+        }
+    } else {
+        console.log("Кнопка плей/пауза заблокирована")
+    }
+}
+
+function rot() {
+    if (audioObj.currentTime === 0) {
+        buttonPlayPauseLock = true
+        buttonPlayPauseElement.src = "/src/ico/load.svg"
+        buttonPlayPauseElement.style.animation = "2s linear 0s normal none infinite running rotate"
+    } else {
+        buttonPlayPauseLock = false
+        buttonPlayPauseElement.src = "/src/ico/pause.svg"
+        clearInterval(playTimeInterval)
+        buttonPlayPauseElement.style.animation = ""
+    }
+}
+
+function pause() {
+    audioObj.pause()
+    audioObj = new Audio()
+    buttonPlayPauseElement.src = "/src/ico/play.svg"
+
+}
+
+function play() {
+    audioObj = new Audio("https://support-flex.ru:8443/live")
+    audioObj.volume = volumeLevel
+    audioObj.play()
+    playTimeInterval = setInterval(rot, 100)
+}
+
+function volumeLevelComfort() {
+    volumeLevel = 0.01
+    audioObj.volume = volumeLevel
+    VolumeLevelControlElement.value = volumeLevel * 100
+    buttonVolumeElement.src = "/src/ico/audio.svg"
+}
+
+function volume() {
+    if (audioObj.volume !== 0) {
+        VolumeLevelNotMute = volumeLevel
+        volumeLevel = 0
+        audioObj.volume = volumeLevel
+        VolumeLevelControlElement.value = 0
+        buttonVolumeElement.src = "/src/ico/mute.svg"
+    } else if (VolumeLevelNotMute !== 0) {
+        volumeLevel = VolumeLevelNotMute
+        audioObj.volume = volumeLevel
+        VolumeLevelControlElement.value = volumeLevel * 100
+        buttonVolumeElement.src = "/src/ico/audio.svg"
+    }
+}
+
+document.addEventListener('keydown', function (event) {
+    if (event.key === " ") {
+        buttonPlayPause()
+    } else if (event.key === "m" || event.key === "ь" || event.key === "M" || event.key === "Ь") {
+        volume()
+    } else if (event.key === "ArrowUp") {
+        if (audioObj.volume < 0.95) {
+            audioObj.volume = audioObj.volume + 0.05
+            volumeLevel = audioObj.volume
+            VolumeLevelControlElement.value = volumeLevel * 100
+        } else if (audioObj.volume >= 0.95) {
+            audioObj.volume = 1
+            volumeLevel = audioObj.volume
+            VolumeLevelControlElement.value = volumeLevel * 100
+        }
+    } else if (event.key === "ArrowDown") {
+        if (audioObj.volume > 0.05) {
+            audioObj.volume = audioObj.volume - 0.05
+            volumeLevel = audioObj.volume
+            VolumeLevelControlElement.value = volumeLevel * 100
+        } else if (audioObj.volume <= 0.05) {
+            audioObj.volume = 0
+            volumeLevel = audioObj.volume
+            VolumeLevelControlElement.value = volumeLevel * 100
+        }
+    }
+})
+
+function getTitle(data) {
+    listeners = data["listeners"]
+    listenersElement.textContent = "Слушатели: " + listeners
+    AppleMusicLink = data["link"]
+    if (title !== data["title"]) {
+        if (data["cover"] === "off") {
+            coverSrc = "https://support-flex.ru/src/image/Default%20cover.PNG"
+        } else {
+            coverSrc = data["cover"]
+        }
+        Switch(coverSrc, coverElement, coverBackElement, "src")
+        bodyElement.style.backgroundImage = "url(" + coverSrc + ")"
+        title = data["title"]
+        tracName = title.split(" - ")
+        Switch(tracName[1].trim(), titleElement, titleBackElement, "text")
+        Switch(tracName[0].trim(), artistAlbumElement, artistAlbumBackElement, "text")
+    }
+    if (AppleMusicLink === "off") {
+        buttonAppleMusicElement.style.opacity = 0
+    } else {
+        buttonAppleMusicElement.style.opacity = 1
+    }
+    if (data["status"] === "off") {
+        off()
+    } else {
+        on()
+    }
+    resizeOn = false
+}
+
+function AppleMusic() {
+    if (AppleMusicLink !== "off") {
+        window.open(AppleMusicLink);
+    }
+}
+
+function off() {
+    state = "off"
+    buttonPlayPauseLock = true
+    buttonPlayPauseElement.src = "/src/ico/pause.svg"
+}
+
+function on() {
+    if (state === "off") {
+        state = "on"
+        buttonPlayPauseLock = false
+        buttonPlayPauseElement.src = "/src/ico/play.svg"
+    }
+}
+
+function volumeLevelControl() {
+    if (volumeLevelHideLock === true) {
+        VolumeLevelControlElement.value = volumeLevel * 100
+    } else {
+        volumeLevel = VolumeLevelControlElement.value / 100
+        audioObj.volume = volumeLevel
+        if (volumeLevel === 0) {
+            buttonVolumeElement.src = "/src/ico/mute.svg"
+            VolumeLevelNotMute = 0
+        } else {
+            buttonVolumeElement.src = "/src/ico/audio.svg"
+        }
+    }
+}
+
+function volumeLevelHide() {
+    volumeLevelHideLock = true
+    wrapVolumeLevelControl.style.opacity = 0
+}
+
+function volumeLevelAppeared() {
+    volumeLevelHideLock = false
+    wrapVolumeLevelControl.style.opacity = 1
+}
+
+// Управление поведением текста в ".metaData"
+function ticker(element) {
+    let titleWidth = element.offsetWidth
+    let containerWidth = document.querySelector(".metaData").offsetWidth
+    let surplus = titleWidth - containerWidth
+    let surplusPercent = surplus / titleWidth * 100
+    element.style.setProperty('--surplus', "-" + surplusPercent + "%")
+    let animationDuration = surplus / 100
+    element.style.animationDuration = animationDuration + "s"
+
+    if (titleWidth > containerWidth) {
+        element.classList.add("anim_")
+    } else {
+        element.classList.remove("anim_")
+    }
+}
+
+function Switch(data, elementOne, elementTwo, type) {
+    if (iteration <= 2) {
+        switchTwo()
+    } else if (elementOne.style.opacity == 0) {
+        switchOne()
+    } else {
+        switchTwo()
+    }
+
+     function switchOne () {
+        if (type === "src"){
+            elementOne.src = data
+        } else if (type === "text"){
+            elementOne.textContent = data
+        }
+        ticker(elementOne)
+         elementTwo.classList.remove("anim_")
+        elementOne.style.opacity = 1
+        elementTwo.style.opacity = 0
+        console.log("Front")
+        iteration++
+    }
+
+    function switchTwo () {
+        if (type === "src"){
+            elementTwo.src = data
+        } else if (type === "text"){
+            elementTwo.textContent = data
+        }
+        ticker(elementTwo)
+        elementOne.classList.remove("anim_")
+        elementOne.style.opacity = 0
+        elementTwo.style.opacity = 1
+        console.log("Back")
+        iteration++
+    }
+    console.log(data)
+}

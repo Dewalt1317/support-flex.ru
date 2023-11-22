@@ -1,0 +1,192 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="true" name="HandheldFriendly"/>
+    <meta content="width" name="MobileOptimized"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <title>Support Flex Station</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/chat.css">
+    <link rel="stylesheet" href="/css/player.css">
+    <link rel="stylesheet" href="/css/additionalСontent.css">
+    <link rel="stylesheet" href="/css/range-input.css">
+    <link rel="icon" href="/src/ico/play.svg" type="image/svg">
+</head>
+
+<body>
+<div class="wrapContent">
+    <div class="Shadow"></div>
+    <div class="chat">
+        <div class="messageBlock"></div>
+        <!-- <div class="inputBlock">
+            <div class="messageInput">
+                <div class="inputMessageInput" contenteditable="true"></div>
+                <p class="textInput">Сообщение</p>
+                <div class="messageInputButton">
+                    <img src="src/ico/emoji.svg" class="buttonEmoji">
+                    <img src="src/ico/send.svg" class="buttonSendMessage">
+                </div>
+            </div>
+            <div class="buttonChat">
+                <div class="buttonDonat"></div>
+                <img src="/src/ico/Listen%20On%20Apple%20Music.svg" alt="" class="buttonAppleMusic">
+            </div>
+        </div> -->
+        <div class="chat-footer">
+            <div class="chat-send-message">
+              <div class="input-block" contenteditable="true">
+              </div>
+              <div class="message-placeholder">Сообщение</div>
+              <div class="chat-btns">
+                <div class="emoji-btn">
+                  <svg
+                    width="26"
+                    height="26"
+                    viewBox="0 0 26 26"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g clip-path="url(#clip0_1317_112)">
+                      <path
+                        d="M14.5812 26C20.8867 26 25.9983 20.7839 25.9983 14.3495C25.9983 7.91508 20.8867 2.69897 14.5812 2.69897C8.27567 2.69897 3.16406 7.91508 3.16406 14.3495C3.16406 20.7839 8.27567 26 14.5812 26Z"
+                        fill="#9BA2BC"
+                      />
+                      <path
+                        d="M3.64397 19.8108L3.28343 19.3253L2.80271 18.5972L2.44217 17.9904L2.31282 17.7727C2.159 17.5138 2.02889 17.2415 1.92406 16.9593L1.72108 16.4127L1.48072 15.5632L1.24036 14.7136L1.12018 13.9855L1 13.136V12.2865V11.5632C1 11.2371 1.03191 10.9117 1.09527 10.5918L1.24036 9.85926L1.48072 9.00974L1.71003 8.31508C1.79736 8.05049 1.90667 7.79367 2.03679 7.54729L2.55481 6.56648C2.71961 6.25444 2.91698 5.96073 3.14363 5.69025L4.12469 4.51943L5.33066 3.39531C5.56768 3.17437 5.82562 2.97699 6.10084 2.80597L6.83608 2.34907C7.11097 2.17825 7.40179 2.03452 7.70445 1.91991L8.71432 1.5375C9.01889 1.42216 9.33401 1.33686 9.65517 1.28281L10.9235 1.06934C11.1977 1.0232 11.4753 1 11.7533 1H13.018L14.5468 1.18162C14.8888 1.22224 15.2256 1.29809 15.552 1.40795L16.1427 1.6068"
+                        stroke="#4C5B98"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                      />
+                      <path
+                        d="M18.0629 14.7119L17.462 14.9547L17.2134 15.0385C16.9 15.1442 16.577 15.2182 16.2493 15.2596L15.6621 15.3338L14.7007 15.404H13.1367L12.4112 15.4262H11.57H10.9751H10.3682H9.5269L8.92601 15.404L8.3749 15.3543C8.22418 15.3407 8.07548 15.3104 7.93146 15.2641C7.79368 15.2197 7.66097 15.1609 7.53552 15.0886L6.88281 14.7121"
+                        stroke="#4C5B98"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                      />
+                      <path
+                        d="M18.0694 8.7666L17.6874 8.89513C17.4613 8.97118 17.241 9.0633 17.0281 9.1708L16.3863 9.49484L16.363 9.50662C16.06 9.65958 15.7838 9.86054 15.545 10.1017C15.4235 10.2244 15.4509 10.4289 15.6005 10.5152L16.1459 10.8299L16.9873 11.1941L17.3479 11.3154L17.9488 11.4368L18.5498 11.5582L19.031 11.5934"
+                        stroke="#4C5B98"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                      />
+                      <path
+                        d="M6.53184 9.00903L6.9139 9.13756C7.13995 9.21361 7.36028 9.30574 7.57318 9.41323L8.21495 9.73727L8.23828 9.74905C8.54125 9.90202 8.81749 10.103 9.0563 10.3441C9.17781 10.4668 9.15036 10.6713 9.00079 10.7576L8.45534 11.0724L7.61399 11.4365L7.25342 11.5579L6.65245 11.6792L6.05149 11.8006L5.57031 11.8358"
+                        stroke="#4C5B98"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                      />
+                      <path
+                        d="M6.86719 22.4202L7.41818 22.7139C7.72223 22.8759 8.04209 23.0062 8.37268 23.1026L9.85193 23.5338L11.1 23.7422C11.3741 23.788 11.6515 23.8109 11.9293 23.8105L13.2157 23.8089C13.5411 23.8085 13.8656 23.7763 14.1845 23.7128L15.2432 23.5018C15.5601 23.4386 15.8701 23.3448 16.1688 23.2216L16.9683 22.8919C17.2674 22.7685 17.5538 22.6163 17.8233 22.4374L19.1948 21.5271L20.3518 20.5337C20.6192 20.3042 20.8615 20.0468 21.0746 19.766L21.7439 18.8841C21.9122 18.6623 22.0616 18.4268 22.1906 18.18L22.529 17.5327L22.9034 16.7342L23.1648 16.0357C23.2791 15.7302 23.3632 15.4143 23.416 15.0923L23.5328 14.3791L23.6701 13.541L23.6888 12.683L23.6879 11.9448L23.5881 11.0671L23.4882 10.1894L23.2894 9.17207L23.1134 8.4651L22.8731 7.8583L22.5009 7.00686C22.4989 7.00234 22.4969 6.99782 22.4949 6.99331C22.476 6.95059 22.3703 6.71387 22.2722 6.52335L22.0318 6.03791L21.4309 5.06703L20.83 4.33887L20.3493 3.85343L19.9888 3.48935L19.3879 3.00391"
+                        stroke="#4C5B98"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                      />
+                      <path
+                        d="M6.89062 14.835C6.97183 15.3602 7.13827 15.8681 7.38332 16.3384L7.61171 16.7767L8.09243 17.5049L8.23326 17.6826C8.45918 17.9678 8.71558 18.2271 8.99788 18.456L9.13099 18.564L9.38282 18.7352C9.65421 18.9197 9.9432 19.0767 10.2456 19.204L10.656 19.3767L11.039 19.4848C11.3681 19.5778 11.706 19.6364 12.0474 19.6597L12.0604 19.6606C12.3243 19.6787 12.5894 19.6756 12.853 19.6514L12.9761 19.6401L13.3735 19.5872L13.4772 19.5653C13.775 19.5025 14.0666 19.4125 14.3483 19.2964L14.4377 19.2596L14.7968 19.1116L15.1366 18.9162L15.4252 18.7419L15.7458 18.4989L16.0664 18.2559L16.4191 17.9443L16.6557 17.7141L16.8384 17.4843L16.8774 17.4263C16.9865 17.2638 17.1174 17.1166 17.224 16.9525L17.3593 16.7512L17.6025 16.3052L17.7507 15.9164L17.8314 15.6283L17.8918 15.4122L18.0674 14.835"
+                        stroke="#4C5B98"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                      />
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_1317_112">
+                        <rect width="26" height="26" fill="white" />
+                      </clipPath>
+                    </defs>
+                  </svg>
+                </div>
+                <div class="send-btn">
+                  <svg
+                    width="27"
+                    height="27"
+                    viewBox="0 0 27 27"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <rect width="26.1094" height="26.1094" rx="4" fill="#4C5B98" />
+                    <path
+                      d="M9.20277 20.0841C8.68952 19.5702 8.69004 18.7375 9.20395 18.2242L15.3006 12.1353C15.8145 11.622 16.6472 11.6225 17.1604 12.1364C17.6737 12.6504 17.6732 13.483 17.1593 13.9963L11.0626 20.0852C10.5487 20.5985 9.71603 20.598 9.20277 20.0841Z"
+                      fill="#9BA2BC"
+                    />
+                    <rect
+                      x="10.1797"
+                      y="5.09473"
+                      width="11.2467"
+                      height="2.67961"
+                      rx="1.33981"
+                      transform="rotate(44.9475 10.1797 5.09473)"
+                      fill="#9BA2BC"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <!-- Далее ещё какие-то кнопки... -->
+            <div class="buttonAppleMusic"></div>
+          </div>
+    </div>
+    <div class="wrapPlayerBlock">
+        <div class="playerBlock">
+            <div class="trackHeader">
+                <div class="wrapCover">
+                    <img class="cover" src="/src/image/Default%20cover.PNG">
+                </div>
+                <div class="metaData">
+                    <div class="title">Support Flex</div>
+                    <div class="artist">Station</div>
+                </div>
+            </div>
+            <div class="player">
+                <div class="wrapControl">
+                    <div class="controlUp">
+                        <img src="/src/ico/play.svg" alt="" class="buttonPlayPause">
+                    </div>
+                    <div class="controlDown">
+                        <div class="wrapVolume">
+                            <div class="wrapVolumeLevelControl">
+                                <input type="range" class="volumeLevelControl styled-slider slider-progress" min="0"
+                                       max="100" value="100">
+                            </div>
+                            <div class="wrapVolumeButton">
+                                <img src="/src/ico/audio.svg" alt="" class="buttonVolume">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="backPlayerBlock">
+                <div class="playerHeader">
+                    <div class="wrapPlayerHeader">
+                        <div class="wrapListeners">
+                            <div class="listeners">Слушатели: 0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="trackHeaderBack">
+                    <div class="wrapCover">
+                        <img class="coverBack" src="/src/image/Default%20cover.PNG">
+                    </div>
+                    <div class="metaData">
+                        <div class="titleBack">Support Flex</div>
+                        <div class="artistBack">Station</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="additionalСontent">
+
+
+    </div>
+</div>
+</body>
+
+<script defer src="/js/main.js"></script>
+<script src="/js/player.js"></script>
+<script src="/js/chat.js"></script>
+<script defer src="/js/range-input.js"></script>
+<script src="/js/request.js"></script>
+</html>
