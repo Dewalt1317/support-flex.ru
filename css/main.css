@@ -10,7 +10,7 @@ body {
     background: #0f111a;
     background-repeat: no-repeat;
     background-position: center;
-    background-image: url("https://support-flex.ru/src/image/Default%20cover.PNG");
+    background-image: url("/src/image/Default%20cover.PNG");
     background-size: cover;
     backdrop-filter: blur(90px);
     overflow-x: hidden;

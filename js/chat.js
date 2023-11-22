@@ -145,20 +145,3 @@ function addMessage(index, item) {
 
     messageBlockElement.insertAdjacentElement("beforeend", messageCreate)
 }
-
-// Скрывать placeholder, когда есть текст в поле
-const $inputBlock = document.querySelector(".input-block")
-
-if (this.innerText) {
-  document.querySelector(".message-placeholder").style.opacity = "0"
-} else {
-  document.querySelector(".message-placeholder").style.opacity = "1"
-}
-
-$inputBlock.addEventListener("keydown", function (event) {
-  if (this.innerText) {
-    document.querySelector(".message-placeholder").style.opacity = "0"
-  } else {
-    document.querySelector(".message-placeholder").style.opacity = "1"
-  }
-})

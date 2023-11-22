@@ -1,21 +1,15 @@
-.chat {
-  display: flex;
-  flex-direction: column;
+.chat-wrapper {
+  color: aliceblue;
   width: calc(100% / 3);
   height: 100vh;
   z-index: 300;
-  justify-content: end;
-}
-
-.messageBlock {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  flex-basis: content;
-  align-items: center;
-  overflow: scroll;
-  overflow-y: auto;
-  -ms-overflow-style: none;
+  justify-content: end;
+}
+.messageBlock {
+  overflow-y: scroll;
+  padding: 5px;
 }
 
 .messageBlock::-webkit-scrollbar {
@@ -25,102 +19,6 @@
 
 .messageBlock p {
   display: inline;
-}
-
-.inputBlock {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 120px;
-  /*background-color: #17ff00;*/
-  padding: 5px 0;
-}
-
-.messageInput {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 40%;
-  width: 90%;
-  border-radius: 6px;
-  background-color: rgba(42, 20, 50, 40%);
-  padding: 0 10px;
-}
-
-.buttonAppleMusic {
-  width: 130px;
-  height: 50px;
-  transition: 1s;
-  opacity: 0;
-}
-
-.buttonDonat {
-  width: 130px;
-  height: 50px;
-}
-
-.buttonChat {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 90%;
-  height: 50%;
-}
-
-.inputMessageInput {
-  padding: 3px;
-  color: rgba(255, 255, 255, 70%);
-  font-size: 18px;
-  /* background-color: rgba(0, 0, 0, 0); */
-  height: 100%;
-  max-height: 200%;
-  width: 100%;
-  overflow: visible;
-  text-align: inherit;
-  vertical-align: middle;
-  z-index: 6;
-}
-
-.inputMessageInput::-webkit-scrollbar {
-  width: 0;
-}
-
-.inputMessageInput:active,
-:hover,
-:focus {
-  outline: 0;
-  outline-offset: 0;
-}
-
-.textInput {
-  z-index: 5;
-  transition: 0.2s;
-  position: absolute;
-  font-size: 18px;
-  color: rgba(255, 255, 255, 0.53);
-  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-}
-
-.messageInputButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.buttonEmoji {
-  margin-right: 10px;
-  width: 30px;
-  height: 30px;
-}
-
-.buttonSendMessage {
-  width: 30px;
-  height: 30px;
 }
 
 .buttonRepleyWrap {
@@ -262,30 +160,30 @@
   line-height: normal;
 }
 
+/* Подвал блока ЧАТ */
 .chat-footer {
   display: flex;
   flex-direction: column;
-  height: 120px;
-  justify-self:end;
-  /* flex-grow:1; */
+  flex-grow: 1;
+  flex-shrink: 1;
+  padding: 5px;
 }
 
+/* Поле для ввода нового сообщения с кнопкой emoji и "Отправить" */
 .chat-send-message {
   background-color: rgba(42, 20, 50, 40%);
   border-radius: 6px;
   display: flex;
   width: 100%;
-  height: 40%;
-  max-height: 100px;
 }
 
 .chat-send-message * {
   box-sizing: border-box;
 }
 
+/* Редактируемый div для ввода сообщения */
 .input-block {
-  flex-basis: 80%;
-  max-width: 80%;
+  max-height: 150px;
   text-wrap: wrap;
   z-index: 10;
   padding: 3px;
@@ -293,8 +191,8 @@
   font-size: 18px;
   overflow-y: scroll;
   padding: 5px;
+  flex-grow: 1;
 }
-
 .input-block::-webkit-scrollbar {
   width: 0;
 }
@@ -306,23 +204,23 @@
   outline-offset: 0;
 }
 
-.message-placeholder {
-  position: absolute;
-  padding: 5px;
-  z-index: 9;
-  user-select: none;
+/* Создание placeholder*/
+.input-block[contenteditable]:empty:before {
+  content: attr(data-placeholder);
+  color: rgba(255, 255, 255, 70%);
+  display: inline-block;
 }
 
+/* Кнопки в поле для нового сообщения */
 .chat-btns {
   display: flex;
-  flex-basis: 20%;
-  max-width: 20%;
+  justify-content: space-between;
   align-items: flex-end;
-  justify-content: space-around;
 }
 
-.emoji-btn {
-}
-
-.send-btn {
+.emoji-btn, .send-btn {
+  display: flex;
+  height: 34px;
+  width: 34px;
+  padding: 0px 3px;
 }
