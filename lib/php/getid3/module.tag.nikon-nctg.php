@@ -378,22 +378,22 @@ class getid3_tag_nikon_nctg
 	);
 
 	protected static $NikkorZLensIDS = array(
-		1 => 'Nikkor Z 24-70mm f/4 S',
-		2 => 'Nikkor Z 14-30mm f/4 S',
-		4 => 'Nikkor Z 35mm f/1.8 S',
-		8 => 'Nikkor Z 58mm f/0.95 S Noct',
-		9 => 'Nikkor Z 50mm f/1.8 S',
-		11 => 'Nikkor Z DX 16-50mm f/3.5-6.3 VR',
-		12 => 'Nikkor Z DX 50-250mm f/4.5-6.3 VR',
-		13 => 'Nikkor Z 24-70mm f/2.8 S',
-		14 => 'Nikkor Z 85mm f/1.8 S',
-		15 => 'Nikkor Z 24mm f/1.8 S',
-		16 => 'Nikkor Z 70-200mm f/2.8 VR S',
-		17 => 'Nikkor Z 20mm f/1.8 S',
-		18 => 'Nikkor Z 24-200mm f/4-6.3 VR',
-		21 => 'Nikkor Z 50mm f/1.2 S',
-		22 => 'Nikkor Z 24-50mm f/4-6.3',
-		23 => 'Nikkor Z 14-24mm f/2.8 S',
+		1 => 'Nikkor Z 24-70mm f.js/4 S',
+		2 => 'Nikkor Z 14-30mm f.js/4 S',
+		4 => 'Nikkor Z 35mm f.js/1.8 S',
+		8 => 'Nikkor Z 58mm f.js/0.95 S Noct',
+		9 => 'Nikkor Z 50mm f.js/1.8 S',
+		11 => 'Nikkor Z DX 16-50mm f.js/3.5-6.3 VR',
+		12 => 'Nikkor Z DX 50-250mm f.js/4.5-6.3 VR',
+		13 => 'Nikkor Z 24-70mm f.js/2.8 S',
+		14 => 'Nikkor Z 85mm f.js/1.8 S',
+		15 => 'Nikkor Z 24mm f.js/1.8 S',
+		16 => 'Nikkor Z 70-200mm f.js/2.8 VR S',
+		17 => 'Nikkor Z 20mm f.js/1.8 S',
+		18 => 'Nikkor Z 24-200mm f.js/4-6.3 VR',
+		21 => 'Nikkor Z 50mm f.js/1.2 S',
+		22 => 'Nikkor Z 24-50mm f.js/4-6.3',
+		23 => 'Nikkor Z 14-24mm f.js/2.8 S',
 	);
 
 	protected static $nikonTextEncodings = array(
@@ -919,7 +919,7 @@ class getid3_tag_nikon_nctg
 						if ($data[1] && $data[1] !== $data[0]) {
 							$value .= '-' . $data[1];
 						}
-						$value .= 'mm f/' . $data[2];
+						$value .= 'mm f.js/' . $data[2];
 						if ($data[3] && $data[3] !== $data[2]) {
 							$value .= '-' . $data[3];
 						}

@@ -1,44 +1,55 @@
-function success(data) {
-    // делаем с ответом сервера что душе угодно,
-    // например распечатаем его в консоль
-   console.log(data)
+let submitButton = document.querySelector(".submit")
+let input = document.querySelector('.file');
+let form = document.querySelector(".form")
+let result = document.querySelector(".result")
+let i = 0
+submitButton.addEventListener("click", response)
+
+function response () {
+    if (i === 0){
+        result.textContent = "[Начало загрузки]<b>"
+    }
+    if (i < input.files.length) {
+    let formData = new FormData()
+        result.textContent = result.textContent + input.files[i]["name"] + "<br>"
+    let file = input.files[i]
+    formData.append(input.name, file);
+        i++
+    SendRequest("POST", "php/upload.php", formData, response)
+    } else {
+        i = 0
+        result.textContent = result.textContent + "[Загрузка завершена]<br>"
+    }
+
 }
-function error(status) {
-    // показываем код ошибки
-    alert('Error: ' + status);
-}
-window.onload = function() {
-    // подвязываем переменные к элементам
-    var $send_btn = document.getElementById('send'),
-        $input = document.getElementById('file');
-    $send_btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        // проверяем массив файлов в файловом инпуте
-        if($input.files.length > 0) {
-            for(var i = 0; i < $input.files.length; i++) {
-                var formData = new FormData(),
-                    file = $input.files[i],
-                    xhr = new XMLHttpRequest();
-                // заполняем объект FormData (данные формы)
-                formData.append($input.name, file);
-                // готовим ajax запрос
-                xhr.open('POST', 'php/upload.php');
-                xhr.setRequestHeader('X-FILE-NAME', file.name);
-                xhr.onreadystatechange = function(e) {
-                    if(e.target.readyState == 4) {
-                        if(e.target.status == 200) {
-                            // успешно отправили файл
-                            success(e.target.responseText);
-                            return;
-                        }
-                        else {
-                            // произошла ошибка
-                            error(e.status);
-                        }
-                    }
-                };
-                xhr.send(formData);
-            }
+
+function SendRequest(
+    method,
+    url,
+    data = "",
+    responseHandler = (response) => {
+        console.log(`Нет обработчика данных. Ответ сервера: ${response}`)
+    }
+) {
+    const xhr = new XMLHttpRequest()
+
+    if (method === "POST") {
+        xhr.open(method, url, true)
+        xhr.send(data)
+    } else if (method === "GET") {
+        xhr.open(method, url, true)
+        xhr.send()
+    }
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState != 4) {
+            return
         }
-    });
+        // Если нет ошибок, то запускаем хэндлер для полученных данных
+        if (xhr.status != 200) {
+            (`${xhr.status} : ${xhr.statusText}`)
+        } else {
+            responseHandler(xhr.responseText)
+        }
+    }
 }

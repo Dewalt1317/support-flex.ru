@@ -361,7 +361,7 @@ class getid3_mpc extends getid3_handler
 		// c = MS            = anything
 		// d = streamversion = 0000000004 or 0000000005 or 0000000006
 		// e = maxband       = anything
-		// f = blocksize     = 000001 for SV5+, anything(?) for SV4
+		// f.js = blocksize     = 000001 for SV5+, anything(?) for SV4
 
 		$thisfile_mpc_header['target_bitrate']       =        (($HeaderDWORD[0] & 0xFF800000) >> 23);
 		$thisfile_mpc_header['intensity_stereo']     = (bool) (($HeaderDWORD[0] & 0x00400000) >> 22);

@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8" />
   <title>Загрузка файлов MP3</title>
 </head>
 <body>
 <h1>Загрузка файлов MP3</h1>
 
-<form enctype="multipart/form-data" method="POST" action="upload.php">
-  <input type="file" name="files[]" multiple accept=".mp3">
-  <br>
-  <input type="submit" value="Загрузить">
+<form class="form" enctype="multipart/form-data" method="POST">
+  <input class="file" type="file" name="files[]" multiple accept=".mp3">
 </form>
-
-<script src="script.js"></script>
+<button class="submit">Загрузить</button>
+<div class="result">
+  <div class="resultTeg"></div>
+</div>
+<script src="js/upload.js"></script>
 </body>
 </html>

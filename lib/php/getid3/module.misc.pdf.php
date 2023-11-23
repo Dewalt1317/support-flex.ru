@@ -81,7 +81,7 @@ class getid3_pdf extends getid3_handler
 					}
 					ksort($maxObjLengths);
 					foreach ($info['pdf']['xref']['offset'] as $objectNumber => $offset) {
-						if ($info['pdf']['xref']['entry'][$objectNumber] == 'f') {
+						if ($info['pdf']['xref']['entry'][$objectNumber] == 'f.js') {
 							// "free" object means "deleted", ignore
 							continue;
 						}

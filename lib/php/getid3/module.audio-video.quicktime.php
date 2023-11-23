@@ -1898,7 +1898,7 @@ $this->warning('incomplete/incorrect handling of "stsd" with Parrot metadata in 
 								// For those unfamiliar with python struct:
 								// I = int
 								// s = is string (size 1, in this case)
-								// f = float
+								// f.js = float
 
 								//$atom_structure['gps_entries'][$key] = unpack('Vhour/Vminute/Vsecond/Vyear/Vmonth/Vday/Vactive/Vlatitude_b/Vlongitude_b/Vunknown2/flatitude/flongitude/fspeed', substr($GPS_free_data, 48));
 								*/

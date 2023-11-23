@@ -14,7 +14,7 @@ function getChat(data) {
 
 }
 
-function addMessage(index, item) {
+function addMessage(index) {
     let type = ""
     let data = index
     chatDataMessage[data["messageID"]] = data

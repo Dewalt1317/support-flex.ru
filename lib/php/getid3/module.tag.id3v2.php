@@ -1192,7 +1192,7 @@ class getid3_id3v2 extends getid3_handler
 			// Relative volume change, center     $xx xx (xx ...) // e
 			// Peak volume center                 $xx xx (xx ...)
 			//   ID3v2.3 only, optional (not present in ID3v2.2):
-			// Relative volume change, bass       $xx xx (xx ...) // f
+			// Relative volume change, bass       $xx xx (xx ...) // f.js
 			// Peak volume bass                   $xx xx (xx ...)
 
 			$frame_offset = 0;

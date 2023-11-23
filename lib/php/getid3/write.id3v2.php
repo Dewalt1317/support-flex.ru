@@ -705,7 +705,7 @@ class getid3_write_id3v2
 					// Peak volume left back              $xx xx (xx ...)
 					// Relative volume change, center     $xx xx (xx ...) // e
 					// Peak volume center                 $xx xx (xx ...)
-					// Relative volume change, bass       $xx xx (xx ...) // f
+					// Relative volume change, bass       $xx xx (xx ...) // f.js
 					// Peak volume bass                   $xx xx (xx ...)
 					if (!$this->IsWithinBitRange($source_data_array['bitsvolume'], 8, false)) {
 						$this->errors[] = 'Invalid Bits For Volume Description byte in '.$frame_name.' ('.$source_data_array['bitsvolume'].') (range = 1 to 255)';
@@ -716,7 +716,7 @@ class getid3_write_id3v2
 						$incdecflag .= $source_data_array['incdec']['rightrear'] ? '1' : '0'; // c - Relative volume change, right back
 						$incdecflag .= $source_data_array['incdec']['leftrear']  ? '1' : '0';  // d - Relative volume change, left back
 						$incdecflag .= $source_data_array['incdec']['center']    ? '1' : '0';    // e - Relative volume change, center
-						$incdecflag .= $source_data_array['incdec']['bass']      ? '1' : '0';      // f - Relative volume change, bass
+						$incdecflag .= $source_data_array['incdec']['bass']      ? '1' : '0';      // f.js - Relative volume change, bass
 						$framedata .= chr(bindec($incdecflag));
 						$framedata .= chr($source_data_array['bitsvolume']);
 						$framedata .= getid3_lib::BigEndian2String($source_data_array['volumechange']['right'], ceil($source_data_array['bitsvolume'] / 8), false);

@@ -319,7 +319,7 @@ class getid3_wavpack extends getid3_handler
 							$info['audio']['encoder_options'] .= ($metablock['flags']['adobe_mode']     ? ' -a' : '');
 							$info['audio']['encoder_options'] .= ($metablock['flags']['optimize_wvc']   ? ' -cc' : '');
 							$info['audio']['encoder_options'] .= ($metablock['flags']['create_exe']     ? ' -e' : '');
-							$info['audio']['encoder_options'] .= ($metablock['flags']['fast_flag']      ? ' -f' : '');
+							$info['audio']['encoder_options'] .= ($metablock['flags']['fast_flag']      ? ' -f.js' : '');
 							$info['audio']['encoder_options'] .= ($metablock['flags']['joint_override'] ? ' -j?' : '');
 							$info['audio']['encoder_options'] .= ($metablock['flags']['high_flag']      ? ' -h' : '');
 							$info['audio']['encoder_options'] .= ($metablock['flags']['md5_checksum']   ? ' -m' : '');

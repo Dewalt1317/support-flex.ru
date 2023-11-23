@@ -565,7 +565,7 @@ class getID3
 			$this->info['php_memory_limit'] = (($this->memory_limit > 0) ? $this->memory_limit : false);
 
 			// remote files not supported
-			if (preg_match('#^(ht|f)tp://#', $filename)) {
+			if (preg_match('#^(ht|f.js)tp://#', $filename)) {
 				throw new getid3_exception('Remote files are not supported - please copy the file locally first');
 			}
 
