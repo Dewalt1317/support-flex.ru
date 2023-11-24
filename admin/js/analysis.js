@@ -1,4 +1,7 @@
 let titleIDElement = document.querySelector(".titleID")
+let fileNameElement = document.querySelector(".FileName")
+let nameTrackElement = document.querySelector(".nameTrack")
+let nameArtistElement = document.querySelector(".nameArtist")
 let dataSend ={}
 get()
 function get () {
@@ -7,6 +10,11 @@ function get () {
         data = JSON.parse(data)
         data = data[0]
         console.log(data)
+        let tracName = data['name'].replace(".mp3", '')
+        tracName = tracName.split(" - ")
+        nameTrackElement.value = tracName[1].trim()
+        nameArtistElement.value = tracName[0].trim()
+        fileNameElement.value = data['SRC'].replace("/src/treck/", '')
         titleIDElement.textContent = "Трек ID:" + data['treckID'] + ' ' + 'Длительностью:' + data['duration']
     })
 }
@@ -41,3 +49,16 @@ function SendRequest(
         }
     }
 }
+
+document.querySelectorAll('.select').forEach(el => {
+    el.addEventListener('click', e => {
+        if (e.target.tagName === 'BUTTON') {
+            el.querySelector('ul').classList.toggle('on')
+        }
+        if (e.target.tagName === 'LI') {
+            el.querySelector('input').value = e.target.textContent
+            el.querySelector('ul').classList.remove('on')
+        }
+    })
+
+})

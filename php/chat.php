@@ -11,9 +11,11 @@ switch ($data->chat->comand){
             $dataChat["comand"] = $data->chat->comand;
         } else {
             $userId = $_SESSION['userID'];
-            $messageText = $data->chat->message;
+            $messageText = $data->chat->messageText;
+            $ReplyMessageID = $data->chat->ReplyMessageID;
+            $photoSRC = $data->chat->photoSRC;
         $messageId = id(11032022);
-        $mysql->query("INSERT INTO `chat` (`messageID`, `userID`, `date`, `time`, `textMessage`, `ReplyMessageID`, `photoSRC`) VALUES ('$messageId', '$userId', CURDATE(), CURTIME(), '', '', '/src/userPhoto/4343.jpg')");
+        $mysql->query("INSERT INTO `chat` (`messageID`, `userID`, `date`, `time`, `textMessage`, `ReplyMessageID`, `photoSRC`) VALUES ('$messageId', '$userId', CURDATE(), CURTIME(), '$messageText', '$ReplyMessageID', '$photoSRC')");
         if ($mysql->error_list[0]["errno"] == null){
             $dataChat['result'] = 'sendOK';
             $dataChat["comand"] = $data->chat->comand;
@@ -49,6 +51,21 @@ switch ($data->chat->comand){
             }
             $dataChat["message"] = $message;
             $dataChat['result'] = "getOk";
+            $dataChat["comand"] = $data->chat->comand;
+        } else {
+            $dataChat['result'] = 'error';
+            $dataChat["comand"] = $data->chat->comand;
+        };
+        $mysql->close();
+        break;
+
+    case "regUser":
+        $username = $data->chat->username;
+        $id = id(40817);
+        $mysql->query("INSERT INTO `user` (`userID`, `name`) VALUES ('$id', '$username')");
+        if ($mysql->error_list[0]["errno"] == null){
+            $_SESSION['userID'] = $id;
+            $dataChat['result'] = "regOK";
             $dataChat["comand"] = $data->chat->comand;
         } else {
             $dataChat['result'] = 'error';

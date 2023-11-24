@@ -1,4 +1,4 @@
-function createPopUp(type, title, text, func, type_input, placeholder, text_input) {
+function createPopUp(type, title, text, func, type_input, placeholder, text_input, insertTo) {
   if (document.querySelector(".pop-up-wrapper")) {
     console.error("Error: pop-up already exists!")
     return
@@ -15,7 +15,7 @@ function createPopUp(type, title, text, func, type_input, placeholder, text_inpu
 
   switch (type) {
     case "message":
-      let popUp_wrapper_message = document.createElement("div")
+      let popUp_wrapper_message = insertTo.createElement("div")
       popUp_wrapper_message.classList.add("pop-up-wrapper")
 
       popUp_wrapper_message.innerHTML = `<div class="pop-up">
@@ -30,7 +30,7 @@ function createPopUp(type, title, text, func, type_input, placeholder, text_inpu
           </div>
       </div>`
 
-      document.body.insertAdjacentElement("beforeend",popUp_wrapper_message)
+      insertTo.insertAdjacentElement("beforeend",popUp_wrapper_message)
       //Удаляем поп-ап по клику
       popUp_wrapper_message.querySelector("#pop-up-btn1").addEventListener("click", () => {
         popUp_wrapper_message.remove()

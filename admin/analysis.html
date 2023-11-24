@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Анализ треков</title>
+    <link rel="stylesheet" href="css/analysis.css" />
 </head>
 <body>
 <div class="title">
@@ -13,8 +14,30 @@
 <div class="inputs">
     <input class="nameTrack" placeholder="Название трека" type="text">
     <input class="nameArtist" placeholder="Исполнитель" type="text">
-    <input class="nameArtistLink" placeholder="Связанный исполнитель" type="text">
-    <input class="category" placeholder="Категория" type="text">
+<!--    <input class="nameArtistLink" placeholder="Связанный исполнитель" type="text">-->
+<!--    <input class="category" placeholder="Категория" type="text">-->
+    <div class='select'>
+        <div>
+            <input class="nameArtistLink" placeholder="Связанный исполнитель"/>
+            <button>+</button>
+        </div>
+        <ul>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+        </ul>
+    </div>
+    <div class='select'>
+        <div>
+            <input class="category" placeholder="Категория"/>
+            <button>+</button>
+        </div>
+        <ul>
+            <li>10</li>
+            <li>20</li>
+            <li>30</li>
+        </ul>
+    </div>
     <input class="mood" placeholder="Настроение" type="text">
     <button class="buttonSave">Сохранить</button>
 </div>

@@ -10,6 +10,23 @@ function getChat(data) {
             chatDataNew.forEach(addMessage)
             dataChatSend["comand"] = ""
             break
+
+        case "sendOK":
+            dataChatSend["comand"] = "getNewMessage"
+            get()
+            break
+
+        case "regUser":
+
+            break
+
+        case "regOK":
+
+            break
+
+        case "error":
+
+            break
     }
 
 }

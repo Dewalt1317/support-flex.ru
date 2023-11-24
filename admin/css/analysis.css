@@ -1,0 +1,12 @@
+.select {
+    display: inline-block;
+}
+.select ul {
+    display: none;
+    border: 1px solid;
+    list-style-type: none;
+    list-style-position: outside;
+}
+.select ul.on {
+    display: block;
+}
