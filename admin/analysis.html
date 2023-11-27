@@ -1,75 +1,184 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
     <title>Анализ треков</title>
     <link rel="stylesheet" href="css/analysis.css" />
-</head>
-<body>
-<div class="title">
-    <h1 class="titleID">Трек ID: Длительностью:</h1>
-    <h1>Файл: <input placeholder="Название файла" class="FileName" type="text"></h1>
+  </head>
+  <body>
 
-</div>
-<div class="inputs">
-    <input class="nameTrack" placeholder="Название трека" type="text">
-    <input class="nameArtist" placeholder="Исполнитель" type="text">
-<!--    <input class="nameArtistLink" placeholder="Связанный исполнитель" type="text">-->
-<!--    <input class="category" placeholder="Категория" type="text">-->
-    <div class='select'>
+    <style>
+
+.multiple_select_wrapper {
+    border: 2px dashed salmon;
+}
+
+        .select,
+        .multiple_select_wrapper {
+          width: 200px;
+          display: inline-flex;
+          flex-direction: column;
+
+        }
+  
+        .select {
+          margin-bottom: 20px;
+        }
+  
+        .select > * {
+          margin-bottom: 10px;
+        }
+  
+        ._hide {
+          display: none;
+        }
+  
+        .multiple_select_wrapper .btns {
+          display: flex;
+          justify-content: space-between;
+        }
+      </style>
+    <div class="title">
+      <h1 class="titleID">Трек ID: Длительностью:</h1>
+      <h1>
+        Файл:
+        <input placeholder="Название файла" class="FileName" type="text" />
+      </h1>
+    </div>
+    <div class="inputs">
+      <input class="nameTrack" placeholder="Название трека" type="text" />
+      <input class="nameArtist" placeholder="Исполнитель" type="text" />
+      <!--    <input class="nameArtistLink" placeholder="Связанный исполнитель" type="text">-->
+      <!--    <input class="category" placeholder="Категория" type="text">-->
+      <div class="multiple_select_wrapper">
+        <div class="select">
+          <p>Выбор 1</p>
+          <select>
+            <option value="choise_1">Вариан 1</option>
+            <option value="choise_2">Вариан 2</option>
+            <option value="choise_3">Вариан 3</option>
+            <option value="another">Свой вариант</option>
+          </select>
+          <input
+            class="another_choise_inpt _hide"
+            type="text"
+            name="another_choise"
+            placeholder="Напишите свой вариант"
+          />
+        </div>
+  
+        <div class="btns">
+          <button class="add-select-btn">Еще один выбор</button>
+          <button class="remove-select-btn _hide">Удалить</button>
+        </div>
+      </div>
+      <div class="select">
         <div>
-            <input class="nameArtistLink" placeholder="Связанный исполнитель"/>
-            <button>+</button>
+          <input class="category" placeholder="Категория" />
+          <button>+</button>
         </div>
         <ul>
-            <li>1</li>
-            <li>2</li>
-            <li>3</li>
+          <li>10</li>
+          <li>20</li>
+          <li>30</li>
         </ul>
+      </div>
+      <input class="mood" placeholder="Настроение" type="text" />
+      <button class="buttonSave">Сохранить</button>
     </div>
-    <div class='select'>
-        <div>
-            <input class="category" placeholder="Категория"/>
-            <button>+</button>
-        </div>
-        <ul>
-            <li>10</li>
-            <li>20</li>
-            <li>30</li>
-        </ul>
+    <!--<div class="inputs">-->
+    <!--    <input style="opacity: 0" type="text">-->
+    <!--    <input style="opacity: 0" type="text">-->
+    <!--    <input class="nameArtistLink2" type="text">-->
+    <!--    <input class="category2" type="text">-->
+    <!--    <input style="opacity: 0" type="text">-->
+    <!--</div>-->
+    <!--<div class="inputs">-->
+    <!--    <input style="opacity: 0" type="text">-->
+    <!--    <input style="opacity: 0" type="text">-->
+    <!--    <input class="nameArtistLink3" type="text">-->
+    <!--    <input class="category3" type="text">-->
+    <!--    <input style="opacity: 0" type="text">-->
+    <!--</div>-->
+    <!--<div class="inputs">-->
+    <!--    <input style="opacity: 0" type="text">-->
+    <!--    <input style="opacity: 0" type="text">-->
+    <!--    <input class="nameArtistLink4" type="text">-->
+    <!--    <input class="category4" type="text">-->
+    <!--    <input style="opacity: 0" type="text">-->
+    <!--</div>-->
+    <!--<div class="inputs">-->
+    <!--    <input style="opacity: 0" type="text">-->
+    <!--    <input style="opacity: 0" type="text">-->
+    <!--    <input class="nameArtistLink5" type="text">-->
+    <!--    <input class="category5" type="text">-->
+    <!--    <input style="opacity: 0" type="text">-->
+    <!--</div>-->
+  </body>
+  <script src="js/analysis.js"></script>
+  <script src="js/request.js"></script>
+  <script>
+    const $addSelectBtn = document.querySelector(".add-select-btn")
+    const $removeSelectBtn = document.querySelector(".remove-select-btn")
+    const $selectWrapper = document.querySelector(".multiple_select_wrapper")
+    let $allSelects = document.querySelectorAll(".multiple_select_wrapper > .select")
+
+    $addSelectBtn.addEventListener("click", () => {
+      document.querySelector(".btns").insertAdjacentHTML(
+        "beforebegin",
+        `
+        <div class="select">
+      <p>Выбор N</p>
+      <select>
+        <option value="choise_1">Вариан 1</option>
+        <option value="choise_2">Вариан 2</option>
+        <option value="choise_3">Вариан 3</option>
+        <option value="another">Свой вариант</option>
+      </select>
+      <input
+        class="another_choise_inpt _hide"
+        type="text"
+        name="another_choise"
+      />
     </div>
-    <input class="mood" placeholder="Настроение" type="text">
-    <button class="buttonSave">Сохранить</button>
-</div>
-<!--<div class="inputs">-->
-<!--    <input style="opacity: 0" type="text">-->
-<!--    <input style="opacity: 0" type="text">-->
-<!--    <input class="nameArtistLink2" type="text">-->
-<!--    <input class="category2" type="text">-->
-<!--    <input style="opacity: 0" type="text">-->
-<!--</div>-->
-<!--<div class="inputs">-->
-<!--    <input style="opacity: 0" type="text">-->
-<!--    <input style="opacity: 0" type="text">-->
-<!--    <input class="nameArtistLink3" type="text">-->
-<!--    <input class="category3" type="text">-->
-<!--    <input style="opacity: 0" type="text">-->
-<!--</div>-->
-<!--<div class="inputs">-->
-<!--    <input style="opacity: 0" type="text">-->
-<!--    <input style="opacity: 0" type="text">-->
-<!--    <input class="nameArtistLink4" type="text">-->
-<!--    <input class="category4" type="text">-->
-<!--    <input style="opacity: 0" type="text">-->
-<!--</div>-->
-<!--<div class="inputs">-->
-<!--    <input style="opacity: 0" type="text">-->
-<!--    <input style="opacity: 0" type="text">-->
-<!--    <input class="nameArtistLink5" type="text">-->
-<!--    <input class="category5" type="text">-->
-<!--    <input style="opacity: 0" type="text">-->
-<!--</div>-->
-</body>
-<script src="js/analysis.js"></script>
-<script src="js/request.js"></script>
+        `
+      )
+
+      $allSelects = document.querySelectorAll(".multiple_select_wrapper > .select")
+      if ($allSelects.length > 1) {
+        $removeSelectBtn.classList.remove("_hide")
+      } else {
+        $removeSelectBtn.classList.add("_hide")
+      }
+
+    })
+
+    $removeSelectBtn.addEventListener("click", () => {
+      $allSelects = document.querySelectorAll(".multiple_select_wrapper > .select")
+      $allSelects[$allSelects.length - 1].remove()
+      $allSelects = document.querySelectorAll(".multiple_select_wrapper > .select")
+      if ($allSelects.length > 1) {
+        $removeSelectBtn.classList.remove("_hide")
+      } else {
+        $removeSelectBtn.classList.add("_hide")
+      }
+    })
+
+    $selectWrapper.addEventListener("click", (event) => {
+      if (!event.target.closest("select")) {
+        return
+      }
+
+      let $select = event.target.closest(".select")
+      let $another_choise_inpt = $select.querySelector(".another_choise_inpt")
+
+      if (event.target.value === "another") {
+        $another_choise_inpt.classList.remove("_hide")
+      } else {
+        $another_choise_inpt.classList.add("_hide")
+      }
+    })
+  
+    
+  </script>
 </html>
