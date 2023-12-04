@@ -6,91 +6,47 @@
     <link rel="stylesheet" href="css/analysis.css" />
   </head>
   <body>
-
-    <style>
-
-.multiple_select_wrapper {
-    border: 2px dashed salmon;
-    margin-bottom: 55px;
-}
-
-        .select,
-        .multiple_select_wrapper {
-          width: 200px;
-          display: inline-flex;
-          flex-direction: column;
-
-        }
-  
-        .select {
-          margin-bottom: 20px;
-        }
-  
-        .select > * {
-          margin-bottom: 10px;
-        }
-  
-        ._hide {
-          display: none;
-        }
-  
-        .multiple_select_wrapper .btns {
-          display: flex;
-          justify-content: space-between;
-        }
-
-        .wrapContent {
-          opacity: 0;
-        }
-
-        audio {
-          width: 100%;
-          position: fixed;
-          bottom: 0;
-        }
-      </style>
-    <input class="get" type="button" value="Получить трек">
+    <input class="get" type="button" value="Получить трек" />
     <div class="wrapContent">
-    <div class="title">
-      <h1 class="titleID">Трек ID: </h1>
-      <h1>
-        Файл:
-        <input placeholder="Название файла" class="FileName" type="text" />
-        <h1 class="duration">Длительностью:
-          <input placeholder="Длительность" class="durationInput" type="time" step="1" value="" />
+      <div class="title">
+        <h1 class="titleID">Трек ID:</h1><br>
+        <h1 class="fileName">
+          Файл:
+          <input placeholder="Название файла" class="FileName" type="text" />
+          <h1 class="duration">
+            Длительностью:
+            <input
+              placeholder="Длительность"
+              class="durationInput"
+              type="time"
+              step="1"
+              value=""
+            />
+          </h1>
         </h1>
-      </h1>
-    </div>
-    <div class="inputs">
-      <input class="nameTrack" placeholder="Название трека" type="text" />
-      <input class="nameArtist" placeholder="Исполнитель" type="text" />
-          <input class="nameArtistLink" placeholder="Связанный исполнитель" type="text">
-      <!--    <input class="category" placeholder="Категория" type="text">-->
-      <div class="multiple_select_wrapper">
-        <div class="select">
-          <p>Категория 1</p>
-          <select>
-            <option value="choise_1">Вариан 1</option>
-            <option value="choise_2">Вариан 2</option>
-            <option value="choise_3">Вариан 3</option>
-            <option value="another">Свой вариант</option>
-          </select>
-          <input
-            class="another_choise_inpt _hide"
-            type="text"
-            name="another_choise"
-            placeholder="Категория"
-          />
-        </div>
-
-        <div class="btns">
-          <button class="add-select-btn">Еще одна категория</button>
-          <button class="remove-select-btn _hide">Удалить</button>
-        </div>
       </div>
-      <input class="mood" placeholder="Настроение" type="text" />
-      <button class="buttonSave">Сохранить</button>
-    </div>
+      <div class="inputs">
+        <input class="nameTrack" placeholder="Название трека" type="text" />
+        <input class="nameArtist" placeholder="Исполнитель" type="text" />
+
+        <!-- Выбор связанного исполнителя -->
+        <div
+          class="multiple_select_wrapper selectArtist"
+          data-selectcount="0"
+          data-selectname="Связанный исполнитель"
+          data-selectheader="Выбор связанных исполнителей"
+        ></div>
+        <div
+          class="multiple_select_wrapper selectCategory"
+          data-selectcount="0"
+          data-selectname="Категория"
+          data-selectheader="Выбор категорий"
+        ></div>
+
+        <!-- Выбор категории -->
+        <input class="mood" placeholder="Настроение" type="text" />
+        <button class="buttonSave">Сохранить</button>
+      </div>
       <audio controls></audio>
     </div>
   </body>

@@ -1,12 +1,52 @@
 .select {
-    display: inline-block;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+{
+    margin: 20px;
+  display: inline-block;
 }
 .select ul {
-    display: none;
-    border: 1px solid;
-    list-style-type: none;
-    list-style-position: outside;
+  display: none;
+  border: 1px solid;
+  list-style-type: none;
+  list-style-position: outside;
 }
 .select ul.on {
-    display: block;
+  display: block;
+}
+
+.multiple_select_wrapper {
+  border: 2px dashed salmon;
+  margin-bottom: 55px;
+}
+
+.select,
+.multiple_select_wrapper {
+  width: 200px;
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.select > * {
+  margin-bottom: 10px;
+}
+
+._hide {
+  display: none;
+}
+
+.multiple_select_wrapper .btns {
+  display: flex;
+  justify-content: space-around;
+}
+
+.wrapContent {
+  opacity: 0;
+}
+
+audio {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
 }
