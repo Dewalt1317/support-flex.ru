@@ -7,18 +7,18 @@ submitButton.addEventListener("click", response)
 
 function response () {
     if (i === 0){
-        result.textContent = "[Начало загрузки]<b>"
+        result.innerHTML = "[Начало загрузки]<br>"
     }
     if (i < input.files.length) {
     let formData = new FormData()
-        result.textContent = result.textContent + input.files[i]["name"] + "<br>"
+        result.innerHTML = result.innerHTML + input.files[i]["name"] + "<br>"
     let file = input.files[i]
     formData.append(input.name, file);
         i++
     SendRequest("POST", "php/upload.php", formData, response)
     } else {
         i = 0
-        result.textContent = result.textContent + "[Загрузка завершена]<br>"
+        result.innerHTML = result.innerHTML + "[Загрузка завершена]<br>"
     }
 
 }
