@@ -5,13 +5,13 @@ let result = document.querySelector(".result")
 let i = 0
 submitButton.addEventListener("click", response)
 
-function response () {
+function response (data) {
     if (i === 0){
         result.innerHTML = "[Начало загрузки]<br>"
     }
     if (i < input.files.length) {
     let formData = new FormData()
-        result.innerHTML = result.innerHTML + input.files[i]["name"] + "<br>"
+        result.innerHTML = result.innerHTML + (i + 1) + ".) " + input.files[i]["name"] + "<br>"
     let file = input.files[i]
     formData.append(input.name, file);
         i++
@@ -19,6 +19,7 @@ function response () {
     } else {
         i = 0
         result.innerHTML = result.innerHTML + "[Загрузка завершена]<br>"
+        result.innerHTML = result.innerHTML + "[Начало ответа от сервера]<br>" + data + "<br>[Конец ответа от сервера]"
     }
 
 }

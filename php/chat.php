@@ -60,7 +60,7 @@ switch ($data->chat->comand){
         break;
 
     case "regUser":
-        $username = $data->chat->username;
+                $username = $data->chat->username;
         $id = id(40817);
         $mysql->query("INSERT INTO `user` (`userID`, `name`) VALUES ('$id', '$username')");
         if ($mysql->error_list[0]["errno"] == null){

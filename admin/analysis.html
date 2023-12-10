@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="ru">
   <head>
+    <script src="js/check.js"></script>
     <meta charset="UTF-8" />
     <title>Анализ треков</title>
     <link rel="stylesheet" href="css/analysis.css" />
   </head>
   <body>
+  <input class="back" type="button" value="Назад" />
     <input class="get" type="button" value="Получить трек" />
     <div class="wrapContent">
       <div class="title">
         <h1 class="titleID">Трек ID:</h1><br>
         <h1 class="fileName">
           Файл:
-          <input placeholder="Название файла" class="FileName" type="text" />
+          <input placeholder="Название файла" class="fileNameInput" type="text" />
           <h1 class="duration">
             Длительностью:
             <input
@@ -25,6 +27,7 @@
           </h1>
         </h1>
       </div>
+      <audio controls></audio>
       <div class="inputs">
         <input class="nameTrack" placeholder="Название трека" type="text" />
         <input class="nameArtist" placeholder="Исполнитель" type="text" />
@@ -36,18 +39,22 @@
           data-selectname="Связанный исполнитель"
           data-selectheader="Выбор связанных исполнителей"
         ></div>
+        <!-- Выбор категории -->
         <div
           class="multiple_select_wrapper selectCategory"
           data-selectcount="0"
           data-selectname="Категория"
           data-selectheader="Выбор категорий"
         ></div>
-
-        <!-- Выбор категории -->
-        <input class="mood" placeholder="Настроение" type="text" />
+        <!-- Выбор Настроения -->
+        <div
+                class="multiple_select_wrapper selectMood"
+                data-selectcount="0"
+                data-selectname="Настроение"
+                data-selectheader="Выбор настроения"
+        ></div>
         <button class="buttonSave">Сохранить</button>
       </div>
-      <audio controls></audio>
     </div>
   </body>
   <script src="js/analysis.js"></script>

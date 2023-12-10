@@ -1,5 +1,5 @@
 let titleIDElement = document.querySelector(".titleID")
-let fileNameElement = document.querySelector(".FileName")
+let fileNameElement = document.querySelector(".fileNameInput")
 let nameTrackElement = document.querySelector(".nameTrack")
 let nameArtistElement = document.querySelector(".nameArtist")
 let getElement = document.querySelector(".get")
@@ -8,22 +8,22 @@ let durationInputElement = document.querySelector(".durationInput")
 let audioElement = document.querySelector("audio")
 const $selectArtist = document.querySelector(".selectArtist")
 const $selectCategory = document.querySelector(".selectCategory")
-
-// TEMP
-let fakeResponse = {
-  "track-name": "name",
-  src: "a/b/c.mp3",
-  "track-duration": "3000",
-  "db-id": "123",
-  categories: ["cat1", "cat2", "cat3"],
-  artists: ["artist1", "artist2", "artist3"],
-}
+const $selectMood = document.querySelector(".selectMood")
+let buttonSaveElement = document.querySelector(".buttonSave")
+let buttonBack = document.querySelector(".back")
+let treckID
+let SRC
+let getStatus
 
 // Все поля для селектов
 const $selectWrappers = document.querySelectorAll(".multiple_select_wrapper")
 
 let dataSend = {}
 
+buttonBack.addEventListener("click", ()=>{
+  window.location.href = "/admin"
+})
+buttonSaveElement. addEventListener("click", save)
 getElement.addEventListener("click", () => {
   get()
   getElement.style.opacity = 0
@@ -33,18 +33,21 @@ getElement.addEventListener("click", () => {
 function get() {
   dataSend["comand"] = "get"
   SendRequest("POST", "php/analysis.php", dataSend, (data) => {
+    getStatus = "get"
     data = JSON.parse(data)
-    data = data[0]
     let tracName = data["name"].replace(".mp3", "")
     tracName = tracName.split(" - ")
     nameTrackElement.value = tracName[1].trim()
     nameArtistElement.value = tracName[0].trim()
-    fileNameElement.value = data["SRC"].replace("/src/treck/", "")
+    SRC = data["SRC"]
+    fileNameElement.value = SRC.replace("/src/treck/", "")
+    treckID = data["treckID"]
     titleIDElement.textContent = "Трек ID:" + data["treckID"]
     durationInputElement.value = data["duration"]
-    audioElement.src = data["SRC"]
-    addSelect($selectArtist, data.artists)
-    addSelect($selectCategory, data.categories)
+    audioElement.src = SRC
+    addSelect($selectArtist, data.artists, "artist")
+    addSelect($selectCategory, data.category, "category")
+    addSelect($selectMood, data.mood, "mood")
   })
 }
 
@@ -92,7 +95,7 @@ document.querySelectorAll(".select").forEach((el) => {
 })
 
 // Функция добавления селекта
-function addSelect(contextEl, options) {
+function addSelect(contextEl, options, teg) {
   let selectCount = contextEl.dataset.selectcount
   let selectName = contextEl.dataset.selectname
   let selectHeader = contextEl.dataset.selectheader
@@ -101,14 +104,39 @@ function addSelect(contextEl, options) {
   if (!options) {
     optionsStr = contextEl.querySelector("select").innerHTML
   }
+let optionValue = ""
+  let optionName = ""
+  let no
+  let button
+  switch (teg){
+    case "artist":
+      optionValue = "artistLinkID"
+        optionName = "artistLink"
+        no = '<option value="no">Нет</option>'
+      button = '<button class="add-select-btn">Добавить</button>'
+      break
+
+    case "category":
+      optionValue = "categoryID"
+      optionName = "category"
+      button = '<button class="add-select-btn">Добавить</button>'
+      break
+
+    case "mood":
+      optionValue = "moodID"
+      optionName = "mood"
+      button = ''
+      break
+
+  }
 
   //   Если начальный селект
   if (selectCount == 0) {
     optionsStr = []
     options.forEach((option) => {
-      optionsStr.push(`<option value="${option}">${option}</option>`)
+      optionsStr.push(`<option value="${option[optionValue]}">${option[optionName]}</option>`)
     })
-    optionsStr = optionsStr.join("") + `<option value="another">Свой вариант</option>`
+    optionsStr = `<option value="non">-----------</option>` + no + optionsStr.join("") + `<option value="another">Свой вариант</option>`
     contextEl.insertAdjacentHTML(
       "beforeend",
       `
@@ -127,7 +155,7 @@ function addSelect(contextEl, options) {
           </div>
 
           <div class="btns">
-            <button class="add-select-btn">Добавить</button>
+            ${button}
             <button class="remove-select-btn _hide">Удалить</button>
           </div>
     `
@@ -214,8 +242,95 @@ $selectWrappers.forEach((el) => {
     }
   })
 })
+let dataCollector = []
+let dataCollectorNewOption = []
+let CollectorStatus
+let category
+let categoryNew
+let mood
+let moodNew
+let artist
+let artistNew
+function save() {
+ let allSelectCategory = $selectCategory.querySelectorAll('select')
+  let allSelectMood = $selectMood.querySelectorAll('select')
+  let allSelectArtistLink = $selectArtist.querySelectorAll('select')
+  categoryCollection(allSelectCategory)
+  moodCollection(allSelectMood)
+  artistLinkCollection(allSelectArtistLink)
+  if (CollectorStatus === "stop"){
+    CollectorStatus = ""
+    return
+  } else {
+    let data = {}
+    data["duration"] = durationInputElement.value
+    data["name"] = nameTrackElement.value
+    data["artist"] =  nameArtistElement.value
+    data["SRC"] = SRC
+    data["SRCNew"] =  "/src/treck/" + fileNameElement.value
+    data["treckID"] = treckID
+    data["category"] = category
+    data["categoryNew"] = categoryNew
+    data["mood"] = mood
+    data["moodNew"] = moodNew
+    data["artistLink"] = artist
+    data["artistLinkNew"] = artistNew
+    dataSend ={"comand": "send", "treck": data}
+    SendRequest("POST", "php/analysis.php", dataSend, (data)=>{
+      getStatus = "save"
+      data = JSON.parse(data)
+      if (data["result"] === "saveOK"){
+        location.reload()
+      }
+    })
+  }
 
-// Не забыть удалить
-getElement.click()
-addSelect($selectArtist, fakeResponse.artists)
-addSelect($selectCategory, fakeResponse.categories)
+}
+function categoryCollection (element) {
+  element.forEach(collector)
+  category = dataCollector
+  dataCollector = []
+  categoryNew = dataCollectorNewOption
+  dataCollectorNewOption = []
+}
+
+function moodCollection (element) {
+  element.forEach(collector)
+  mood = dataCollector
+  dataCollector = []
+  moodNew = dataCollectorNewOption
+  dataCollectorNewOption = []
+}
+
+function artistLinkCollection (element) {
+  element.forEach(collector)
+  artist = dataCollector
+  dataCollector = []
+  artistNew = dataCollectorNewOption
+  dataCollectorNewOption = []
+}
+function collector (index) {
+  if (CollectorStatus === "stop"){
+    return
+  } else if (index.value === "non") {
+    alert("Заполните все поля")
+    CollectorStatus = "stop"
+  } else if (index.value === "another") {
+    if (index.closest("div").querySelector(".another_choise_inpt").value === ""){
+      alert("Заполните все поля")
+      CollectorStatus = "stop"
+    } else {
+      dataCollectorNewOption.push(index.closest("div").querySelector(".another_choise_inpt").value)
+    }
+  } else {
+    dataCollector.push(index.value)
+  }
+}
+
+window.onbeforeunload = function() {
+  if (getStatus === "get"){
+  dataSend ={"comand": "out", "id": treckID}
+  SendRequest("POST", "php/analysis.php", dataSend)
+  return "Данные не сохранены. Точно перейти?";
+  }
+};

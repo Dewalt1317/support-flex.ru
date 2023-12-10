@@ -2,8 +2,11 @@
   display: inline-block;
   margin-bottom: 20px;
 }
-{
-    margin: 20px;
+.titleID {
+  margin: 0;
+}
+.fileName, .duration{
+    margin: 0 20px 20px 0;
   display: inline-block;
 }
 .select ul {
@@ -18,7 +21,6 @@
 
 .multiple_select_wrapper {
   border: 2px dashed salmon;
-  margin-bottom: 55px;
 }
 
 .select,
@@ -47,6 +49,8 @@
 
 audio {
   width: 100%;
-  position: fixed;
-  bottom: 0;
+}
+
+.fileNameInput {
+  width: 250px;
 }

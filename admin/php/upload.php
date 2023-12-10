@@ -5,6 +5,7 @@ require_once('../../lib/php/getid3/getid3.php');
 if ($mysql->connect_error) {
     die("Ошибка подключения к базе данных: " . $mysql->connect_error);
 }
+$uploadNum = 0;
 $uploadDir = '../../src/treck';
 if (isset($_FILES['files'])) {
     $uploadedFiles = $_FILES['files'];
@@ -23,11 +24,13 @@ if (isset($_FILES['files'])) {
                 $treckID = id(8000);
                 $mysql->query("INSERT INTO treck (`treckID`, `name`, `SRC`, `duration`) VALUES ('$treckID', '$fileName', '$filePath', '$duration')");
                 $mysql->close();
+                $uploadNum = $uploadNum  + 1;
+                echo 'Файл "' . $fileName . '" Загружен' . "<br>";
             } else {
-                echo "Ошибка при перемещении файла: " . $fileName;
+                echo "Ошибка при перемещении файла: " . $fileName . "<br>";
             }
         } else {
-            echo "Неподдерживаемый формат файла: " . $fileName;
+            echo "Неподдерживаемый формат файла: " . $fileName . "<br>";
         }
     }
 } else {
