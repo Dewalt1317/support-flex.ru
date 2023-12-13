@@ -19,7 +19,8 @@ function response (data) {
     } else {
         i = 0
         result.innerHTML = result.innerHTML + "[Загрузка завершена]<br>"
-        result.innerHTML = result.innerHTML + "[Начало ответа от сервера]<br>" + data + "<br>[Конец ответа от сервера]"
+        data = JSON.parse(data)
+        result.innerHTML = result.innerHTML + "[Начало ответа от сервера]<br>" + data["error"] + data["result"] + "<br>[Конец ответа от сервера]"
     }
 
 }

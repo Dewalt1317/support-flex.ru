@@ -1,56 +1,97 @@
-.select {
-  display: inline-block;
-  margin-bottom: 20px;
-}
-.titleID {
+/* Общие стили для страницы */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
   margin: 0;
-}
-.fileName, .duration{
-    margin: 0 20px 20px 0;
-  display: inline-block;
-}
-.select ul {
-  display: none;
-  border: 1px solid;
-  list-style-type: none;
-  list-style-position: outside;
-}
-.select ul.on {
-  display: block;
+  padding: 20px;
 }
 
-.multiple_select_wrapper {
-  border: 2px dashed salmon;
+/* Стили для кнопок */
+input[type="button"],
+button {
+  cursor: pointer;
+  padding: 10px 20px;
+  margin: 5px;
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
-.select,
-.multiple_select_wrapper {
-  width: 200px;
-  display: inline-flex;
+input[type="button"]:hover,
+button:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Стилизация кнопки "Назад" */
+.back {
+  background-color: #fda;
+}
+
+/* Стилизация кнопки "Получить трек" */
+.get {
+  background-color: #adf;
+}
+
+/* Обертка для содержимого */
+.wrapContent {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Стилизация заголовков */
+.title h1 {
+  margin: 10px 0;
+}
+
+/* Стилизация полей ввода */
+input[type="text"],
+.durationInput {
+  padding: 10px;
+  margin: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: calc(100% - 22px); /* 100% - padding - border */
+}
+
+input[type="text"]:focus,
+.durationInput:focus {
+  border-color: #aaa;
+}
+
+/* Аудио плеер на всю ширину контейнера */
+audio {
+  width: 100%;
+  margin: 10px 0;
+}
+
+/* Стили кнопки "Сохранить" */
+.buttonSave {
+  background-color: #4CAF50;
+  color: white;
+}
+
+/* Расположение элементов ввода в столбец */
+.inputs {
+  display: flex;
   flex-direction: column;
 }
 
-.select > * {
-  margin-bottom: 10px;
+/* Множественный выбор связанных стилей */
+.multiple_select_wrapper {
+  margin: 15px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
 
+/* Подсказка в полях ввода */
+input::placeholder {
+  color: #bbb;
+}
+
+/* Стиль для того чтоб спрятать объект */
 ._hide {
   display: none;
-}
-
-.multiple_select_wrapper .btns {
-  display: flex;
-  justify-content: space-around;
-}
-
-.wrapContent {
-  opacity: 0;
-}
-
-audio {
-  width: 100%;
-}
-
-.fileNameInput {
-  width: 250px;
 }

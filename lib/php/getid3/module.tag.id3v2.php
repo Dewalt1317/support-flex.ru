@@ -308,7 +308,7 @@ class getid3_id3v2 extends getid3_handler
 						if ($this->IsValidID3v2FrameName($nextFrameID, $id3v2_majorversion)) {
 							// next frame is OK
 						} elseif (($frame_name == "\x00".'MP3') || ($frame_name == "\x00\x00".'MP') || ($frame_name == ' MP3') || ($frame_name == 'MP3e')) {
-							// MP3ext known broken frames - "ok" for the purposes of this test
+							// MP3ext known broken frames - "ok" for the purposes of this emoji
 						} elseif (($id3v2_majorversion == 4) && ($this->IsValidID3v2FrameName(substr($framedata, getid3_lib::BigEndian2Int(substr($frame_header, 4, 4), 0), 4), 3))) {
 							$this->warning('ID3v2 tag written as ID3v2.4, but with non-synchsafe integers (ID3v2.3 style). Older versions of (Helium2; iTunes) are known culprits of this. Tag has been parsed as ID3v2.3');
 							$id3v2_majorversion = 3;

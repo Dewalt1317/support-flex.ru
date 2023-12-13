@@ -26,10 +26,9 @@ buttonBack.addEventListener("click", ()=>{
 buttonSaveElement. addEventListener("click", save)
 getElement.addEventListener("click", () => {
   get()
-  getElement.style.opacity = 0
-  wrapContentElement.style.opacity = 1
+  getElement.classList.add("_hide")
+  wrapContentElement.classList.remove("_hide")
 })
-// get()
 function get() {
   dataSend["comand"] = "get"
   SendRequest("POST", "php/analysis.php", dataSend, (data) => {
