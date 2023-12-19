@@ -23,10 +23,10 @@ const $selectWrappers = document.querySelectorAll(".multiple_select_wrapper")
 
 let dataSend = {}
 
-buttonBack.addEventListener("click", ()=>{
+buttonBack.addEventListener("click", () => {
   window.location.href = "/admin"
 })
-buttonSaveElement. addEventListener("click", save)
+buttonSaveElement.addEventListener("click", save)
 getElement.addEventListener("click", () => {
   get("get")
 })
@@ -34,29 +34,30 @@ buttonSkippedQueue.addEventListener("click", () => {
   get("getSkipped")
 })
 buttonSkipElement.addEventListener("click", () => {
-  dataSend ={"comand": "skip", "id": treckID}
-  SendRequest("POST", "php/analysis.php", dataSend, (data)=>{
+  dataSend = { comand: "skip", id: treckID }
+  SendRequest("POST", "php/analysis.php", dataSend, (data) => {
     data = JSON.parse(data)
-    if (data["result"] === "skipOK"){
+    if (data["result"] === "skipOK") {
       Status = "skip"
       location.reload()
     }
   })
 })
+
 function get(comand) {
   dataSend["comand"] = comand
   SendRequest("POST", "php/analysis.php", dataSend, (data) => {
     data = JSON.parse(data)
-    if (data["status"] === "absent"){
-       switch (dataSend["comand"]){
-         case "get":
-           alert("В основной очереди нет треков для анализа")
-           break
+    if (data["status"] === "absent") {
+      switch (dataSend["comand"]) {
+        case "get":
+          alert("В основной очереди нет треков для анализа")
+          break
 
-         case "getSkipped":
-           alert("В очереди пропущенных нет треков для анализа")
-           break
-       }
+        case "getSkipped":
+          alert("В очереди пропущенных нет треков для анализа")
+          break
+      }
     } else {
       buttonGetWrapElement.classList.add("_hide")
       wrapContentElement.classList.remove("_hide")
@@ -131,15 +132,15 @@ function addSelect(contextEl, options, teg) {
   if (!options) {
     optionsStr = contextEl.querySelector("select").innerHTML
   }
-let optionValue = ""
+  let optionValue = ""
   let optionName = ""
   let no
   let button
-  switch (teg){
+  switch (teg) {
     case "artist":
       optionValue = "artistLinkID"
-        optionName = "artistLink"
-        no = '<option value="no">Нет</option>'
+      optionName = "artistLink"
+      no = '<option value="no">Нет</option>'
       button = '<button class="add-select-btn">Добавить</button>'
       break
 
@@ -152,18 +153,23 @@ let optionValue = ""
     case "mood":
       optionValue = "moodID"
       optionName = "mood"
-      button = ''
+      button = ""
       break
-
   }
 
   //   Если начальный селект
   if (selectCount == 0) {
     optionsStr = []
     options.forEach((option) => {
-      optionsStr.push(`<option value="${option[optionValue]}">${option[optionName]}</option>`)
+      optionsStr.push(
+        `<option value="${option[optionValue]}">${option[optionName]}</option>`
+      )
     })
-    optionsStr = `<option value="non">-----------</option>` + no + optionsStr.join("") + `<option value="another">Свой вариант</option>`
+    optionsStr =
+      `<option value="non">-----------</option>` +
+      no +
+      optionsStr.join("") +
+      `<option value="another">Свой вариант</option>`
     contextEl.insertAdjacentHTML(
       "beforeend",
       `
@@ -198,7 +204,7 @@ let optionValue = ""
     "beforebegin",
     `
             <div class="select">
-          <p>${selectName} ${+selectCount+1}</p>
+          <p>${selectName} ${+selectCount + 1}</p>
           <select>
           ${optionsStr}
           </select>
@@ -269,6 +275,7 @@ $selectWrappers.forEach((el) => {
     }
   })
 })
+
 let dataCollector = []
 let dataCollectorNewOption = []
 let CollectorStatus
@@ -279,22 +286,22 @@ let moodNew
 let artist
 let artistNew
 function save() {
- let allSelectCategory = $selectCategory.querySelectorAll('select')
-  let allSelectMood = $selectMood.querySelectorAll('select')
-  let allSelectArtistLink = $selectArtist.querySelectorAll('select')
+  let allSelectCategory = $selectCategory.querySelectorAll("select")
+  let allSelectMood = $selectMood.querySelectorAll("select")
+  let allSelectArtistLink = $selectArtist.querySelectorAll("select")
   categoryCollection(allSelectCategory)
   moodCollection(allSelectMood)
   artistLinkCollection(allSelectArtistLink)
-  if (CollectorStatus === "stop"){
+  if (CollectorStatus === "stop") {
     CollectorStatus = ""
     return
   } else {
     let data = {}
     data["duration"] = durationInputElement.value
     data["name"] = nameTrackElement.value
-    data["artist"] =  nameArtistElement.value
+    data["artist"] = nameArtistElement.value
     data["SRC"] = SRC
-    data["SRCNew"] =  "/src/treck/" + fileNameElement.value
+    data["SRCNew"] = "/src/treck/" + fileNameElement.value
     data["treckID"] = treckID
     data["category"] = category
     data["categoryNew"] = categoryNew
@@ -302,18 +309,17 @@ function save() {
     data["moodNew"] = moodNew
     data["artistLink"] = artist
     data["artistLinkNew"] = artistNew
-    dataSend ={"comand": "send", "treck": data}
-    SendRequest("POST", "php/analysis.php", dataSend, (data)=>{
+    dataSend = { comand: "send", treck: data }
+    SendRequest("POST", "php/analysis.php", dataSend, (data) => {
       data = JSON.parse(data)
-      if (data["result"] === "saveOK"){
+      if (data["result"] === "saveOK") {
         Status = "save"
         location.reload()
       }
     })
   }
-
 }
-function categoryCollection (element) {
+function categoryCollection(element) {
   element.forEach(collector)
   category = dataCollector
   dataCollector = []
@@ -321,7 +327,7 @@ function categoryCollection (element) {
   dataCollectorNewOption = []
 }
 
-function moodCollection (element) {
+function moodCollection(element) {
   element.forEach(collector)
   mood = dataCollector
   dataCollector = []
@@ -329,35 +335,39 @@ function moodCollection (element) {
   dataCollectorNewOption = []
 }
 
-function artistLinkCollection (element) {
+function artistLinkCollection(element) {
   element.forEach(collector)
   artist = dataCollector
   dataCollector = []
   artistNew = dataCollectorNewOption
   dataCollectorNewOption = []
 }
-function collector (index) {
-  if (CollectorStatus === "stop"){
+function collector(index) {
+  if (CollectorStatus === "stop") {
     return
   } else if (index.value === "non") {
     alert("Заполните все поля")
     CollectorStatus = "stop"
   } else if (index.value === "another") {
-    if (index.closest("div").querySelector(".another_choise_inpt").value === ""){
+    if (
+      index.closest("div").querySelector(".another_choise_inpt").value === ""
+    ) {
       alert("Заполните все поля")
       CollectorStatus = "stop"
     } else {
-      dataCollectorNewOption.push(index.closest("div").querySelector(".another_choise_inpt").value)
+      dataCollectorNewOption.push(
+        index.closest("div").querySelector(".another_choise_inpt").value
+      )
     }
   } else {
     dataCollector.push(index.value)
   }
 }
 
-window.onbeforeunload = function() {
-  if (Status === "get"){
-  dataSend ={"comand": "out", "id": treckID}
-  SendRequest("POST", "php/analysis.php", dataSend)
-  return "Данные не сохранены. Точно перейти?";
+window.onbeforeunload = function () {
+  if (Status === "get") {
+    dataSend = { comand: "out", id: treckID }
+    SendRequest("POST", "php/analysis.php", dataSend)
+    return "Данные не сохранены. Точно перейти?"
   }
-};
+}

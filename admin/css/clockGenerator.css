@@ -76,3 +76,9 @@ button:disabled {
 .wrapBlock {
     display: flex;
 }
+
+/* Стиль для того чтоб спрятать объект */
+._hide {
+    display: none !important;
+  }
+  

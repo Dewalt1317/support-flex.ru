@@ -1,30 +1,50 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Генератор расписания для радио</title>
-    <link rel="stylesheet" href="css/clockGenerator.css">
-</head>
-<body>
-<div class="wrapBlock">
-<div class="left-block">
-    <div id="category-blocks">
-        <!-- Блоки категорий будут добавляться сюда -->
-    </div>
-    <button onclick="addCategoryBlock()">Добавить категорию</button>
-</div>
+    <link rel="stylesheet" href="css/clockGenerator.css" />
+    <script src="js/check.js"></script>
+  </head>
 
-<div class="right-block">
-    <div id="schedule-blocks">
-        <!-- Блоки времени будут добавляться сюда -->
+  <body>
+    <div class="wrapBlock">
+      <div class="left-block">
+        <div id="category-blocks">
+          <!-- Блоки категорий будут добавляться сюда -->
+          <div style="border: 3px dashed red;">
+            <div
+              class="multiple_select_wrapper selectCategory"
+              data-selectcount="0"
+              data-selectname="Категория"
+              data-selectheader="Выбор категории"
+            ></div>
+            <div
+              class="multiple_select_wrapper selectMood"
+              data-selectcount="0"
+              data-selectname="Настроение"
+              data-selectheader="Выбор настроения"
+            ></div>
+          </div>
+        </div>
+        <button class="addCatBlockBtn">Добавить категорию</button>
+        <button class="removeCatBlockBtn">Удалить категорию</button>
+      </div>
+
+      <div class="right-block">
+        <div id="schedule-blocks">
+          <!-- Блоки времени будут добавляться сюда -->
+        </div>
+        <button onclick="addScheduleBlock()">Добавить Клок</button>
+        <input
+          type="checkbox"
+          id="all-day-checkbox"
+          onchange="toggleAllDay()"
+        />
+        <label for="all-day-checkbox">Генерация клоков на весь день</label>
+      </div>
     </div>
-    <button onclick="addScheduleBlock()">Добавить Клок</button>
-    <input type="checkbox" id="all-day-checkbox" onchange="toggleAllDay()">
-    <label for="all-day-checkbox">Генерация клоков на весь день</label>
-</div>
-</div>
-<button class="generateButton" onclick="generate()">Генерировать</button>
-</body>
-<script src="js/check.js"></script>
-<script src="js/clockGenerator.js"></script>
+    <button class="generateButton" onclick="generate()">Генерировать</button>
+  </body>
+  <script src="js/clockGenerator.js"></script>
 </html>
