@@ -59,6 +59,27 @@ switch ($data->comand) {
             }
         } while ($mysql->more_results() && $mysql->next_result());
         $data = ['name' => $data[0][0]['name'], 'treckID' => $data[0][0]['treckID'], 'SRC' => $data[0][0]['SRC'], 'duration' => $data[0][0]['duration'], 'artists' => $data[2], 'category' => $data[1], 'mood' => $data[3]];
+
+        if ($data['treckID'] == null){
+            $data = ['status' => 'absent'];
+        }
+        systemResponse($data);
+        break;
+
+    case "getSkipped":
+        $mysql->query("UPDATE `treck` SET `selectIN` = CURTIME(), `sessionID` = '$id' WHERE `sessionID` = 'skiped' limit 1");
+        $mysql->multi_query("SELECT `treckID`, `name`, `SRC`, `duration` FROM `treck` WHERE `sessionID` = '$id' limit 1; SELECT `categoryID`, `category` FROM `category`; SELECT `artistLinkID`, `artistLink` FROM `artistLink`; SELECT `moodID`, `mood` FROM `mood`;");
+        $data = [];
+        do {
+            if ($result = $mysql->store_result()) {
+                array_push($data, $result->fetch_all(MYSQLI_ASSOC));
+                $result->free();
+            }
+        } while ($mysql->more_results() && $mysql->next_result());
+        $data = ['name' => $data[0][0]['name'], 'treckID' => $data[0][0]['treckID'], 'SRC' => $data[0][0]['SRC'], 'duration' => $data[0][0]['duration'], 'artists' => $data[2], 'category' => $data[1], 'mood' => $data[3]];
+        if ($data['treckID'] == null){
+            $data = ['status' => 'absent'];
+        }
         systemResponse($data);
         break;
 
@@ -93,9 +114,15 @@ switch ($data->comand) {
         systemResponse($dataSend);
         break;
 
+    case "skip":
+        $id = $data->id;
+        $mysql->query("UPDATE `treck` SET `selectIN` = CURTIME(), `sessionID` = 'skiped' WHERE `treckID` = '$id'");
+        $dataSend["result"] = "skipOK";
+        systemResponse($dataSend);
+        break;
+
     case "out":
         $id = $data->id;
         $mysql->query("UPDATE `treck` SET `selectIN` = NULL, `sessionID` = NULL WHERE `treckID` = '$id'");
-        print_r($mysql);
         break;
 }

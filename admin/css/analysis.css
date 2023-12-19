@@ -32,6 +32,10 @@ button:hover {
   background-color: #adf;
 }
 
+.skippedQueue {
+  background-color: #58c04d;
+}
+
 /* Обертка для содержимого */
 .wrapContent {
   background-color: #fff;
@@ -72,6 +76,11 @@ audio {
   color: white;
 }
 
+.buttonSkip {
+  background-color: #b44444;
+  color: white;
+}
+
 /* Расположение элементов ввода в столбец */
 .inputs {
   display: flex;
@@ -93,5 +102,17 @@ input::placeholder {
 
 /* Стиль для того чтоб спрятать объект */
 ._hide {
-  display: none;
+  display: none !important;
+}
+
+.buttonGetWrap {
+  display: inline;
+}
+
+.nameTrackH2 {
+  margin: 0 0 0 5px;
+}
+
+.nameArtistH2 {
+  margin: 10px 0 0 5px;
 }

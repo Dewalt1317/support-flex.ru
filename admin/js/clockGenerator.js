@@ -44,10 +44,8 @@ function toggleAllDay() {
 
     if (allDayCheckbox.checked) {
         timeInputs.forEach(input => input.disabled = true);
-        buttons.forEach(button => button.disabled = true);
     } else {
         timeInputs.forEach(input => input.disabled = false);
-        buttons.forEach(button => button.disabled = false);
     }
 }
 
@@ -76,3 +74,7 @@ window.onload = function() {
     addCategoryBlock();
     addScheduleBlock();
 };
+
+function generate (){
+    console.log("Генерация")
+}

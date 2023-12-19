@@ -8,7 +8,10 @@
   </head>
   <body>
   <input class="back" type="button" value="Назад" />
+  <div class="buttonGetWrap">
     <input class="get" type="button" value="Получить трек" />
+  <input class="skippedQueue" type="button" value="Получить трек из пропущенных" />
+  </div>
     <div class="wrapContent _hide">
       <div class="title">
         <h1 class="titleID">Трек ID:</h1><br>
@@ -29,7 +32,9 @@
       </div>
       <audio controls></audio>
       <div class="inputs">
+        <h2 class="nameTrackH2">Название трека</h2>
         <input class="nameTrack" placeholder="Название трека" type="text" />
+        <h2 class="nameArtistH2">Исполнитель</h2>
         <input class="nameArtist" placeholder="Исполнитель" type="text" />
 
         <!-- Выбор связанного исполнителя -->
@@ -54,6 +59,7 @@
                 data-selectheader="Выбор настроения"
         ></div>
         <button class="buttonSave">Сохранить</button>
+        <button class="buttonSkip">Пропустить трек</button>
       </div>
     </div>
   </body>

@@ -3,6 +3,7 @@ let fileNameElement = document.querySelector(".fileNameInput")
 let nameTrackElement = document.querySelector(".nameTrack")
 let nameArtistElement = document.querySelector(".nameArtist")
 let getElement = document.querySelector(".get")
+let buttonGetWrapElement = document.querySelector(".buttonGetWrap")
 let wrapContentElement = document.querySelector(".wrapContent")
 let durationInputElement = document.querySelector(".durationInput")
 let audioElement = document.querySelector("audio")
@@ -11,9 +12,11 @@ const $selectCategory = document.querySelector(".selectCategory")
 const $selectMood = document.querySelector(".selectMood")
 let buttonSaveElement = document.querySelector(".buttonSave")
 let buttonBack = document.querySelector(".back")
+let buttonSkippedQueue = document.querySelector(".skippedQueue")
+let buttonSkipElement = document.querySelector(".buttonSkip")
 let treckID
 let SRC
-let getStatus
+let Status
 
 // Все поля для селектов
 const $selectWrappers = document.querySelectorAll(".multiple_select_wrapper")
@@ -25,28 +28,53 @@ buttonBack.addEventListener("click", ()=>{
 })
 buttonSaveElement. addEventListener("click", save)
 getElement.addEventListener("click", () => {
-  get()
-  getElement.classList.add("_hide")
-  wrapContentElement.classList.remove("_hide")
+  get("get")
 })
-function get() {
-  dataSend["comand"] = "get"
-  SendRequest("POST", "php/analysis.php", dataSend, (data) => {
-    getStatus = "get"
+buttonSkippedQueue.addEventListener("click", () => {
+  get("getSkipped")
+})
+buttonSkipElement.addEventListener("click", () => {
+  dataSend ={"comand": "skip", "id": treckID}
+  SendRequest("POST", "php/analysis.php", dataSend, (data)=>{
     data = JSON.parse(data)
-    let tracName = data["name"].replace(".mp3", "")
-    tracName = tracName.split(" - ")
-    nameTrackElement.value = tracName[1].trim()
-    nameArtistElement.value = tracName[0].trim()
-    SRC = data["SRC"]
-    fileNameElement.value = SRC.replace("/src/treck/", "")
-    treckID = data["treckID"]
-    titleIDElement.textContent = "Трек ID:" + data["treckID"]
-    durationInputElement.value = data["duration"]
-    audioElement.src = SRC
-    addSelect($selectArtist, data.artists, "artist")
-    addSelect($selectCategory, data.category, "category")
-    addSelect($selectMood, data.mood, "mood")
+    if (data["result"] === "skipOK"){
+      Status = "skip"
+      location.reload()
+    }
+  })
+})
+function get(comand) {
+  dataSend["comand"] = comand
+  SendRequest("POST", "php/analysis.php", dataSend, (data) => {
+    data = JSON.parse(data)
+    if (data["status"] === "absent"){
+       switch (dataSend["comand"]){
+         case "get":
+           alert("В основной очереди нет треков для анализа")
+           break
+
+         case "getSkipped":
+           alert("В очереди пропущенных нет треков для анализа")
+           break
+       }
+    } else {
+      buttonGetWrapElement.classList.add("_hide")
+      wrapContentElement.classList.remove("_hide")
+      Status = "get"
+      let tracName = data["name"].replace(".mp3", "")
+      tracName = tracName.split(" - ")
+      nameTrackElement.value = tracName[1].trim()
+      nameArtistElement.value = tracName[0].trim()
+      SRC = data["SRC"]
+      fileNameElement.value = SRC.replace("/src/treck/", "")
+      treckID = data["treckID"]
+      titleIDElement.textContent = "Трек ID:" + data["treckID"]
+      durationInputElement.value = data["duration"]
+      audioElement.src = SRC
+      addSelect($selectArtist, data.artists, "artist")
+      addSelect($selectCategory, data.category, "category")
+      addSelect($selectMood, data.mood, "mood")
+    }
   })
 }
 
@@ -276,9 +304,9 @@ function save() {
     data["artistLinkNew"] = artistNew
     dataSend ={"comand": "send", "treck": data}
     SendRequest("POST", "php/analysis.php", dataSend, (data)=>{
-      getStatus = "save"
       data = JSON.parse(data)
       if (data["result"] === "saveOK"){
+        Status = "save"
         location.reload()
       }
     })
@@ -327,7 +355,7 @@ function collector (index) {
 }
 
 window.onbeforeunload = function() {
-  if (getStatus === "get"){
+  if (Status === "get"){
   dataSend ={"comand": "out", "id": treckID}
   SendRequest("POST", "php/analysis.php", dataSend)
   return "Данные не сохранены. Точно перейти?";
