@@ -37,14 +37,16 @@ switch ($data->chat->comand){
             $dataChat['result'] = "getOk";
             $dataChat["comand"] = $data->chat->comand;
         } else {
-            $dataChat[' '] = 'error';
+            $dataChat['result'] = 'error';
             $dataChat["comand"] = $data->chat->comand;
         };
         $mysql->close();
         break;
     case "getNewMessage":
-        $date = $data->chat->date;
-        $newMessage = $mysql->query("SELECT `messageID`, `name`, `date`, `time`, `textMessage`, `ReplyMessageID`, `photoSRC` FROM `chat` LEFT JOIN `user` ON `chat`.`userID` = `user`.`userID` WHERE  `date` < $date");
+        $date = $data->chat->lastMessage->date;
+        $time = $data->chat->lastMessage->time;
+        $ID = $data->chat->lastMessage->ID;
+        $newMessage = $mysql->query("SELECT `messageID`, `name`, `date`, `time`, `textMessage`, `ReplyMessageID`, `photoSRC` FROM `chat` LEFT JOIN `user` ON `chat`.`userID` = `user`.`userID` WHERE  (`date` >= '$date' and `time` >= '$time' and `messageID` != '$ID')");
         if ($mysql->error_list[0]["errno"] == null){
             while ($row = $newMessage->fetch_assoc()) {
                 array_push($message, $row);

@@ -6,7 +6,7 @@ include "../../php/idGenerator.php";
 $data = json_decode(file_get_contents("php://input"));
 
 $id = session_id();
-$hor = $min = date("H");
+$hor = date("H");
 $min = date("i") - 30;
 $sec = date("s");
 

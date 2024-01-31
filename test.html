@@ -5,6 +5,82 @@
     <title>Title</title>
 </head>
 <body>
+<style>
+    .menu-list {
+        display: none;
+    }
 
+    .menu-button:focus + .menu-list,
+    .menu-container.clicked .menu-list {
+        display: block;
+    }
+    .menu-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .menu-button {
+        padding: 10px;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        cursor: pointer;
+    }
+
+    .menu-list {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        display: none;
+        padding: 10px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+    }
+
+    .menu-list a {
+        display: block;
+        padding: 5px 0;
+        color: #333;
+        text-decoration: none;
+    }
+
+    .menu-list a:hover {
+        background-color: #f0f0f0;
+    }
+    .test {
+        width: 300px;
+        height: 300px;
+        background-color: #0f111a;
+    }
+</style>
+<div class="menu-container">
+    <div class="menu-button">Меню</div>
+    <div class="menu-list">
+        <a href="#">Пункт меню 1</a>
+        <a href="#">Пункт меню 2</a>
+        <a href="#">Пункт меню 3</a>
+    </div>
+</div>
+</div>
+<div class="test"></div>
+<script>
+    document.addEventListener('click', function(event) {
+        const menuContainer = document.querySelector('.menu-container');
+        const menuButton = menuContainer.querySelector('.menu-button');
+        const menuList = menuContainer.querySelector('.menu-list');
+
+        if (!menuContainer.contains(event.target)) {
+            menuContainer.classList.remove('clicked');
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const menuContainer = document.querySelector('.menu-container');
+        const menuButton = menuContainer.querySelector('.menu-button');
+
+        menuButton.addEventListener('click', function() {
+            menuContainer.classList.toggle('clicked');
+        });
+    });
+</script>
 </body>
 </html>

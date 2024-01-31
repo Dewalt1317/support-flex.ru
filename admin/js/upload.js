@@ -3,6 +3,7 @@ let input = document.querySelector('.file');
 let form = document.querySelector(".form")
 let result = document.querySelector(".result")
 let i = 0
+let serverData
 submitButton.addEventListener("click", response)
 
 function response (data) {
@@ -15,12 +16,14 @@ function response (data) {
     let file = input.files[i]
     formData.append(input.name, file);
         i++
+        data = JSON.parse(data)
+        serverData =
     SendRequest("POST", "php/upload.php", formData, response)
     } else {
         i = 0
         result.innerHTML = result.innerHTML + "[Загрузка завершена]<br>"
         data = JSON.parse(data)
-        result.innerHTML = result.innerHTML + "[Начало ответа от сервера]<br>" + data["error"] + data["result"] + "<br>[Конец ответа от сервера]"
+        result.innerHTML = result.innerHTML + "[Начало ответа от сервера]<br>" + data["error"] + data["uploadedFiles"] + "<br>[Конец ответа от сервера]"
     }
 
 }

@@ -24,10 +24,10 @@ emojiContainer.addEventListener("click", (event) => {
 })
 
 // Получение позиции курсора в поле ввода ".inputMessage" при отжатии любой клавиши
-document.querySelector(".inputMessage").addEventListener("keyup", (event) => {
+inputMessage.addEventListener("keyup", (event) => {
   CaretPosition = event.target.selectionStart
 })
 // Получение позиции курсора в поле ввода ".inputMessage" при клике
-document.querySelector(".inputMessage").addEventListener("click", (event) => {
+inputMessage.addEventListener("click", (event) => {
   CaretPosition = event.target.selectionStart
 })

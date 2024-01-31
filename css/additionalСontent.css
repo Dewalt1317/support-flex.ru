@@ -1,6 +1,8 @@
 .additionalСontent {
+    position: relative;
     display: flex;
     width: calc(100%/3);
     height: 100vh;
+    z-index: 1;
     /*background-color: #ff0000;*/
 }

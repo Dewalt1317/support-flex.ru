@@ -22,6 +22,53 @@ body {
     justify-content: space-between;
 }
 
+.menu-container {
+    position: relative;
+    display: inline-block;
+}
+
+.menuTop {
+    bottom: 100%;
+    margin-bottom: 5px;
+}
+
+.menuBottom {
+    top: 100%;
+    margin-top: 5px;
+}
+
+.menuList {
+    background-color: rgba(53, 41, 58, 90%);
+    width: fit-content;
+    height: fit-content;
+    padding: 5px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    z-index: 500;
+}
+
+.menuElement {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    min-width: max-content;
+    padding: 5px;
+}
+
+.menuElement img {
+    width: 25px;
+    height: 25px;
+    padding-right: 5px;
+}
+
+.menuElement:hover {
+  background-color: rgba(217, 217, 217, 50%);
+}
+
 .Shadow {
     background-color: rgba(0, 0, 0, 0.2);
     z-index: -1000;

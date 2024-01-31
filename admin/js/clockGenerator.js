@@ -1,22 +1,21 @@
 const $selectMood = document.querySelector(".selectMood")
 const $selectCategory = document.querySelector(".selectCategory")
 const $selectWrappers = document.querySelectorAll(".multiple_select_wrapper")
+let dataSend = {}
+get("get")
 
 // test data
-let data = {}
-data.mood = [
-  { moodID: "0", mood: "m1" },
-  { moodID: "0", mood: "m2" },
-  { moodID: "0", mood: "m3" },
-]
-data.category = [
-  { categoryID: "0", category: "c1" },
-  { categoryID: "0", category: "c2" },
-  { categoryID: "0", category: "c3" },
-]
-
-addSelect($selectMood, data.mood, "mood")
-addSelect($selectCategory, data.category, "category")
+// let data = {}
+// data.mood = [
+//   { moodID: "0", mood: "m1" },
+//   { moodID: "0", mood: "m2" },
+//   { moodID: "0", mood: "m3" },
+// ]
+// data.category = [
+//   { categoryID: "0", category: "c1" },
+//   { categoryID: "0", category: "c2" },
+//   { categoryID: "0", category: "c3" },
+// ]
 
 // function addCategoryBlock() {
 //     const categoriesContainer = document.getElementById('category-blocks');
@@ -150,8 +149,7 @@ function addSelect(contextEl, options, teg) {
     optionsStr =
       `<option value="non">-----------</option>` +
       no +
-      optionsStr.join("") +
-      `<option value="another">Свой вариант</option>`
+      optionsStr.join("")
     contextEl.insertAdjacentHTML(
       "beforeend",
       `
@@ -259,7 +257,6 @@ $selectWrappers.forEach((el) => {
 })
 
 const selectsTemlate = `
-  <div style="border: 3px dashed red;">
   <div
         class="multiple_select_wrapper selectCategory"
         data-selectcount="0"
@@ -286,12 +283,33 @@ $addCatBlockBtn.addEventListener("click", () => {
     .insertAdjacentHTML("beforeend", selectsTemlate)
   addSelect(
     document.querySelector("#category-blocks div:last-child .selectCategory"),
-    data.category,
+      options.category,
     "category"
   )
   addSelect(
     document.querySelector("#category-blocks div:last-child .selectMood"),
-    data.mood,
+      options.mood,
     "mood"
   )
 })
+
+function get(comand) {
+  dataSend["comand"] = comand
+  SendRequest("POST", "php/clockGenerator.php", dataSend, (data) => {
+    data = JSON.parse(data)
+    switch (data["status"]) {
+      case "absent":
+      switch (dataSend["comand"]) {
+        case "get":
+          alert("Нехватает данных для генерации")
+          break
+      }
+      break
+
+      case "getOK":
+        addSelect($selectMood, data.mood, "mood")
+        addSelect($selectCategory, data.category, "category")
+        break
+    }
+  })
+}

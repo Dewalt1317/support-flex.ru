@@ -15,6 +15,9 @@ let titleBackElement = document.querySelector(".titleBack")
 let artistAlbumBackElement = document.querySelector(".artistBack")
 let listenersElement = document.querySelector(".listeners")
 let playTimeInterval = setInterval(() => {}, 0)
+let settingWrapElement = document.querySelector('.settingWrap');
+let settingButton = settingWrapElement.querySelector('.settingImg');
+let settingMenuListElement = settingWrapElement.querySelector('.settingMenuList')
 let dataTitleSend = {}
 let coverSrc = "https://support-flex.ru/src/image/Default%20cover.PNG"
 let title = "Station - Support Flex"
@@ -240,7 +243,6 @@ function Switch(data, elementOne, elementTwo, type) {
          elementTwo.classList.remove("anim_")
         elementOne.style.opacity = 1
         elementTwo.style.opacity = 0
-        console.log("Front")
         iteration++
     }
 
@@ -254,8 +256,86 @@ function Switch(data, elementOne, elementTwo, type) {
         elementOne.classList.remove("anim_")
         elementOne.style.opacity = 0
         elementTwo.style.opacity = 1
-        console.log("Back")
         iteration++
     }
-    console.log(data)
 }
+
+// Получим доступ ко всем выходным аудиоустройствам и добавим в селектор
+function updateDeviceList() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+        console.log("Перечисление устройств не поддерживается вашим браузером.");
+        return;
+    }
+
+    // Запрашиваем перечень устройств
+    navigator.mediaDevices.enumerateDevices()
+        .then(function(devices) {
+            const audioOutputDevices = devices.filter(device => device.kind === 'audiooutput');
+
+            const deviceSelector = document.createElement('select');
+            audioOutputDevices.forEach(function(device) {
+                const option = document.createElement('option');
+                option.value = device.deviceId;
+                option.text = device.label || `Устройство ${device.deviceId}`;
+                deviceSelector.appendChild(option);
+            });
+
+            // Добавляем селектор в ваш HTML
+            // Замените 'yourElementSelector' на селектор элемента, куда вы хотите поместить селектор устройств
+            const selectorElement = document.querySelector('.selectAudio');
+            selectorElement.appendChild(deviceSelector);
+
+            // Обработчик изменения выбранного устройства
+            deviceSelector.addEventListener('change', function() {
+                const deviceId = this.value;
+                setAudioOutputDevice(audioObj, deviceId); // audioObj - это ваше аудио или видео DOM-элемент
+            });
+        })
+        .catch(function(err) {
+            console.log(err.name + ": " + err.message);
+        });
+}
+
+// Установим аудиоустройство для output
+function setAudioOutputDevice(audioElement, deviceId) {
+    if (typeof audioElement.sinkId !== 'undefined') {
+        audioElement.setSinkId(deviceId)
+            .then(() => {
+                console.log(`Устройство вывода аудио изменено на: ${deviceId}`);
+            })
+            .catch(err => {
+                let errorMessage = err;
+                if (err.name === 'SecurityError') {
+                    errorMessage = `Вы не дали разрешение на использование устройства вывода аудио.`;
+                }
+                console.error(errorMessage);
+            });
+    } else {
+        console.warn('Ваш браузер не поддерживает выбор устройств вывода аудио.');
+    }
+}
+
+function getMedia() {
+    // Запрашиваем медиапоток, чтобы получить разрешение пользователя на доступ к устройствам
+    navigator.mediaDevices.getUserMedia({ audio: true, fake: true })
+        .then(stream => {
+            // Теперь у нас есть разрешение, списка устройств вывода будет доступен
+            updateDeviceList();
+            // Сразу закрываем поток
+            stream.getTracks().forEach(track => track.stop());
+        })
+        .catch(error => {
+            console.error('Ошибка при получении медиапотока:', error);
+        });
+}
+
+document.addEventListener('click', function(event) {
+    if (!settingWrapElement.contains(event.target)) {
+        settingWrapElement.classList.remove('clicked');
+        settingMenuListElement.style.opacity = 0;
+        setTimeout(function() {
+            settingMenuListElement.style.display = 'none';
+        }, 300);
+    }
+});
+// Запускаем функцию прямо после загрузки страницы
