@@ -6,7 +6,11 @@
     transform: rotate(360deg);
   }
 }
-
+@media (max-width: 900px) {
+  .wrapPlayerBlock {
+    width: 100% !important;
+  }
+}
 @media (max-width: 400px) {
   div.wrapCover {
     width: 250px;

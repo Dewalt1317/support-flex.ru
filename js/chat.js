@@ -2,10 +2,13 @@ let dataChatSend = {"comand": "getChat"}
 let messageBlockElement = document.querySelector(".messageBlock")
 let emojiContainer = document.querySelector(".emojiContainer")
 let inputMessage = document.querySelector(".input-block")
+let buttonSend = document.querySelector(".send-btn")
 let CaretPosition = 0
 let chatDataNew = {}
 let chatDataMessage = {}
 let lastMessage = {}
+
+buttonSend.addEventListener("click", send)
 
 function getChat(data) {
     switch (data["result"]) {
@@ -20,21 +23,27 @@ function getChat(data) {
             dataChatSend["lastMessage"] = lastMessage
             dataChatSend["comand"] = "getNewMessage"
             get()
+            inputMessage.textContent = ""
+            messageBlockElement.scrollTop =  messageBlockElement.scrollHeight
             break
 
         case "regUser":
+            dataChatSend["lastMessage"] = lastMessage
+            dataChatSend["comand"] = "getNewMessage"
             createPopUp("input", "Представьтесь", "Для общения в чате введите свой никнейм", ()=>{
                 dataChatSend["comand"] = "regUser"
-                dataChatSend["name"] = "test"
+                dataChatSend["name"] = document.querySelector("#popup-input").value
                 get()
             }, "text", "Введите никнейм", "Отправить сообщение", document.querySelector(".chat-wrapper"))
             break
 
         case "regOK":
-
+            send()
             break
 
         case "error":
+            dataChatSend["lastMessage"] = lastMessage
+            dataChatSend["comand"] = "getNewMessage"
             createPopUp("message", "Ошибка", "Произошла какая-то ошибка, наши специалисты уже работают над её устранением", "", "", "", "Ок", document.querySelector(".chat-wrapper"))
             break
     }
@@ -237,8 +246,19 @@ function addMessage(index) {
       </div>`
             break
     }
-
+    let scroll
+    if (calc(messageBlockElement) === 0){
+        scroll = true
+    } else {
+        scroll = false
+    }
     messageBlockElement.insertAdjacentElement("beforeend", messageCreate)
+
+    if (scroll === true) {
+        messageBlockElement.scrollTop =  messageBlockElement.scrollHeight
+    } else {
+
+    }
 }
 
 // Если тут непонятно как работтает -> https://learn.javascript.ru/event-delegation
@@ -268,3 +288,13 @@ inputMessage.addEventListener("keyup", (event) => {
 inputMessage.addEventListener("click", (event) => {
     CaretPosition = window.getSelection().getRangeAt(0).startOffset
 })
+
+function send () {
+    dataChatSend["messageText"] = inputMessage.textContent
+    dataChatSend["comand"] = "send"
+    get()
+}
+
+function calc(block) {
+   return  block.scrollHeight - block.scrollTop - block.offsetHeight
+}

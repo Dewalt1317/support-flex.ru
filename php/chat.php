@@ -20,6 +20,7 @@ switch ($data->chat->comand){
             $dataChat['result'] = 'sendOK';
             $dataChat["comand"] = $data->chat->comand;
         } else {
+            $dataChat["error"] = $mysql->error_list;
             $dataChat['result'] = 'error';
             $dataChat["comand"] = $data->chat->comand;
         };
@@ -28,7 +29,7 @@ switch ($data->chat->comand){
         break;
 
     case "getChat":
-       $chat = $mysql->query("SELECT `messageID`, `name`, `date`, `time`, `textMessage`, `ReplyMessageID`, `photoSRC` FROM `chat` LEFT JOIN `user` ON `chat`.`userID` = `user`.`userID`");
+       $chat = $mysql->query("SELECT `messageID`, `name`, `date`, `time`, `textMessage`, `ReplyMessageID`, `photoSRC` FROM `chat` LEFT JOIN `user` ON `chat`.`userID` = `user`.`userID` ORDER BY `date`, `time`");
         if ($mysql->error_list[0]["errno"] == null){
             while ($row = $chat->fetch_assoc()) {
                 array_push($message, $row);
@@ -37,6 +38,7 @@ switch ($data->chat->comand){
             $dataChat['result'] = "getOk";
             $dataChat["comand"] = $data->chat->comand;
         } else {
+            $dataChat["error"] = $mysql->error_list;
             $dataChat['result'] = 'error';
             $dataChat["comand"] = $data->chat->comand;
         };
@@ -46,7 +48,7 @@ switch ($data->chat->comand){
         $date = $data->chat->lastMessage->date;
         $time = $data->chat->lastMessage->time;
         $ID = $data->chat->lastMessage->ID;
-        $newMessage = $mysql->query("SELECT `messageID`, `name`, `date`, `time`, `textMessage`, `ReplyMessageID`, `photoSRC` FROM `chat` LEFT JOIN `user` ON `chat`.`userID` = `user`.`userID` WHERE  (`date` >= '$date' and `time` >= '$time' and `messageID` != '$ID')");
+        $newMessage = $mysql->query("SELECT `messageID`, `name`, `date`, `time`, `textMessage`, `ReplyMessageID`, `photoSRC` FROM `chat` LEFT JOIN `user` ON `chat`.`userID` = `user`.`userID` WHERE  (`date` >= '$date' and `time` >= '$time' and `messageID` != '$ID') ORDER BY `date`, `time`");
         if ($mysql->error_list[0]["errno"] == null){
             while ($row = $newMessage->fetch_assoc()) {
                 array_push($message, $row);
@@ -55,6 +57,7 @@ switch ($data->chat->comand){
             $dataChat['result'] = "getOk";
             $dataChat["comand"] = $data->chat->comand;
         } else {
+            $dataChat["error"] = $mysql->error_list;
             $dataChat['result'] = 'error';
             $dataChat["comand"] = $data->chat->comand;
         };
@@ -62,7 +65,7 @@ switch ($data->chat->comand){
         break;
 
     case "regUser":
-                $username = $data->chat->username;
+        $username = $data->chat->name;
         $id = id(40817);
         $mysql->query("INSERT INTO `user` (`userID`, `name`) VALUES ('$id', '$username')");
         if ($mysql->error_list[0]["errno"] == null){
@@ -70,6 +73,7 @@ switch ($data->chat->comand){
             $dataChat['result'] = "regOK";
             $dataChat["comand"] = $data->chat->comand;
         } else {
+            $dataChat["error"] = $mysql->error_list;
             $dataChat['result'] = 'error';
             $dataChat["comand"] = $data->chat->comand;
         };

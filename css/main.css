@@ -1,3 +1,9 @@
+@media (max-width: 900px) {
+    .wrapContent {
+        justify-content: center !important;
+    }
+}
+
 * {
     margin: 0;
     padding: 0;

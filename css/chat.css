@@ -1,3 +1,9 @@
+@media (max-width: 900px) {
+  .chat-wrapper {
+    display: none !important;
+  }
+}
+
 .chat-wrapper {
   position: relative;
   color: aliceblue;
@@ -11,6 +17,7 @@
 .messageBlock {
   overflow-y: scroll;
   padding: 5px;
+  height: 100%;
 }
 
 .messageBlock::-webkit-scrollbar {
@@ -298,4 +305,20 @@ font-size: 25px;
 
 .emojiMenuList td:hover {
   background-color: rgba(217, 217, 217, 50%);
+}
+
+.newMessage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  background-color: #4C5B98;
+}
+
+.newMessage img {
+  width: 15px;
+  height: 21px;
 }
