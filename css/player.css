@@ -237,6 +237,10 @@
   margin-right: 15px;
 }
 
+.buttonPlayPause:hover, .buttonVolume:hover, .settingImg:hover, .wrapVolumeLevelControl input {
+  cursor: pointer;
+}
+
 .titleBack.anim_ {
   animation-name: tickerTitle;
   animation-timing-function: linear;

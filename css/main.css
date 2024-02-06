@@ -73,6 +73,7 @@ body {
 
 .menuElement:hover {
   background-color: rgba(217, 217, 217, 50%);
+    cursor: pointer;
 }
 
 .Shadow {

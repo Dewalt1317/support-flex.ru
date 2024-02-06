@@ -1,140 +1,193 @@
-let dataChatSend = {"comand": "getChat"}
-let messageBlockElement = document.querySelector(".messageBlock")
-let emojiContainer = document.querySelector(".emojiContainer")
-let inputMessage = document.querySelector(".input-block")
-let buttonSend = document.querySelector(".send-btn")
-let CaretPosition = 0
-let chatDataNew = {}
-let chatDataMessage = {}
-let lastMessage = {}
+// Объект для отправки данных чата
+let dataChatSend = {"comand": "getChat", "messageID":[]};
 
-buttonSend.addEventListener("click", send)
+let messageID = {}
 
+// Элемент блока сообщений
+let messageBlockElement = document.querySelector(".messageBlock");
+
+// Контейнер для смайликов
+let emojiContainer = document.querySelector(".emojiContainer");
+
+// Контейнер кнопеи ответа
+let buttonReplay = document.querySelectorAll(".buttonRepleyWrap")
+
+// Поле ввода сообщения
+let inputMessage = document.querySelector(".input-block");
+
+// Кнопка отправки сообщения
+let buttonSend = document.querySelector(".send-btn");
+
+let inputMessageReplay = document.querySelector(".chat-send-message-top")
+
+// Позиция курсора в поле ввода
+let CaretPosition = 0;
+
+// Объект для хранения новых сообщений чата
+let chatDataNew = {};
+
+// Объект для хранения данных сообщений чата
+let chatDataMessage = {};
+
+// Последнее сообщение
+let lastMessage = {};
+
+// Обработчик события клика по кнопке отправки сообщения
+buttonSend.addEventListener("click", send);
+// Обработчик события клика по кнопке ответить на сообщение
+messageBlockElement.addEventListener("click", function(event) {
+    // Проверка, что событие произошло на нужном элементе
+    if (event.target.matches(".buttonRepleyWrap") || event.target.matches(".buttonRepley")) {
+        let element = event.target.parentNode.parentNode
+        if (element.id === "") element = element.parentNode
+        replySend(element.id)
+    }
+});
+
+inputMessageReplay.addEventListener("click", function(event) {
+    // Проверка, что событие произошло на нужном элементе
+    if (event.target.matches(".deleteReply") || event.target.matches(".deleteReplyWrap")) {
+        inputMessageReplay.removeChild(inputMessageReplay.firstChild)
+    }
+});
+
+// Функция для обработки ответа сервера при получении чата
 function getChat(data) {
     switch (data["result"]) {
         case "getOk":
-            chatDataNew = data["message"]
-            chatDataNew.forEach(addMessage)
-            dataChatSend["lastMessage"] = lastMessage
-            dataChatSend["comand"] = "getNewMessage"
-            break
+            chatDataNew = data["message"];
+            chatDataNew.forEach(addMessage);
+            dataChatSend["lastMessage"] = lastMessage;
+            dataChatSend["comand"] = "getNewMessage";
+            break;
 
         case "sendOK":
-            dataChatSend["lastMessage"] = lastMessage
-            dataChatSend["comand"] = "getNewMessage"
-            get()
-            inputMessage.textContent = ""
-            messageBlockElement.scrollTop =  messageBlockElement.scrollHeight
-            break
+            dataChatSend["lastMessage"] = lastMessage;
+            dataChatSend["comand"] = "getNewMessage";
+            get();
+            inputMessage.textContent = "";
+            if (inputMessageReplay.firstChild !== null) inputMessageReplay.removeChild(inputMessageReplay.firstChild)
+            messageBlockElement.scrollTop =  messageBlockElement.scrollHeight;
+            break;
 
         case "regUser":
-            dataChatSend["lastMessage"] = lastMessage
-            dataChatSend["comand"] = "getNewMessage"
+            dataChatSend["lastMessage"] = lastMessage;
+            dataChatSend["comand"] = "getNewMessage";
             createPopUp("input", "Представьтесь", "Для общения в чате введите свой никнейм", ()=>{
-                dataChatSend["comand"] = "regUser"
-                dataChatSend["name"] = document.querySelector("#popup-input").value
-                get()
-            }, "text", "Введите никнейм", "Отправить сообщение", document.querySelector(".chat-wrapper"))
-            break
+                dataChatSend["comand"] = "regUser";
+                dataChatSend["name"] = document.querySelector("#popup-input").value;
+                get();
+            }, "text", "Введите никнейм", "Отправить сообщение", document.querySelector(".chat-wrapper"));
+            break;
 
         case "regOK":
-            send()
-            break
+            send();
+            break;
 
         case "error":
-            dataChatSend["lastMessage"] = lastMessage
-            dataChatSend["comand"] = "getNewMessage"
-            createPopUp("message", "Ошибка", "Произошла какая-то ошибка, наши специалисты уже работают над её устранением", "", "", "", "Ок", document.querySelector(".chat-wrapper"))
-            break
+            dataChatSend["lastMessage"] = lastMessage;
+            dataChatSend["comand"] = "getNewMessage";
+            createPopUp("message", "Ошибка", "Произошла какая-то ошибка, наши специалисты уже работают над её устранением", "", "", "", "Ок", document.querySelector(".chat-wrapper"));
+            break;
     }
-
 }
 
+// Функция для добавления сообщения в блок сообщений
 function addMessage(index) {
-    let type = ""
-    let data = index
+    let type = "";
+    let data = index;
+    //Сохраняем id сообщения в массив
+    dataChatSend["messageID"].push(data["messageID"])
+    // Проверяем, если дата текущего сообщения отличается от предыдущего, добавляем блок с датой
     if(lastMessage["date"] !== data["date"]){
         let currentYear = new Date().getFullYear();
-
-        let monthName
-        let date = data["date"].split("-")
+        let monthName;
+        let date = data["date"].split("-");
 
         switch (date[1]){
             case "01":
-                monthName = "Января"
-                break
+                monthName = "Января";
+                break;
 
             case "02":
-                monthName = "Февраля"
-                break
+                monthName = "Февраля";
+                break;
 
             case "03":
-                monthName = "Марта"
-                break
+                monthName = "Марта";
+                break;
 
             case "04":
-                monthName = "Апреля"
-                break
+                monthName = "Апреля";
+                break;
 
             case "05":
-                monthName = "Мая"
-                break
+                monthName = "Мая";
+                break;
 
             case "06":
-                monthName = "Июня"
-                break
+                monthName = "Июня";
+                break;
 
             case "07":
-                monthName = "Июля"
-                break
+                monthName = "Июля";
+                break;
 
             case "08":
-                monthName = "Августа"
-                break
+                monthName = "Августа";
+                break;
 
             case "09":
-                monthName = "Сентября"
-                break
+                monthName = "Сентября";
+                break;
 
             case "10":
-                monthName = "Октября"
-                break
+                monthName = "Октября";
+                break;
 
             case "11":
-                monthName = "Ноября"
-                break
+                monthName = "Ноября";
+                break;
 
             case "12":
-                monthName = "Декабря"
-                break
+                monthName = "Декабря";
+                break;
         }
 
         if (currentYear != date[0]){
-            date = date[2] + " " + monthName + " " + date[0] + "г."
+            date = date[2] + " " + monthName + " " + date[0] + "г.";
         } else {
-            date = date[2] + " " + monthName
+            date = date[2] + " " + monthName;
         }
 
-        let dataCreate = document.createElement("div")
-        dataCreate.classList.add("messageDataWrap")
-        dataCreate.innerHTML = `<div class="messageData" id="${data["date"]}">${date}</div>`
-        messageBlockElement.insertAdjacentElement("beforeend", dataCreate)
+        let dataCreate = document.createElement("div");
+        dataCreate.classList.add("messageDateWrap");
+        dataCreate.innerHTML = `<div class="messageDate" id="${data["date"]}">${date}</div>`;
+        messageBlockElement.insertAdjacentElement("beforeend", dataCreate);
     }
-    chatDataMessage[data["messageID"]] = data
-    lastMessage["ID"] = data["messageID"]
-    lastMessage["date"] = data["date"]
-    lastMessage["time"] = data["time"]
-    let messageCreate = document.createElement("div")
-    messageCreate.classList.add("messageWarp")
+
+    chatDataMessage[data["messageID"]] = data;
+    lastMessage["ID"] = data["messageID"];
+    lastMessage["date"] = data["date"];
+    lastMessage["time"] = data["time"];
+
+    let messageCreate = document.createElement("div");
+    messageCreate.classList.add("messageWarp");
+
+    // Определяем тип сообщения
     if (data["ReplyMessageID"] !== "" && data["photoSRC"] !== "") {
-        type = "photoReply"
+        type = "photoReply";
     } else if (data["ReplyMessageID"] == "" && data["photoSRC"] !== "") {
-        type = "photo"
+        type = "photo";
     } else if (data["ReplyMessageID"] !== "" && data["photoSRC"] == "") {
-        type = "reply"
+        type = "reply";
+    } else if (data["name"] == "40817BOTdonationalerts") {
+        type = "donat";
     } else {
-        type = "message"
+        type = "message";
     }
+
+    // Создаем разметку для сообщения в зависимости от типа
     switch (type) {
         case "message":
             messageCreate.innerHTML = `<div class="message" id="${data["messageID"]}">
@@ -154,8 +207,8 @@ function addMessage(index) {
 </div>
             <div class="timeMessage">${data["time"].slice(0, -3)}</div>
           </div>
-      </div>`
-            break
+      </div>`;
+            break;
 
         case "photoReply":
             messageCreate.innerHTML = `<div class="message" id="${data["messageID"]}">
@@ -164,6 +217,7 @@ function addMessage(index) {
         ${data["name"]}
     </p>
     <div class="replyWrap">
+    <div class="replyContent">
     <div class="replyTrait"></div>
     <div class="photoReplyWrap">
     <img class="photoReply" src="${chatDataMessage[data["ReplyMessageID"]]["photoSRC"]}" alt="">
@@ -171,6 +225,7 @@ function addMessage(index) {
         <div class="reply">
             <div class="replyUsername">${chatDataMessage[data["ReplyMessageID"]]["name"]}</div>
             <div class="replyMessageTextMessage">${chatDataMessage[data["ReplyMessageID"]]["textMessage"]}</div>
+        </div>
         </div>
     </div>
 </div>
@@ -188,8 +243,8 @@ function addMessage(index) {
     </div>
     <div class="timeMessage">${data["time"].slice(0, -3)}</div>
 </div>
-            </div>`
-            break
+            </div>`;
+            break;
 
         case "photo":
             messageCreate.innerHTML = `<div class="message" id="${data["messageID"]}">
@@ -212,8 +267,8 @@ function addMessage(index) {
 </div>
             <div class="timeMessage">${data["time"].slice(0, -3)}</div>
           </div>
-      </div>`
-            break
+      </div>`;
+            break;
 
         case "reply":
             messageCreate.innerHTML = `<div class="message" id="${data["messageID"]}">
@@ -222,13 +277,15 @@ function addMessage(index) {
           ${data["name"]}
           </p>
     <div class="replyWrap">
-    <div class="replyTrait"></div>
+        <div class="replyContent">
+            <div class="replyTrait"></div>
     <div class="photoReplyWrap">
     <img class="photoReply" src="${chatDataMessage[data["ReplyMessageID"]]["photoSRC"]}" alt="">
 </div>
         <div class="reply">
             <div class="replyUsername">${chatDataMessage[data["ReplyMessageID"]]["name"]}</div>
             <div class="replyMessageTextMessage">${chatDataMessage[data["ReplyMessageID"]]["textMessage"]}</div>
+        </div>
         </div>
     </div>
           </div>
@@ -243,58 +300,114 @@ function addMessage(index) {
 </div>
             <div class="timeMessage">${data["time"].slice(0, -3)}</div>
           </div>
-      </div>`
-            break
+      </div>`;
+            break;
+
+        case "donat":
+            let message = JSON.parse(data["textMessage"]);
+            messageCreate.innerHTML = `<div class="messageDonat" id="${data["messageID"]}">
+          <div class="username">
+            <img src="/src/ico/donationalerts.svg" alt="">
+          </div>
+                    <div class="messageTextBot">
+          <p>
+            ${message["botStart"]}
+            </p>
+            <p class="amount">${message["amount"]}</p>   
+            <p>${message["botEnd"]}</p>         
+          </div>
+          <div class="messageTextMessageDonat">
+          <p>
+            ${message["Message"]}
+            </p>
+          </div>
+          <div class="messageBottom">
+            <div class="timeMessage">${data["time"].slice(0, -3)}</div>
+          </div>
+      </div>`;
+            break;
     }
-    let scroll
+
+    // Проверяем, нужно ли прокрутить блок сообщений вниз
+    let scroll;
     if (calc(messageBlockElement) === 0){
-        scroll = true
+        scroll = true;
     } else {
-        scroll = false
+        scroll = false;
     }
-    messageBlockElement.insertAdjacentElement("beforeend", messageCreate)
 
+    // Вставляем сообщение в блок сообщений
+    messageBlockElement.insertAdjacentElement("beforeend", messageCreate);
+
+    // Прокручиваем блок сообщений вниз, если нужно
     if (scroll === true) {
-        messageBlockElement.scrollTop =  messageBlockElement.scrollHeight
-    } else {
-
+        messageBlockElement.scrollTop =  messageBlockElement.scrollHeight;
     }
 }
 
-// Если тут непонятно как работтает -> https://learn.javascript.ru/event-delegation
+// Обработчик события клика по смайликам
 emojiContainer.addEventListener("click", (event) => {
-    let td = event.target.closest("td")
-    if (!td) return
+    let td = event.target.closest("td");
+    if (!td) return;
 
-    //Получим выбранный emoji
-    let selectedEmoji = td.innerText
+    // Получаем выбранный смайлик
+    let selectedEmoji = td.innerText;
 
-    //Превратим строку в массив
-    let inputText = inputMessage.textContent.split("")
-    //Разделим строку на 2 массива:
-    //левый(до позиции курсора) и правый(после позиции курсора)
-    let rightText = inputText.splice(CaretPosition, inputText.length)
+    // Преобразуем текст в поле ввода в массив
+    let inputText = inputMessage.textContent.split("");
 
-    //Ставим в inputMessage текст с выбранным emoji
-    inputMessage.textContent = inputText.join("") + selectedEmoji + rightText.join("")
-    CaretPosition = CaretPosition + selectedEmoji.length
-})
+    // Разделяем массив на две части: левую (до позиции курсора) и правую (после позиции курсора)
+    let rightText = inputText.splice(CaretPosition, inputText.length);
 
-// Получение позиции курсора в поле ввода ".inputMessage" при отжатии любой клавиши
+    // Устанавливаем в поле ввода текст с выбранным смайликом
+    inputMessage.textContent = inputText.join("") + selectedEmoji + rightText.join("");
+    CaretPosition = CaretPosition + selectedEmoji.length;
+});
+
+// Получение позиции курсора в поле ввода при отжатии любой клавиши
 inputMessage.addEventListener("keyup", (event) => {
-    CaretPosition = window.getSelection().getRangeAt(0).startOffset
-})
-// Получение позиции курсора в поле ввода ".inputMessage" при клике
+    CaretPosition = window.getSelection().getRangeAt(0).startOffset;
+});
+
+// Получение позиции курсора в поле ввода при клике
 inputMessage.addEventListener("click", (event) => {
-    CaretPosition = window.getSelection().getRangeAt(0).startOffset
-})
+    CaretPosition = window.getSelection().getRangeAt(0).startOffset;
+});
 
+// Функция для отправки сообщения
 function send () {
-    dataChatSend["messageText"] = inputMessage.textContent
-    dataChatSend["comand"] = "send"
-    get()
+    if (inputMessage.textContent !== ""){
+        dataChatSend["messageText"] = inputMessage.textContent;
+        dataChatSend["comand"] = "send";
+        get();
+    }
 }
 
+// Функция для вычисления скрытой части блока сообщений
 function calc(block) {
-   return  block.scrollHeight - block.scrollTop - block.offsetHeight
+    return  block.scrollHeight - block.scrollTop - block.offsetHeight;
 }
+ function replySend (id) {
+     if (inputMessageReplay.firstChild !== null) inputMessageReplay.removeChild(inputMessageReplay.firstChild)
+     dataChatSend["ReplyMessageID"] = id
+     let replySendElement = document.createElement("div");
+     replySendElement.innerHTML = `<div class="replySendWrap">
+<div class="replyWrap">
+<div class="replyContent">
+    <div class="replyTrait"></div>
+    <div class="photoReplyWrap">
+    <img class="photoReply" src="${chatDataMessage[id]["photoSRC"]}" alt="">
+</div>
+        <div class="reply">
+            <div class="replyUsername">${chatDataMessage[id]["name"]}</div>
+            <div class="replyMessageTextMessage">${chatDataMessage[id]["textMessage"]}</div>
+        </div>
+    </div>
+            <div class="deleteReplyWrap">
+        <img class="deleteReply" src="/src/ico/close.svg" alt="">
+</div>
+</div>
+</div>`
+
+     inputMessageReplay.insertAdjacentElement("beforeend", replySendElement);
+ }

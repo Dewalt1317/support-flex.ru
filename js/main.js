@@ -1,8 +1,12 @@
+let buttonDonat = document.querySelector(".buttonDonat")
 let getTimeInterval = setInterval(() => {}, 0)
+
+buttonDonat.addEventListener("click", ()=>{
+    window.open('https://www.donationalerts.com/r/support_flex_station', '_blank');
+})
 
 get ()
 getTimeInterval = setInterval(get, 5000)
-
 
 function get () {
     dataSend = {"chat": dataChatSend, "title": dataTitleSend}
@@ -52,3 +56,34 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+document.addEventListener('keydown', function (event) {
+    if (event.target.hasAttribute("data-input")){
+        switch (event.code){
+            case "Enter":
+                if (!event.shiftKey){
+                    event.preventDefault()
+                    send()
+                }
+                if (inputMessage.textContent !== "") inputMessage.textContent = null
+                break
+        }
+    } else {
+        switch (event.code){
+            case "Space":
+                buttonPlayPause()
+                break
+
+            case "KeyM":
+                volume()
+                break
+
+            case "ArrowUp":
+                volume("up")
+                break
+            case "ArrowDown":
+                volume("down")
+                break
+        }
+    }
+})

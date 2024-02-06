@@ -20,11 +20,13 @@ switch ($data->chat->comand){
             $dataChat['result'] = 'sendOK';
             $dataChat["comand"] = $data->chat->comand;
         } else {
-            $dataChat["error"] = $mysql->error_list;
             $dataChat['result'] = 'error';
             $dataChat["comand"] = $data->chat->comand;
-        };
-            $mysql->close();
+            $errorLog["dataChat"] = $dataChat;
+            $errorLog["mysql"]  = $mysql;
+            file_put_contents("../log/Error chat request " . date('d.m.Y H-i-s'), json_encode($errorLog));
+
+        }
         }
         break;
 
@@ -38,30 +40,42 @@ switch ($data->chat->comand){
             $dataChat['result'] = "getOk";
             $dataChat["comand"] = $data->chat->comand;
         } else {
-            $dataChat["error"] = $mysql->error_list;
             $dataChat['result'] = 'error';
             $dataChat["comand"] = $data->chat->comand;
+            $errorLog["dataChat"] = $dataChat;
+            $errorLog["mysql"]  = $mysql;
+            file_put_contents("../log/Error chat request " . date('d.m.Y H-i-s'), json_encode($errorLog));
         };
-        $mysql->close();
         break;
     case "getNewMessage":
         $date = $data->chat->lastMessage->date;
         $time = $data->chat->lastMessage->time;
         $ID = $data->chat->lastMessage->ID;
-        $newMessage = $mysql->query("SELECT `messageID`, `name`, `date`, `time`, `textMessage`, `ReplyMessageID`, `photoSRC` FROM `chat` LEFT JOIN `user` ON `chat`.`userID` = `user`.`userID` WHERE  (`date` >= '$date' and `time` >= '$time' and `messageID` != '$ID') ORDER BY `date`, `time`");
+        $messageID = $data->chat->messageID;
+        $newMessage = $mysql->query("SELECT `messageID`, `name`, `date`, `time`, `textMessage`, `ReplyMessageID`, `photoSRC` FROM `chat` LEFT JOIN `user` ON `chat`.`userID` = `user`.`userID` WHERE  (`date` >= '$date' and `time` >= '$time') ORDER BY `date`, `time`");
         if ($mysql->error_list[0]["errno"] == null){
             while ($row = $newMessage->fetch_assoc()) {
-                array_push($message, $row);
+                $messageSend = false;
+                foreach ($messageID as $value) {
+                    if ($value === $row["messageID"]) {
+                        $messageSend = true;
+                        break; // Прерываем цикл, если значение найдено
+                    }
+                }
+                if (!$messageSend){
+                    array_push($message, $row);
+                }
             }
             $dataChat["message"] = $message;
             $dataChat['result'] = "getOk";
             $dataChat["comand"] = $data->chat->comand;
         } else {
-            $dataChat["error"] = $mysql->error_list;
             $dataChat['result'] = 'error';
             $dataChat["comand"] = $data->chat->comand;
+            $errorLog["dataChat"] = $dataChat;
+            $errorLog["mysql"]  = $mysql;
+            file_put_contents("../log/Error chat request " . date('d.m.Y H-i-s'), json_encode($errorLog));
         };
-        $mysql->close();
         break;
 
     case "regUser":
@@ -73,14 +87,17 @@ switch ($data->chat->comand){
             $dataChat['result'] = "regOK";
             $dataChat["comand"] = $data->chat->comand;
         } else {
-            $dataChat["error"] = $mysql->error_list;
             $dataChat['result'] = 'error';
             $dataChat["comand"] = $data->chat->comand;
+            $errorLog["dataChat"] = $dataChat;
+            $errorLog["mysql"]  = $mysql;
+            file_put_contents("../log/Error chat request " . date('d.m.Y H-i-s'), json_encode($errorLog));
         };
-        $mysql->close();
         break;
     default:
         $dataChat['result'] = "unknown";
         $dataChat["comand"] = $data->chat->comand;
+        $errorLog["dataChat"] = $dataChat;
+        file_put_contents("../log/Error chat request " . date('d.m.Y H-i-s'), json_encode($errorLog));
         break;
 }

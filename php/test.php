@@ -1,1 +1,16 @@
-def5020036acc5cd27254a5c0ed294c3216acc767eb7fe8ce7837153eaaeea820e70f4fb68a12a7c03617fe0f9c486c031cd137184d527fb077d2fbced9fc2ce13be0dcba97ea0449bc7ec86354119fc8920816ed9c0bb8f6fd00bb24b57f59632b3a739a80523356f1811709f750cb766bf9917153aa57ad1acb6411185277561f483d336a1a94a4795ce41a234fae462da723bf4796bf28a643501f63a558ad62c7d38d9f660210c60f7dec06707e2ed616624b4eece5cb6c5081b289437a4f8547868d70cf003b598890fc11b3c88e237c22cb4c821d6df91b6060f6086f1fa05b654c18f308e66a8048400f78283cdcc439eb9fc18dee3b3527f299714ad08e806cddb9a12b096f654a394dfa7f6c2c9c4618bd73c42f5d8210d5926b81deb7e4d5070ec511b460e32408318be1708c503ce287d8dc666d37a26195769d0e86a3b7706d4cddb55c8354c2bba5c137857911e3cdccd583aa5180289d045d074d5fe9f6b95524a10b531c18ca0a0868cb30520c70d8f
+<?php
+$fileTempDonat = "../temp/donatRequestTime.json";
+$TempDonat = json_decode(file_get_contents($fileTempDonat));
+$originalTime =
+$targedTime = "18-50-15";
+if ($originalTime<$targedTime) {
+    print_r(date('d.m.Y ')  - "00.00.0000 00-05-00");
+} else {
+    print_r("false");
+}
+print_r($TempDonat->timeRequest);
+$date = date_create(date('d.m.Y H:i:s'));
+date_modify($date, '+5 min');
+
+$TempDonat->timeRequest = date_format($date, "H:i:s");
+file_put_contents($fileTempDonat, json_encode($TempDonat));

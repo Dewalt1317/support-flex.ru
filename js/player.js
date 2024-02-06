@@ -89,48 +89,60 @@ function volumeLevelComfort() {
     buttonVolumeElement.src = "/src/ico/audio.svg"
 }
 
-function volume() {
-    if (audioObj.volume !== 0) {
-        VolumeLevelNotMute = volumeLevel
-        volumeLevel = 0
-        audioObj.volume = volumeLevel
-        VolumeLevelControlElement.value = 0
-        buttonVolumeElement.src = "/src/ico/mute.svg"
-    } else if (VolumeLevelNotMute !== 0) {
-        volumeLevel = VolumeLevelNotMute
-        audioObj.volume = volumeLevel
-        VolumeLevelControlElement.value = volumeLevel * 100
-        buttonVolumeElement.src = "/src/ico/audio.svg"
+function volume(event) {
+    switch (event){
+        case "up":
+            if (audioObj.volume < 0.95) {
+                audioObj.volume = audioObj.volume + 0.05
+                volumeLevel = audioObj.volume
+                VolumeLevelControlElement.value = volumeLevel * 100
+            } else if (audioObj.volume >= 0.95) {
+                buttonVolumeElement.src = "/src/ico/audio.svg"
+                audioObj.volume = 1
+                volumeLevel = audioObj.volume
+                VolumeLevelControlElement.value = volumeLevel * 100
+            }
+            break
+
+        case "down":
+            if (audioObj.volume > 0.05) {
+                buttonVolumeElement.src = "/src/ico/mute.svg"
+                audioObj.volume = audioObj.volume - 0.05
+                volumeLevel = audioObj.volume
+                VolumeLevelControlElement.value = volumeLevel * 100
+            } else if (audioObj.volume <= 0.05) {
+                buttonVolumeElement.src = "/src/ico/mute.svg"
+                VolumeLevelNotMute = 0
+                audioObj.volume = 0
+                volumeLevel = audioObj.volume
+                VolumeLevelControlElement.value = volumeLevel * 100
+            }
+            break
+
+        case "mute":
+            VolumeLevelNotMute = volumeLevel
+            volumeLevel = 0
+            audioObj.volume = volumeLevel
+            VolumeLevelControlElement.value = 0
+            buttonVolumeElement.src = "/src/ico/mute.svg"
+            break
+
+        default:
+            if (audioObj.volume !== 0) {
+                VolumeLevelNotMute = volumeLevel
+                volumeLevel = 0
+                audioObj.volume = volumeLevel
+                VolumeLevelControlElement.value = 0
+                buttonVolumeElement.src = "/src/ico/mute.svg"
+            } else if (VolumeLevelNotMute !== 0) {
+                volumeLevel = VolumeLevelNotMute
+                audioObj.volume = volumeLevel
+                VolumeLevelControlElement.value = volumeLevel * 100
+                buttonVolumeElement.src = "/src/ico/audio.svg"
+            }
+            break
     }
 }
-
-document.addEventListener('keydown', function (event) {
-    if (event.key === " ") {
-        buttonPlayPause()
-    } else if (event.key === "m" || event.key === "ь" || event.key === "M" || event.key === "Ь") {
-        volume()
-    } else if (event.key === "ArrowUp") {
-        if (audioObj.volume < 0.95) {
-            audioObj.volume = audioObj.volume + 0.05
-            volumeLevel = audioObj.volume
-            VolumeLevelControlElement.value = volumeLevel * 100
-        } else if (audioObj.volume >= 0.95) {
-            audioObj.volume = 1
-            volumeLevel = audioObj.volume
-            VolumeLevelControlElement.value = volumeLevel * 100
-        }
-    } else if (event.key === "ArrowDown") {
-        if (audioObj.volume > 0.05) {
-            audioObj.volume = audioObj.volume - 0.05
-            volumeLevel = audioObj.volume
-            VolumeLevelControlElement.value = volumeLevel * 100
-        } else if (audioObj.volume <= 0.05) {
-            audioObj.volume = 0
-            volumeLevel = audioObj.volume
-            VolumeLevelControlElement.value = volumeLevel * 100
-        }
-    }
-})
 
 function getTitle(data) {
     listeners = data["listeners"]

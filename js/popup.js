@@ -25,7 +25,7 @@ function createPopUp(type, title = "Сообщение системы", text, ca
     const inputHtml = `
       <br><br>
       <div class="input_div">
-        <input id="popup-input" type="${type_input}" placeholder="${placeholder}">
+        <input id="popup-input" type="${type_input}" placeholder="${placeholder}" data-input="true">
       </div>`;
     popUpWrapper.querySelector('.messagePopUp').insertAdjacentHTML('beforeend', inputHtml);
   }
