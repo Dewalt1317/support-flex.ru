@@ -1,7 +1,7 @@
 <?php
 $fileTemp = "../temp/TitleData.json";
 $temp = json_decode(file_get_contents($fileTemp));
-$data = file_get_contents("http://support-flex.ru:8000/status-json.xsl");
+$data = file_get_contents("http://support-flex.ru:8443/status-json.xsl");
 $data = json_decode($data);
 $title = $data->icestats->source->title;
 $title = str_replace("(musmore.com)", "", $title);
