@@ -24,19 +24,26 @@
       <!-- ЧАТ -->
       <div class="chat-wrapper">
         <div class="messageBlockWrap">
+        <div class="messageBlock">
+        </div>
           <div class="newMessage">
             <img src="/src/ico/arrowDown.svg" alt="">
           </div>
-        <div class="messageBlock">
-        </div>
       </div>
         <div class="chat-footer">
           <div class="chat-send-message">
             <div class="chat-send-message-top"></div>
             <div class="chat-send-message-bottom">
-            <div class="addFile-btn">
-              <img src="/src/ico/addFile.svg" alt="">
-            </div>
+              <div class="input__wrapper">
+                <input name="file" type="file" id="input__file" class="input input__file" accept="image/*">
+                <label for="input__file" class="input__file-button">
+                                <span class="input__file-icon-wrapper">
+                                    <div class="addFile-btn">
+                                    <img class="input__file-icon" src="/src/ico/addFile.svg" alt="Выбрать файл" width="25">
+                            </div>
+                                </span>
+                </label>
+              </div>
             <div class="input-block" contenteditable="true" data-placeholder="Сообщение" data-input></div>
             <div class="chat-btns">
               <div class="emojiWrap menu-container">

@@ -13,10 +13,12 @@ function createPopUp(type, title = "Сообщение системы", text, ca
       <div class="top">${title}</div>
       <div class="messagePopUp">${text}</div>
       <div class="bottom">
-        ${type === 'confirm' || type === 'input'
+        ${type === 'confirm' || type === 'input' || type === 'image_send'
       ? '<div id="pop-up-cancel" class="button">Отмена</div>'
       : ''}
-        <div id="pop-up-ok" class="button">${buttonText}</div>
+        ${type === 'connect_fail'
+      ? ''
+      : '<div id="pop-up-ok" class="button">' + buttonText +'</div>'}
       </div>
     </div>`;
 
@@ -31,14 +33,24 @@ function createPopUp(type, title = "Сообщение системы", text, ca
   }
 
   // События для кнопок
-  popUpWrapper.querySelector('#pop-up-ok').onclick = () => {
-    const input = popUpWrapper.querySelector('#popup-input');
-    if (callback) callback(type === 'input' || type === 'input_connect' ? input.value : undefined);
-    popUpWrapper.remove();
-  };
+  const OKButton = popUpWrapper.querySelector('#pop-up-ok');
+  if (OKButton){
+    popUpWrapper.querySelector('#pop-up-ok').onclick = () => {
+      const input = popUpWrapper.querySelector('#popup-input');
+      let response
+      if (type === 'input' || type === 'input_connect') response = input.value
+      if (type === "image_send") response = document.querySelector(".wrapSendPopUp .input-block").textContent;
+      if (callback) callback("Ok",  response);
+      popUpWrapper.remove();
+    };
+  }
+
   const cancelButton = popUpWrapper.querySelector('#pop-up-cancel');
   if (cancelButton) {
-    cancelButton.onclick = () => popUpWrapper.remove();
+    cancelButton.onclick = () => {
+      if (callback) callback("cancel")
+      popUpWrapper.remove();
+    }
   }
 
   // Отображаем поп-ап

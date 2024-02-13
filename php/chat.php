@@ -3,14 +3,14 @@ session_start();
 $data = json_decode(file_get_contents("php://input"));
 $dataChat = [];
 $message = [];
+$userId = $_SESSION['userID'];
 switch ($data->chat->comand){
     case "send":
-        if ($_SESSION['userID'] == ""){
+        if ($userId == ""){
 
             $dataChat["result"] = "regUser";
             $dataChat["comand"] = $data->chat->comand;
         } else {
-            $userId = $_SESSION['userID'];
             $messageText = $data->chat->messageText;
             $ReplyMessageID = $data->chat->ReplyMessageID;
             $photoSRC = $data->chat->photoSRC;
@@ -24,18 +24,20 @@ switch ($data->chat->comand){
             $dataChat["comand"] = $data->chat->comand;
             $errorLog["dataChat"] = $dataChat;
             $errorLog["mysql"]  = $mysql;
-            file_put_contents("../log/Error chat request " . date('d.m.Y H-i-s'), json_encode($errorLog));
+            file_put_contents("../log/Error chat request " . date('d.m.Y H-i-s') . ".log", json_encode($errorLog, JSON_UNESCAPED_UNICODE));
 
         }
+
         }
         break;
 
     case "getChat":
-       $chat = $mysql->query("SELECT `messageID`, `name`, `date`, `time`, `textMessage`, `ReplyMessageID`, `photoSRC` FROM `chat` LEFT JOIN `user` ON `chat`.`userID` = `user`.`userID` ORDER BY `date`, `time`");
+       $chat = $mysql->query("SELECT `messageID`, `chat`.`userID`, `name`, `date`, `time`, `textMessage`, `ReplyMessageID`, `photoSRC` FROM `chat` LEFT JOIN `user` ON `chat`.`userID` = `user`.`userID` ORDER BY `date`, `time`");
         if ($mysql->error_list[0]["errno"] == null){
             while ($row = $chat->fetch_assoc()) {
                 array_push($message, $row);
             }
+            $dataChat["userID"] = $userId;
             $dataChat["message"] = $message;
             $dataChat['result'] = "getOk";
             $dataChat["comand"] = $data->chat->comand;
@@ -44,7 +46,7 @@ switch ($data->chat->comand){
             $dataChat["comand"] = $data->chat->comand;
             $errorLog["dataChat"] = $dataChat;
             $errorLog["mysql"]  = $mysql;
-            file_put_contents("../log/Error chat request " . date('d.m.Y H-i-s'), json_encode($errorLog));
+            file_put_contents("../log/Error chat request " . date('d.m.Y H-i-s') . ".log", json_encode($errorLog, JSON_UNESCAPED_UNICODE));
         };
         break;
     case "getNewMessage":
@@ -52,7 +54,7 @@ switch ($data->chat->comand){
         $time = $data->chat->lastMessage->time;
         $ID = $data->chat->lastMessage->ID;
         $messageID = $data->chat->messageID;
-        $newMessage = $mysql->query("SELECT `messageID`, `name`, `date`, `time`, `textMessage`, `ReplyMessageID`, `photoSRC` FROM `chat` LEFT JOIN `user` ON `chat`.`userID` = `user`.`userID` WHERE  (`date` >= '$date' and `time` >= '$time') ORDER BY `date`, `time`");
+        $newMessage = $mysql->query("SELECT `messageID`, `chat`.`userID`, `name`, `date`, `time`, `textMessage`, `ReplyMessageID`, `photoSRC` FROM `chat` LEFT JOIN `user` ON `chat`.`userID` = `user`.`userID` WHERE  (`date` >= '$date' and `time` >= '$time') ORDER BY `date`, `time`");
         if ($mysql->error_list[0]["errno"] == null){
             while ($row = $newMessage->fetch_assoc()) {
                 $messageSend = false;
@@ -66,6 +68,7 @@ switch ($data->chat->comand){
                     array_push($message, $row);
                 }
             }
+            $dataChat["userID"] = $userId;
             $dataChat["message"] = $message;
             $dataChat['result'] = "getOk";
             $dataChat["comand"] = $data->chat->comand;
@@ -74,14 +77,14 @@ switch ($data->chat->comand){
             $dataChat["comand"] = $data->chat->comand;
             $errorLog["dataChat"] = $dataChat;
             $errorLog["mysql"]  = $mysql;
-            file_put_contents("../log/Error chat request " . date('d.m.Y H-i-s'), json_encode($errorLog));
+            file_put_contents("../log/Error chat request " . date('d.m.Y H-i-s') . ".log", json_encode($errorLog, JSON_UNESCAPED_UNICODE));
         };
         break;
 
     case "regUser":
         $username = $data->chat->name;
         $id = id(40817);
-        $mysql->query("INSERT INTO `user` (`userID`, `name`) VALUES ('$id', '$username')");
+        $mysql->query("INSERT INTO `user` (`userID`, `name`) VALUES ('$id', '$username')") . ".log";
         if ($mysql->error_list[0]["errno"] == null){
             $_SESSION['userID'] = $id;
             $dataChat['result'] = "regOK";
@@ -91,13 +94,13 @@ switch ($data->chat->comand){
             $dataChat["comand"] = $data->chat->comand;
             $errorLog["dataChat"] = $dataChat;
             $errorLog["mysql"]  = $mysql;
-            file_put_contents("../log/Error chat request " . date('d.m.Y H-i-s'), json_encode($errorLog));
+            file_put_contents("../log/Error chat request " . date('d.m.Y H-i-s') . ".log", json_encode($errorLog, JSON_UNESCAPED_UNICODE));
         };
         break;
     default:
         $dataChat['result'] = "unknown";
         $dataChat["comand"] = $data->chat->comand;
         $errorLog["dataChat"] = $dataChat;
-        file_put_contents("../log/Error chat request " . date('d.m.Y H-i-s'), json_encode($errorLog));
+        file_put_contents("../log/Error chat request " . date('d.m.Y H-i-s') . ".log", json_encode($errorLog, JSON_UNESCAPED_UNICODE));
         break;
 }

@@ -31,6 +31,7 @@ let volumeLevel = 1
 let VolumeLevelNotMute = 1
 let listeners = 0
 let iteration = 0
+let streamLink
 
 
 wrapVolume.addEventListener("mouseleave", volumeLevelHide)
@@ -76,7 +77,7 @@ function pause() {
 }
 
 function play() {
-    audioObj = new Audio("https://support-flex.ru:8443/live")
+    audioObj = new Audio(streamLink)
     audioObj.volume = volumeLevel
     audioObj.play()
     playTimeInterval = setInterval(rot, 100)

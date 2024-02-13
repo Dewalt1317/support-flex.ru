@@ -13,7 +13,7 @@ function messageSend($donorName, $botStart, $amount, $donatioMessage, $botEnd, $
             $mysql->query("UPDATE `donation` SET `messageID` = '$donatioMessageId'WHERE `id` = '$donationID'");
             if ($mysql->error_list[0]["errno"] != null) {
                 // Обработка ошибки записи в базу данных
-                file_put_contents("../log/Error Database Update " . date('d.m.Y H-i-s'), $mysql);
+                file_put_contents("../log/Error Database Update " . date('d.m.Y H-i-s') . ".log", json_encode($mysql, JSON_UNESCAPED_UNICODE));
             }
         }
     } else {
@@ -21,7 +21,7 @@ function messageSend($donorName, $botStart, $amount, $donatioMessage, $botEnd, $
         $dataChat["comand"] = "donatMessageSend";
         $errorLog["dataChat"] = $dataChat;
         $errorLog["mysql"] = $mysql;
-        file_put_contents("../log/Error chat request " . date('d.m.Y H-i-s'), json_encode($errorLog));
+        file_put_contents("../log/Error chat request " . date('d.m.Y H-i-s') . ".log", json_encode($errorLog, JSON_UNESCAPED_UNICODE));
     }
     return $donatioMessageId;
 }
@@ -97,22 +97,22 @@ if (date("H:i:s") >= $TempDonat->timeRequest) {
                     $mysql->query($insertQuery);
                     if ($mysql->error_list[0]["errno"] != null) {
                         // Обработка ошибки записи в базу данных
-                        file_put_contents("../log/Error Database Insert " . date('d.m.Y H-i-s'), $mysql);
+                        file_put_contents("../log/Error Database Insert " . date('d.m.Y H-i-s') . ".log", json_encode($mysql, JSON_UNESCAPED_UNICODE));
                     }
                 }
             }
         } else {
-            file_put_contents("../log/Error Donat request " . date('d.m.Y H-i-s'), $response);
+            file_put_contents("../log/Error Donat request " . date('d.m.Y H-i-s') . ".log", json_encode($response, JSON_UNESCAPED_UNICODE));
         }
     } else {
-        file_put_contents("../log/Error Donat request " . date('d.m.Y H-i-s'), json_encode(curl_getinfo($curl)));
+        file_put_contents("../log/Error Donat request " . date('d.m.Y H-i-s') . ".log", json_encode(curl_getinfo($curl)), JSON_UNESCAPED_UNICODE);
     }
 
     $date = date_create(date('d.m.Y H:i:s'));
     date_modify($date, '+5 min');
 
     $TempDonat->timeRequest = date_format($date, "H:i:s");
-        file_put_contents($fileTempDonat, json_encode($TempDonat));
+        file_put_contents($fileTempDonat, json_encode($TempDonat, JSON_UNESCAPED_UNICODE));
     curl_close($curl);
 }
 ?>

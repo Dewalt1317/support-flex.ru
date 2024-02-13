@@ -189,16 +189,19 @@
   width: 30px;
   height: 30px;
   display: flex;
+  position: relative;
+  z-index: 1;
 }
 
 .wrapVolumeLevelControl {
   position: relative;
+  z-index: 1;
   left: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 60%;
-  width: 100px;
+  width: 150px;
   background-color: #fafafa;
   opacity: 0;
   border-radius: 10px;

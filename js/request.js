@@ -4,13 +4,16 @@ function SendRequest(
   data = "",
   responseHandler = (response) => {
     console.log(`Нет обработчика данных. Ответ сервера: ${response}`)
-  }
+  },
+  transform
 ) {
   const xhr = new XMLHttpRequest()
-
+  if (transform !== "file") {
+    data = JSON.stringify(data)
+  }
   if (method === "POST") {
     xhr.open(method, url, true)
-    xhr.send(JSON.stringify(data))
+    xhr.send(data)
   } else if (method === "GET") {
     xhr.open(method, url, true)
     xhr.send()

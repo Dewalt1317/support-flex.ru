@@ -1,10 +1,11 @@
 <?php
 $fileTemp = "../temp/TitleData.json";
+$isecastConf = "../config/isecast.conf";
+$config = json_decode(file_get_contents($isecastConf));
 $temp = json_decode(file_get_contents($fileTemp));
-$data = file_get_contents("http://support-flex.ru:8443/status-json.xsl");
+$data = file_get_contents($config->link);
 $data = json_decode($data);
 $title = $data->icestats->source->title;
-$title = str_replace("(musmore.com)", "", $title);
 $listeners = $data->icestats->source->listeners;
 $dataTitle = "";
 if ($title == ""){

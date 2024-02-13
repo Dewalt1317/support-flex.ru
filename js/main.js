@@ -1,61 +1,101 @@
 let buttonDonat = document.querySelector(".buttonDonat")
 let getTimeInterval = setInterval(() => {}, 0)
+let getLink
+
 
 buttonDonat.addEventListener("click", ()=>{
     window.open('https://www.donationalerts.com/r/support_flex_station', '_blank');
 })
 
-get ()
-getTimeInterval = setInterval(get, 5000)
+SendRequest("POST", "php/connect.php", "", (data) => {
+    data = JSON.parse(data)
+    switch (data["result"]) {
+        case "connectOK":
+            streamLink = data["streamLink"]
+            getLink = data["phpGet"]
+            get ()
+            getTimeInterval = setInterval(get, 5000)
+            break
+
+        case "connectFail":
+            Connect("Привет, ты точно сотрудник Озон? Введи пожалуйста кодовое слово)")
+            break
+
+        default:
+            createPopUp("message", "Ошибка", "Произошла какая-то ошибка, наши специалисты уже работают над её устранением", "", "", "", "Ок", bodyElement);
+            break
+    }
+})
+function Connect(text) {
+    createPopUp("input_connect", "Подключение к радио", text, (type, response)=>{
+        let data = {"codeword": response}
+        SendRequest("POST", "php/connect.php", data, (data) => {
+            data = JSON.parse(data)
+            switch (data["result"]) {
+                case "connectOK":
+                    streamLink = data["streamLink"]
+                    getLink = data["phpGet"]
+                    get ()
+                    getTimeInterval = setInterval(get, 5000)
+                    break
+
+                case "connectFail":
+                    if (data["attempts"] === 0){
+                        createPopUp("connect_fail", "Подключение к радио", "Вы много раз ввели неверное кодовое слово, повторная попытка будет доступна через 10 минут", null, null, null, null, document.body)
+                    } else {
+                        text = "Кодовое слово неверно. Колличество оставшихся попыток: " + data["attempts"]
+                        Connect(text)
+                    }
+                        break
+
+                default:
+                    createPopUp("message", "Ошибка", "Произошла какая-то ошибка, наши специалисты уже работают над её устранением", "", "", "", "Ок", bodyElement);
+                    break
+            }
+        })
+    }, "password", "Введите кодовое слово", "Подключиться", document.body)
+
+}
 
 function get () {
     dataSend = {"chat": dataChatSend, "title": dataTitleSend}
-    SendRequest("POST", "php/get.php", dataSend, (data) => {
+    SendRequest("POST", getLink, dataSend, (data) => {
         data = JSON.parse(data)
         getTitle(data["title"])
         getChat(data["chat"])
     })
 }
 
+// Добавление обработчиков событий для новых меню
 document.addEventListener('click', function(event) {
-    const menuContainers = document.querySelectorAll('.menu-container');
-    for (let i = 0; i < menuContainers.length; i++) {
-        const menuContainer = menuContainers[i];
-        const menuList = menuContainer.querySelector('.menuList');
+    const menuButton = event.target.closest('.menu-button');
+    const menuContainer = event.target.closest('.menu-container');
 
-        if (!menuContainer.contains(event.target)) {
-            menuContainer.classList.remove('clicked');
-            menuList.style.opacity = 0;
+    // Если клик на элементе `.menu-button`, то открыть меню
+    if (menuButton) {
+        menuContainer.classList.add('clicked');
+        const menuList = menuContainer.querySelector('.menuList');
+        menuList.style.display = 'block';
+        setTimeout(function() {
+            menuList.style.opacity = 1;
+        }, 10);
+        return;
+    }
+
+    // Если клик вне menu-container, то закрыть все открытые меню
+    if (!menuContainer) {
+        const openMenuContainers = document.querySelectorAll('.menu-container.clicked');
+        for (let j = 0; j < openMenuContainers.length; j++) {
+            openMenuContainers[j].classList.remove('clicked');
+            const openMenuList = openMenuContainers[j].querySelector('.menuList');
+            openMenuList.style.opacity = 0;
             setTimeout(function() {
-                menuList.style.display = 'none';
+                openMenuList.style.display = 'none';
             }, 300);
         }
     }
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-    const menuButtons = document.querySelectorAll('.menu-button');
-    for (let i = 0; i < menuButtons.length; i++) {
-        const menuButton = menuButtons[i];
-        const menuContainer = menuButton.parentNode;
-        const menuList = menuContainer.querySelector('.menuList');
-
-        menuButton.addEventListener('click', function() {
-            menuContainer.classList.toggle('clicked');
-            if (menuContainer.classList.contains('clicked')) {
-                menuList.style.display = 'block';
-                setTimeout(function() {
-                    menuList.style.opacity = 1;
-                }, 10);
-            } else {
-                menuList.style.opacity = 0;
-                setTimeout(function() {
-                    menuList.style.display = 'none';
-                }, 300);
-            }
-        });
-    }
-});
 
 document.addEventListener('keydown', function (event) {
     if (event.target.hasAttribute("data-input")){
@@ -64,8 +104,17 @@ document.addEventListener('keydown', function (event) {
                 if (!event.shiftKey){
                     event.preventDefault()
                     send()
+                } else {
+                    // Преобразуем текст в поле ввода в массив
+                    let inputText = inputMessage.textContent.split("");
+
+                    // Разделяем массив на две части: левую (до позиции курсора) и правую (после позиции курсора)
+                    let rightText = inputText.splice(CaretPosition, inputText.length);
+
+                    // Устанавливаем в поле ввода текст с переносом
+                    inputMessage.textContent = inputText.join("") + '\n' + rightText.join("");
+                    CaretPosition = CaretPosition + "\n".length;
                 }
-                if (inputMessage.textContent !== "") inputMessage.textContent = null
                 break
         }
     } else {

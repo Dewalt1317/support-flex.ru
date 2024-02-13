@@ -45,12 +45,6 @@
     margin-left: -15px;
 }
 
-.pop-up .messagePopUp img {
-    height: 45px;
-    width: 45px;
-    margin-right: 5px;
-    animation: moving 700ms infinite linear;
-}
 .pop-up .bottom {
     flex-wrap: wrap;
     display: flex;
