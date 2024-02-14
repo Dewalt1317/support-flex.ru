@@ -16,7 +16,6 @@ let artistAlbumBackElement = document.querySelector(".artistBack")
 let listenersElement = document.querySelector(".listeners")
 let playTimeInterval = setInterval(() => {}, 0)
 let settingWrapElement = document.querySelector('.settingWrap');
-let settingButton = settingWrapElement.querySelector('.settingImg');
 let settingMenuListElement = settingWrapElement.querySelector('.settingMenuList')
 let dataTitleSend = {}
 let coverSrc = "https://support-flex.ru/src/image/Default%20cover.PNG"
@@ -277,31 +276,43 @@ function Switch(data, elementOne, elementTwo, type) {
 function updateDeviceList() {
     if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
         console.log("Перечисление устройств не поддерживается вашим браузером.");
+        createPopUp("message", "Ошибка", "Выбор аудио устройств не поддерживается вашим браузером.", null, null, null, "Ок", document.querySelector(".wrapPlayerBlock"))
         return;
     }
 
     // Запрашиваем перечень устройств
     navigator.mediaDevices.enumerateDevices()
         .then(function(devices) {
-            const audioOutputDevices = devices.filter(device => device.kind === 'audiooutput');
+                const audioOutputDevices = devices.filter(device => device.kind === 'audiooutput');
 
-            const deviceSelector = document.createElement('select');
+            const deviceSelector = document.createElement('div');
+            deviceSelector.classList.add("audioElementList");
             audioOutputDevices.forEach(function(device) {
-                const option = document.createElement('option');
-                option.value = device.deviceId;
-                option.text = device.label || `Устройство ${device.deviceId}`;
+                const option = document.createElement('div');
+                option.classList.add("audioElement")
+                option.id = device.deviceId;
+                option.textContent = device.label || `Устройство ${device.deviceId}`;
                 deviceSelector.appendChild(option);
             });
 
-            // Добавляем селектор в ваш HTML
-            // Замените 'yourElementSelector' на селектор элемента, куда вы хотите поместить селектор устройств
+            // Добавляем селектор
+            let Container = `<div class="selectAudio"></div>`
+            createPopUp("audio_select", "Выбор аудиоустройства", Container, (type, response)=>{
+
+            }, null, null, "Ok", document.querySelector(".wrapPlayerBlock"))
             const selectorElement = document.querySelector('.selectAudio');
             selectorElement.appendChild(deviceSelector);
-
             // Обработчик изменения выбранного устройства
-            deviceSelector.addEventListener('change', function() {
-                const deviceId = this.value;
-                setAudioOutputDevice(audioObj, deviceId); // audioObj - это ваше аудио или видео DOM-элемент
+            deviceSelector.addEventListener('click', (event) => {
+                const deviceId = event.target.id;
+                setAudioOutputDevice(audioObj, deviceId); // audioObj - это аудио элемент
+                let lastSelect = deviceSelector.querySelector(".clicked")
+                if (lastSelect) {
+                    lastSelect.style.backgroundColor = ""
+                    lastSelect.classList.remove("clicked")
+                }
+                event.target.classList.add("clicked")
+                event.target.style.backgroundColor = "rgb(123 147 211)"
             });
         })
         .catch(function(err) {
@@ -319,26 +330,32 @@ function setAudioOutputDevice(audioElement, deviceId) {
             .catch(err => {
                 let errorMessage = err;
                 if (err.name === 'SecurityError') {
+                    createPopUp("message", "Ошибка", "Вы не дали разрешение на использование устройства вывода аудио.", null, null, null, "Ок", document.querySelector(".wrapPlayerBlock"))
                     errorMessage = `Вы не дали разрешение на использование устройства вывода аудио.`;
                 }
                 console.error(errorMessage);
             });
     } else {
+        createPopUp("message", "Ошибка", "Выбор аудио устройств не поддерживается вашим браузером.", null, null, null, "Ок", document.querySelector(".wrapPlayerBlock"))
         console.warn('Ваш браузер не поддерживает выбор устройств вывода аудио.');
     }
 }
 
 function getMedia() {
     // Запрашиваем медиапоток, чтобы получить разрешение пользователя на доступ к устройствам
+    createPopUp("message", "Запрос доступа", "Для изменения аудио устройства, нужен доступ к медиаустройствам, слушать не будем, правда)", null, null, null, "Ок", document.querySelector(".wrapPlayerBlock"))
     navigator.mediaDevices.getUserMedia({ audio: true, fake: true })
         .then(stream => {
             // Теперь у нас есть разрешение, списка устройств вывода будет доступен
+            document.querySelector(".pop-up-wrapper").remove();
             updateDeviceList();
             // Сразу закрываем поток
             stream.getTracks().forEach(track => track.stop());
         })
         .catch(error => {
+            document.querySelector(".pop-up-wrapper").remove();
             console.error('Ошибка при получении медиапотока:', error);
+            createPopUp("message", "Ошибка", "Ошибка при получении медиапотока", null, null, null, "Ок", document.querySelector(".wrapPlayerBlock"))
         });
 }
 
@@ -351,4 +368,3 @@ document.addEventListener('click', function(event) {
         }, 300);
     }
 });
-// Запускаем функцию прямо после загрузки страницы

@@ -271,6 +271,35 @@
   display: block;
 }
 
+.selectAudio{
+  width: fit-content;
+}
+
+.audioElementList {
+  background-color: rgba(53, 41, 58, 50%);
+  width: fit-content;
+  height: fit-content;
+  padding: 5px;
+}
+
+.audioElement {
+  border: 3px solid rgb(131, 130, 130);
+  border-bottom: none;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  padding: 5px;
+}
+
+.audioElement:last-child {
+  border-bottom: 3px solid rgb(131, 130, 130);
+}
+
+.audioElement:hover {
+  background-color: rgba(217, 217, 217, 50%);
+  cursor: pointer;
+}
+
 @keyframes tickerTitle {
   0% {
     opacity: 0;

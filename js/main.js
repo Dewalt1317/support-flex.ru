@@ -1,10 +1,34 @@
 let buttonDonat = document.querySelector(".buttonDonat")
 let getTimeInterval = setInterval(() => {}, 0)
 let getLink
-
+let buttonChatHidden = document.querySelector(".chatHidden")
+let chatBlock = document.querySelector(".chat-wrapper")
+let settingMenuContainer  = document.querySelector(".settingWrap")
 
 buttonDonat.addEventListener("click", ()=>{
     window.open('https://www.donationalerts.com/r/support_flex_station', '_blank');
+})
+
+buttonChatHidden.addEventListener("click", ()=> {
+    if (chatBlock.getBoundingClientRect().height > 0) {
+        chatBlock.style.transition = "height 0.5s"
+    chatBlock.style.height = "0px"
+    closeMenu(settingMenuContainer, () => {
+        buttonChatHidden.querySelector("p").textContent = "Открыть чат"
+        buttonChatHidden.querySelector("img").src = "/src/ico/chat.svg"
+    })
+} else {
+        chatBlock.style.height = "100vh"
+        setTimeout(()=>{
+            chatBlock.style.transition = ""
+        }, 500)
+        closeMenu(settingMenuContainer, () => {
+            buttonChatHidden.querySelector("p").textContent = "Скрыть чат"
+            buttonChatHidden.querySelector("img").src = "/src/ico/chatOff.svg"
+            chatScroll()
+        })
+
+    }
 })
 
 SendRequest("POST", "php/connect.php", "", (data) => {
@@ -136,3 +160,13 @@ document.addEventListener('keydown', function (event) {
         }
     }
 })
+
+function closeMenu (menuContainer, postClose) {
+    menuContainer.classList.remove('clicked');
+    const openMenuList = menuContainer.querySelector('.menuList');
+    openMenuList.style.opacity = 0;
+    setTimeout(function () {
+        openMenuList.style.display = 'none';
+        if (postClose) postClose()
+    }, 300);
+}
