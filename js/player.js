@@ -78,6 +78,16 @@ function pause() {
 function play() {
     audioObj = new Audio(streamLink)
     audioObj.volume = volumeLevel
+    navigator.mediaDevices.enumerateDevices()
+        .then(function(devices) {
+            const audioOutputDevices = devices.filter(device => device.kind === 'audiooutput');
+            if (audioOutputDevices[0]["deviceId"] !== "") {
+                // Пользователь разрешил доступ к микрофону
+                let cookie = getCookieData("audioDevice")
+                if (cookie !== "")  setAudioOutputDevice(audioObj, cookie);
+                createCookie("audioDevice", cookie, 14)
+            }
+        })
     audioObj.play()
     playTimeInterval = setInterval(rot, 100)
 }
@@ -297,15 +307,23 @@ function updateDeviceList() {
 
             // Добавляем селектор
             let Container = `<div class="selectAudio"></div>`
-            createPopUp("audio_select", "Выбор аудиоустройства", Container, (type, response)=>{
-
-            }, null, null, "Ok", document.querySelector(".wrapPlayerBlock"))
+            createPopUp("audio_select", "Выбор аудиоустройства", Container, null, null, null, "Ok", document.querySelector(".wrapPlayerBlock"))
             const selectorElement = document.querySelector('.selectAudio');
             selectorElement.appendChild(deviceSelector);
+            if (getCookieData("audioDevice") !== "") {
+                let element = document.querySelector("#" + getCookieData("audioDevice"))
+                    element.classList.add("clicked")
+                element.style.backgroundColor = "rgb(123 147 211)"
+            } else {
+                let element = document.querySelector("#default")
+                element.classList.add("clicked")
+                element.style.backgroundColor = "rgb(123 147 211)"
+            }
             // Обработчик изменения выбранного устройства
             deviceSelector.addEventListener('click', (event) => {
                 const deviceId = event.target.id;
                 setAudioOutputDevice(audioObj, deviceId); // audioObj - это аудио элемент
+                createCookie("audioDevice", deviceId, 14)
                 let lastSelect = deviceSelector.querySelector(".clicked")
                 if (lastSelect) {
                     lastSelect.style.backgroundColor = ""
@@ -342,29 +360,61 @@ function setAudioOutputDevice(audioElement, deviceId) {
 }
 
 function getMedia() {
-    // Запрашиваем медиапоток, чтобы получить разрешение пользователя на доступ к устройствам
-    createPopUp("message", "Запрос доступа", "Для изменения аудио устройства, нужен доступ к медиаустройствам, слушать не будем, правда)", null, null, null, "Ок", document.querySelector(".wrapPlayerBlock"))
-    navigator.mediaDevices.getUserMedia({ audio: true, fake: true })
-        .then(stream => {
-            // Теперь у нас есть разрешение, списка устройств вывода будет доступен
-            document.querySelector(".pop-up-wrapper").remove();
-            updateDeviceList();
-            // Сразу закрываем поток
-            stream.getTracks().forEach(track => track.stop());
+    navigator.mediaDevices.enumerateDevices()
+        .then(function(devices) {
+            const audioOutputDevices = devices.filter(device => device.kind === 'audiooutput');
+            if (audioOutputDevices[0]["deviceId"] !== "") {
+                // Пользователь разрешил доступ к микрофону
+                updateDeviceList();
+            } else {
+                // Запрашиваем медиапоток, чтобы получить разрешение пользователя на доступ к устройствам
+                createPopUp("message", "Запрос доступа", "Для изменения аудио устройства, нужен доступ к медиаустройствам, слушать не будем, правда)", null, null, null, "Ок", document.querySelector(".wrapPlayerBlock"))
+                navigator.mediaDevices.getUserMedia({ audio: true})
+                    .then(stream => {
+                        // Теперь у нас есть разрешение, списка устройств вывода будет доступен
+                        document.querySelector(".pop-up-wrapper").remove();
+                        updateDeviceList();
+                        // Сразу закрываем поток
+                        stream.getTracks().forEach(track => track.stop());
+                    })
+                    .catch(error => {
+                        navigator.mediaDevices.enumerateDevices()
+                            .then(function(devices) {
+                                const audioOutputDevices = devices.filter(device => device.kind === 'audiooutput');
+                                if (audioOutputDevices[0]["deviceId"] !== "") {
+                                    // Пользователь разрешил доступ к микрофону
+                                    document.querySelector(".pop-up-wrapper").remove();
+                                    updateDeviceList();
+                                } else {
+                                    document.querySelector(".pop-up-wrapper").remove();
+                                    console.error('Ошибка при получении медиапотока:', error);
+                                    createPopUp("message", "Ошибка", "Ошибка при получении медиапотока", null, null, null, "Ок", document.querySelector(".wrapPlayerBlock"))
+                                }
+                            })
+                    });            }
         })
-        .catch(error => {
-            document.querySelector(".pop-up-wrapper").remove();
-            console.error('Ошибка при получении медиапотока:', error);
-            createPopUp("message", "Ошибка", "Ошибка при получении медиапотока", null, null, null, "Ок", document.querySelector(".wrapPlayerBlock"))
-        });
 }
 
-document.addEventListener('click', function(event) {
-    if (!settingWrapElement.contains(event.target)) {
-        settingWrapElement.classList.remove('clicked');
-        settingMenuListElement.style.opacity = 0;
-        setTimeout(function() {
-            settingMenuListElement.style.display = 'none';
-        }, 300);
+function getCookieData(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
     }
-});
+    return null;
+}
+function createCookie(name, value, days) {
+    var expires;
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toGMTString();
+    }
+    else {
+        expires = "";
+    }
+    document.cookie = name + "=" + value + expires + "; path=/";
+}
+

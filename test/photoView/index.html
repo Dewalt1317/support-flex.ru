@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Модальное окно с зумом</title>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+
+    .photo-container {
+      position: relative;
+      width: 500px;
+      height: 500px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+
+    .photo {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .photo-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    }
+
+    .photo-modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .photo-modal-content {
+      position: relative;
+      width: 80%;
+      height: 80%;
+      background-color: #fff;
+      overflow: hidden;
+    }
+
+    .photo-modal-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .photo-modal-controls {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .photo-modal-zoom-in {
+      width: 50px;
+      height: 50px;
+      background-color: #ccc;
+      border: none;
+      cursor: pointer;
+    }
+
+    .photo-modal-zoom-out {
+      width: 50px;
+      height: 50px;
+      background-color: #ccc;
+      border: none;
+      cursor: pointer;
+    }
+
+    .photo-modal-zoom-slider {
+      width: 100%;
+      height: 10px;
+      background-color: #ccc;
+      cursor: pointer;
+    }
+
+    .photo-modal-close {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 50px;
+      height: 50px;
+      background-color: #ccc;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+<div class="photo-container">
+  <img class="photo" src="image.jpg" alt="Photo">
+</div>
+
+<div class="photo-modal">
+  <div class="photo-modal-content">
+    <img class="photo-modal-image" src="image.jpg" alt="Photo">
+  </div>
+  <div class="photo-modal-controls">
+    <button class="photo-modal-zoom-in">+</button>
+    <input type="range" class="photo-modal-zoom-slider" min="0" max="1" step="0.01" value="0.5">
+    <button class="photo-modal-zoom-out">-</button>
+    <button class="photo-modal-close">X</button>
+  </div>
+</div>
+
+<script>
+  const photoContainer = document.querySelector('.photo-container');
+  const photo = document.querySelector('.photo');
+  const photoModal = document.querySelector('.photo-modal');
+  const photoModalContent = document.querySelector('.photo-modal-content');
+  const photoModalImage = document.querySelector('.photo-modal-image');
+  const photoModalZoomIn = document.querySelector('.photo-modal-zoom-in');
+  const photoModalZoomOut = document.querySelector('.photo-modal-zoom-out');
+  const photoModalZoomSlider = document.querySelector('.photo-modal-zoom-slider');
+  const photoModalClose = document.querySelector('.photo-modal-close');
+
+  photoContainer.addEventListener('click', () => {
+    photoModal.classList.add('active');
+  });
+
+  photoModalClose.addEventListener('click', () => {
+    photoModal.classList.remove('active');
+  });
+
+  photoModalZoomIn.addEventListener('click', () => {
+    const zoomLevel = parseFloat(photoModalZoomSlider.value) + 0.1;
+    if (zoomLevel <= 1) {
+      photoModalZoomSlider.value = zoomLevel;
+      photoModalImage.style.transform = `scale(${zoomLevel})`;
+    }
+  });
+
+  photoModalZoomOut.addEventListener('click', () => {
+    const zoomLevel = parseFloat(photoModalZoomSlider.value) - 0.1;
+    if (zoomLevel >= 0) {
+      photoModalZoomSlider.value = zoomLevel;
+      photoModalImage.style.transform = `scale(${zoomLevel})`;
+    }
+  });
+
+  photoModalZoomSlider.addEventListener('input', () => {
+    const zoomLevel = parseFloat(photoModalZoomSlider.value);
+    photoModalImage.style.transform = `scale(${zoomLevel})`;
+  });
+</script>
+</body>
+</html>

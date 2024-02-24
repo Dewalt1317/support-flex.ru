@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Чат</title>
+  <style>
+    body {
+      font-family: Arial;
+    }
+
+    .chat-container {
+      width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .chat-messages {
+      height: 400px;
+      overflow-y: scroll;
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+
+    .chat-input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+    }
+
+    .chat-button {
+      float: right;
+      padding: 10px;
+      background-color: #008CBA;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+    <meta charset="UTF-8">
+</head>
+<body>
+  <div class="chat-container">
+    <h1>Чат</h1>
+    <div class="chat-messages"></div>
+    <form class="chat-input-form">
+      <input type="text" class="chat-input" placeholder="Введите сообщение">
+      <button type="submit" class="chat-button">Отправить</button>
+    </form>
+  </div>
+
+  <script>
+    const chatMessages = document.querySelector('.chat-messages');
+    const chatInput = document.querySelector('.chat-input');
+    const chatInputForm = document.querySelector('.chat-input-form');
+
+    const socket = new WebSocket('ws://192.168.1.162:9000');
+
+    socket.addEventListener('open', () => {
+      console.log('Соединение установлено');
+    });
+
+    socket.addEventListener('message', (event) => {
+      const data = JSON.parse(event.data);
+      console.log(data)
+      if (data.type === 'usermsg') {
+        chatMessages.innerHTML += `<p>${data.message}</p>`;
+      } else if (data.type === 'error') {
+        alert(data.message);
+      }
+    });
+
+    socket.addEventListener('close', () => {
+      console.log('Соединение закрыто');
+    });
+
+    chatInputForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const message = chatInput.value;
+
+      if (message.trim() === '') {
+        return;
+      }
+
+      socket.send(JSON.stringify({
+        type: 'message',
+        message: message
+      }));
+
+      chatInput.value = '';
+    });
+    // let socket = new WebSocket('ws://localhost:9000 ');
+    //
+    // socket.onopen = function() {
+    //   console.log('Подключено к серверу');
+    //   console.log(socket)
+    // };
+    //
+    // socket.onmessage = function(event) {
+    //   console.log('Получено сообщение: ' + event.data);
+    // };
+    //
+    // socket.onclose = function() {
+    //   console.log('Соединение с сервером закрыто');
+    // };
+    //
+    // socket.onerror = function(error) {
+    //   console.log(error);
+    //   console.log(socket)
+    // };
+
+  </script>
+</body>
+</html>

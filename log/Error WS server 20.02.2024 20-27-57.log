@@ -1,0 +1,6 @@
+Ошибка: [2] socket_select(): supplied resource is not a valid Socket resource в файле C:\OpenServer\domains\Support-flex\php\WS-server.php на строке 34
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] socket_select(): supplied resource is not a valid Socket resource в файле C:\OpenServer\domains\Support-flex\php\WS-server.php на строке 34
+Полученные данные: 
+Отправленные данные: 

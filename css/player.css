@@ -47,8 +47,8 @@
   align-items: center;
   flex-direction: column;
   width: 90%;
+  height: 100%;
   transition: 1s;
-  margin-bottom: 50px;
 }
 
 .trackHeader {
@@ -178,6 +178,7 @@
 }
 
 .wrapVolume {
+  position: relative;
   width: 150px;
   height: 30px;
   display: flex;
@@ -194,7 +195,7 @@
 }
 
 .wrapVolumeLevelControl {
-  position: relative;
+  position: absolute;
   z-index: 1;
   left: 15px;
   display: flex;

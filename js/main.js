@@ -1,12 +1,18 @@
 let buttonDonat = document.querySelector(".buttonDonat")
 let getTimeInterval = setInterval(() => {}, 0)
-let getLink
+let WS
 let buttonChatHidden = document.querySelector(".chatHidden")
+let buttonMediaSelect = document.querySelector(".mediaSelector")
 let chatBlock = document.querySelector(".chat-wrapper")
 let settingMenuContainer  = document.querySelector(".settingWrap")
 
 buttonDonat.addEventListener("click", ()=>{
     window.open('https://www.donationalerts.com/r/support_flex_station', '_blank');
+})
+
+buttonMediaSelect.addEventListener("click", ()=> {
+    getMedia()
+    closeMenu(settingMenuContainer)
 })
 
 buttonChatHidden.addEventListener("click", ()=> {
@@ -36,7 +42,8 @@ SendRequest("POST", "php/connect.php", "", (data) => {
     switch (data["result"]) {
         case "connectOK":
             streamLink = data["streamLink"]
-            getLink = data["phpGet"]
+            WS = new WebSocket(data["WSLink"])
+            socketStart()
             get ()
             getTimeInterval = setInterval(get, 5000)
             break
@@ -58,8 +65,8 @@ function Connect(text) {
             switch (data["result"]) {
                 case "connectOK":
                     streamLink = data["streamLink"]
-                    getLink = data["phpGet"]
-                    get ()
+                    WS = new WebSocket(data["WSLink"])
+                    socketStart()
                     getTimeInterval = setInterval(get, 5000)
                     break
 
@@ -80,14 +87,34 @@ function Connect(text) {
     }, "password", "Введите кодовое слово", "Подключиться", document.body)
 
 }
+function socketStart (){
+    console.log("test")
+    WS.addEventListener('open', () => {
+        console.log('Соединение с сервером установлено');
+    });
+
+    WS.addEventListener('message', (event) => {
+        const data = JSON.parse(event.data);
+        console.log(data)
+        if (data.type === 'usermsg') {
+            chatMessages.innerHTML += `<p>${data.message}</p>`;
+        } else if (data.type === 'error') {
+            alert(data.message);
+        }
+    });
+}
+
 
 function get () {
     dataSend = {"chat": dataChatSend, "title": dataTitleSend}
-    SendRequest("POST", getLink, dataSend, (data) => {
-        data = JSON.parse(data)
-        getTitle(data["title"])
-        getChat(data["chat"])
-    })
+
+
+
+    // SendRequest("POST", getLink, dataSend, (data) => {
+    //     data = JSON.parse(data)
+    //     getTitle(data["title"])
+    //     getChat(data["chat"])
+    // })
 }
 
 // Добавление обработчиков событий для новых меню

@@ -8,7 +8,7 @@ $config = json_decode(file_get_contents($fileConf));
 $data = json_decode(file_get_contents("php://input"));
 if (!$data->codeword){
     if($_SESSION["connect"] == "OK"){
-        $data = ["streamLink" => $frontConfig->streamLink, "phpGet"=> $frontConfig->phpGet, "result"=>"connectOK"];
+        $data = ["streamLink" => $frontConfig->streamLink, "WSLink"=> $frontConfig->WSLink, "result"=>"connectOK"];
     } else {
     $data = ["result"=>"connectFail"];
     }
@@ -20,7 +20,7 @@ $data->codeword = filter_var(
     FILTER_SANITIZE_STRING
 ); if (date("H:i:s") >= $_SESSION["attemptsDate"] or !$_SESSION["attemptsDate"]) {
     if ($data->codeword == $config->codeword){
-        $data = ["streamLink" => $frontConfig->streamLink, "phpGet"=> $frontConfig->phpGet, "result"=>"connectOK"];
+        $data = ["streamLink" => $frontConfig->streamLink, "WSLink"=> $frontConfig->WSLink, "result"=>"connectOK"];
         $_SESSION["attemptsDate"] = "";
         $_SESSION["attempts"] = "";
         $_SESSION["connect"] = "OK";

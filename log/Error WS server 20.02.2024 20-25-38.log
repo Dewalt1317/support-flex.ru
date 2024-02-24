@@ -1,0 +1,3 @@
+Ошибка: [2] socket_bind(): supplied resource is not a valid Socket resource в файле C:\OpenServer\domains\Support-flex\php\WS-server.php на строке 21
+Полученные данные: 
+Отправленные данные: 

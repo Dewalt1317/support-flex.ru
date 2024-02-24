@@ -12,3 +12,27 @@
     z-index: 1;
     /*background-color: #ff0000;*/
 }
+
+.additionalWrap {
+    display: flex;
+    flex-direction: column;
+}
+
+.listenOnWrap {
+    display: flex;
+    justify-content: end;
+    width: 100%;
+}
+
+.listenOn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(44, 11, 58, 0.4);
+    margin-top: 10px;
+    border-radius: 10px;
+    max-width: 80%;
+    padding: 5px;
+    color: rgba(255, 255, 255, 0.7);
+}
