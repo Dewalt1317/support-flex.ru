@@ -222,10 +222,14 @@ function volumeLevelControl() {
 function volumeLevelHide() {
     volumeLevelHideLock = true
     wrapVolumeLevelControl.style.opacity = 0
+    setTimeout(() => {
+        wrapVolumeLevelControl.classList.toggle("wrapVolumeLevelControl__hiden")
+    }, 500)
 }
 
 function volumeLevelAppeared() {
     volumeLevelHideLock = false
+    wrapVolumeLevelControl.classList.toggle("wrapVolumeLevelControl__hiden")
     wrapVolumeLevelControl.style.opacity = 1
 }
 
