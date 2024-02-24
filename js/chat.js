@@ -42,6 +42,7 @@ buttonSend.addEventListener("click", send)
 messageBlockElement.addEventListener("scroll", buttonScroll)
 
 buttonNewMessage.addEventListener("click", chatScroll)
+
 // Обработчик события клика по кнопке ответить на сообщение
 messageBlockElement.addEventListener("click", function (event) {
     // Проверка, что событие произошло на нужном элементе
