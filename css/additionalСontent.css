@@ -62,6 +62,7 @@
     transition: width .5s;
 }
 
+/* Скрываем кнопки в блоке "Слушайте в" */
 .buttonAppleMusicWrap--hide,
 .buttonYoutubeMusicWrap--hide,
 .buttonYandexMusicWrap--hide {
