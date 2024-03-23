@@ -170,24 +170,18 @@
 
 .controlDown {
   width: 100%;
-  padding: 0 20px 0 20px;
+  padding: 10px 20px 0 20px;
   display: flex;
   justify-content: space-around;
   align-items: center;
   margin-top: 5px;
 }
 
-.wrapVolume {
-  /* height: 30px; */
-  /* display: flex; */
-  /* justify-content: space-between; */
-  /* align-items: center; */
-}
-
 .wrapVolumeButton {
   position: relative;
   width: 30px;
   padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .wrapVolumeLevelControl {
@@ -307,10 +301,10 @@
   2% {
     opacity: 1;
   }
-  15% {
+  20% {
     transform: translateX(0);
   }
-  90% {
+  70% {
     transform: translateX(var(--surplus));
   }
   95%{
@@ -334,10 +328,10 @@
   2% {
     opacity: 1;
   }
-  15% {
+  20% {
     transform: translateX(0);
   }
-  90% {
+  70% {
     transform: translateX(var(--surplus));
   }
   95%{

@@ -1,5 +1,5 @@
 // Объект для отправки данных чата
-let dataChatSend = {"comand": "getChat", "messageID": []};
+let dataChatSend = {};
 
 let messageID = {}
 
@@ -10,9 +10,6 @@ let buttonNewMessage = document.querySelector(".newMessage")
 
 // Контейнер для смайликов
 let emojiMenuList = document.querySelector(".emojiMenuList")
-
-// Контейнер кнопеи ответа
-let buttonReplay = document.querySelectorAll(".buttonRepleyWrap")
 
 // Поле ввода сообщения
 let inputMessage = document.querySelector(".input-block");
@@ -34,7 +31,13 @@ let chatDataMessage = {};
 // Последнее сообщение
 let lastMessage = {};
 
-let userID
+let userID = getCookieData("userRegData")
+
+if (!userID) {
+    userID = {"userID": "0", "userCode": "0"}
+} else {
+    userID = JSON.parse(userID)
+}
 
 // Обработчик события клика по кнопке отправки сообщения
 buttonSend.addEventListener("click", send)
@@ -67,19 +70,14 @@ inputMessageReplay.addEventListener("click", function (event) {
 function getChat(data) {
     switch (data["result"]) {
         case "getOk":
-            userID = data["userID"]
             chatDataNew = data["message"];
             chatDataNew.forEach((element)=>{
                 addMessage(element, data)
             });
             dataChatSend["lastMessage"] = lastMessage;
-            dataChatSend["comand"] = "getNewMessage";
             break;
 
         case "sendOK":
-            dataChatSend["lastMessage"] = lastMessage;
-            dataChatSend["comand"] = "getNewMessage";
-            get();
             inputMessage.textContent = "";
             dataChatSend["photoSRC"] = ""
             dataChatSend["ReplyMessageID"] = ""
@@ -88,28 +86,25 @@ function getChat(data) {
             break;
 
         case "regUser":
-            dataChatSend["lastMessage"] = lastMessage;
-            dataChatSend["comand"] = "getNewMessage";
             createPopUp("input", "Представьтесь", "Для общения в чате введите свой никнейм", () => {
-                dataChatSend["comand"] = "regUser";
                 dataChatSend["name"] = document.querySelector("#popup-input").value;
-                get();
+                WS.send(JSON.stringify({"type":"chatReg", "data":dataChatSend}))
             }, "text", "Введите никнейм", "Отправить сообщение", document.querySelector(".chat-wrapper"));
             break;
 
         case "regOK":
+            userID = {"userID": data["userID"], "userCode": data["code"]}
+            createCookie("userRegData", JSON.stringify(userID), 30)
             send();
             break;
 
         case "error":
             dataChatSend["lastMessage"] = lastMessage;
-            dataChatSend["comand"] = "getNewMessage";
             createPopUp("message", "Ошибка", "Произошла какая-то ошибка, наши специалисты уже работают над её устранением", "", "", "", "Ок", document.querySelector(".chat-wrapper"));
             break;
 
         default:
             dataChatSend["lastMessage"] = lastMessage;
-            dataChatSend["comand"] = "getNewMessage";
             createPopUp("message", "Ошибка", "Произошла какая-то ошибка, наши специалисты уже работают над её устранением", "", "", "", "Ок", document.querySelector(".chat-wrapper"));
             break;
     }
@@ -118,8 +113,6 @@ function getChat(data) {
 // Функция для добавления сообщения в блок сообщений
 function addMessage(data, array) {
     let type
-    //Сохраняем id сообщения в массив
-    dataChatSend["messageID"].push(data["messageID"])
     // Проверяем, если дата текущего сообщения отличается от предыдущего, добавляем блок с датой
     if (lastMessage["date"] !== data["date"]) {
         let currentYear = new Date().getFullYear()
@@ -197,8 +190,9 @@ function addMessage(data, array) {
     messageCreate.classList.add("messageWarp");
 
     let name = data["name"]
-    if (data["userID"] === userID) {
+    if (data["userID"] === userID["userID"]) {
         name = ""
+        data["name"] = "Вы"
         data["class"] = "youMessage"
     } else {
         data["class"] = ""
@@ -398,8 +392,9 @@ function send() {
         let message = inputMessage.textContent.replaceAll(/>/gi, "&gt;");
         message = message.replaceAll(/</gi, "&lt;");
         dataChatSend["messageText"] = message;
-        dataChatSend["comand"] = "send";
-        get();
+        dataChatSend["userID"] = userID["userID"]
+        dataChatSend["userCode"] = userID["userCode"]
+        WS.send(JSON.stringify({"type":"sendMessage", "data":dataChatSend}))
     }
 }
 
@@ -450,7 +445,7 @@ function buttonScroll() {
 }
 
 function chatScroll(comand, messageUserID) {
-    if (messageUserID === userID && comand !== "getChat") comand = "messageSend"
+    if (messageUserID === userID["userID"] && comand !== "getChat") comand = "messageSend"
     let lastMessage = messageBlockElement.querySelector(".messageWarp:last-child")
     switch (comand) {
         case "getNewMessage":
@@ -555,9 +550,13 @@ fileInput.addEventListener("change", (event)=>{
                             case "saveOK":
                                 dataChatSend["photoSRC"] = "/src/userPhoto/" + data["src"]
                                 dataChatSend["messageText"] = response;
-                                dataChatSend["comand"] = "send";
-                                get();
+                                dataChatSend["userID"] = userID["userID"]
+                                dataChatSend["userCode"] = userID["userCode"]
+                                WS.send(JSON.stringify({"type":"sendMessage", "data":dataChatSend}))
                                 fileInput.value = ""
+                                break
+                            default:
+                                createPopUp("message", "Ошибка", "Произошла какая-то ошибка, наши специалисты уже работают над её устранением", "", "", "", "Ок", document.querySelector(".chat-wrapper"));
                                 break
                         }
                     }, "file")

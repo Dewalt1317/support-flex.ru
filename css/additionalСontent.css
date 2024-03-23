@@ -10,21 +10,22 @@
     width: calc(100%/3);
     height: 100vh;
     z-index: 1;
-    /*background-color: #ff0000;*/
 }
 
 .additionalWrap {
+    width: 100%;
+    padding-right: 5px;
     display: flex;
     flex-direction: column;
 }
 
-.listenOnWrap {
+.listenOnWrap, .presenterWrap, .topDonationWrap, .lastTrackWrap {
     display: flex;
     justify-content: end;
     width: 100%;
 }
 
-.listenOn {
+.listenOn, .presenter, .topDonation, .lastTrack {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -32,7 +33,90 @@
     background-color: rgba(44, 11, 58, 0.4);
     margin-top: 10px;
     border-radius: 10px;
-    max-width: 80%;
+    width: 420px;
     padding: 5px;
     color: rgba(255, 255, 255, 0.7);
+}
+
+.listenOn p:first-child, .presenter p:first-child, .lastTrack p:first-child {
+    font-size: 20px;
+}
+
+.listenOnButtonWrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    transition: 0.2s;
+    margin-top: 10px;
+}
+
+.buttonAppleMusic {
+    width: 130px;
+    height: 50px;
+    transition: 1s;
+    opacity: 0;
+}
+
+.presenter-block{
+    display: flex;
+    width: 100%;
+    height: 105px;
+    padding: 0 10px;
+}
+
+.presenterOnAir {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 18px
+}
+
+.presenterPhotoWrap {
+    height: 75px;
+    width: 75px;
+}
+.presenterPhotoWrap img {
+    height: 75px;
+    width: 75px;
+    border-radius: 10px;
+}
+
+.presenterName {
+    margin-left: 5px;
+}
+
+.topDonation {
+    background-color: rgba(25, 25, 25, 0.7);
+    height: 150px;
+}
+
+.topDonationHeaderWrap {
+    display: flex;
+}
+
+.topDonationHeaderWrap img {
+    margin-right: 10px;
+}
+
+.topDonationHeaderWrap p {
+    display: inline;
+    color: rgba(245, 156, 7, 1);
+    font-size: 20px;
+    font-family: "Rubik", sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.topDonation-block {
+    height: 120px;
+}
+
+.lastTrackWrap {
+    margin-bottom: 10px;
+    height: 100%;
+}
+.lastTrack-block {
+    height: 100%;
 }

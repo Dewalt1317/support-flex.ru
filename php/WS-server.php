@@ -1,4 +1,9 @@
 <?php
+include "idGenerator.php";
+include "getTitle.php";
+include "chat.php";
+include "donatRequest.php";
+include "presenter.php";
 $host = '0.0.0.0'; // хост
 $port = '9000'; // порт
 $null = null;
@@ -11,12 +16,15 @@ stream_context_set_option($context, 'ssl', 'allow_self_signed', true);
 stream_context_set_option($context, 'ssl', 'verify_peer', false);
 
 // Создаем сокет TCP/IP потока с SSL
-$socket = stream_socket_server("tls://{$host}:{$port}", $errno, $errstr, STREAM_SERVER_BIND|STREAM_SERVER_LISTEN, $context);
+$socket = stream_socket_server("tls://{$host}:{$port}", $errno, $errstr, STREAM_SERVER_BIND | STREAM_SERVER_LISTEN, $context);
+if ($socket === false) {
+    die("Не удалось создать сокет: $errstr ($errno)");
+}
 
 // Создаем и добавляем слушающий сокет в список
 $clients = array($socket);
 
-echo "Сервер запущен на адресе $host и порту $port\n";
+echo "Сервер слушает адрес $host и порт $port\n";
 echo "Чтобы остановить сервер, нажмите Ctrl+C\n";
 
 // Устанавливаем обработчик ошибок
@@ -24,6 +32,7 @@ set_error_handler("errorHandler");
 
 // Начинаем бесконечный цикл, чтобы наш скрипт не остановился
 while (true) {
+    try {
     // Управляем несколькими соединениями
     $changed = $clients;
     // Возвращает ресурсы сокета в массив $changed
@@ -32,11 +41,18 @@ while (true) {
     // Проверяем на новый сокет
     if (in_array($socket, $changed)) {
         $socket_new = stream_socket_accept($socket); // принимаем новый сокет
+        if ($socket_new === false) {
+            echo "Не удалось принять новое соединение\n";
+            continue;
+        }
         $clients[] = $socket_new; // добавляем сокет в массив клиентов
 
-        $header = socket_read($socket_new, 1024); // читаем данные, отправленные сокетом
+        $header = fread($socket_new, 1024); // читаем данные, отправленные сокетом
         perform_handshaking($header, $socket_new, $host, $port); // выполняем рукопожатие websocket
-
+        $dataSend = ["type" => "title", "data" => getTitle()];
+        send_to_specific_client(mask(json_encode($dataSend)), $socket_new);
+        $dataSend = ["type" => "presenter", "data" => presenter()];
+        send_to_specific_client(mask(json_encode($dataSend)), $socket_new);
         // Освобождаем место для нового сокета
         $found_socket = array_search($socket, $changed);
         unset($changed[$found_socket]);
@@ -46,54 +62,111 @@ while (true) {
     foreach ($changed as $changed_socket) {
 
         // Проверяем на входящие данные
-        while(socket_recv($changed_socket, $buf, 1024, 0) >= 1)
-        {
+        while (($buf = fread($changed_socket, 1024)) !== '') {
             $received_text = unmask($buf); // демаскируем данные
-            $tst_msg = json_decode($received_text); // декодируем json
-            $user_message = $tst_msg->message; // текст сообщения
-            $user_name = $tst_msg->name; // имя отправителя
-            $user_color = $tst_msg->color; // цвет
-
-            // Подготавливаем данные для отправки клиенту
-            $response_text = mask(json_encode(array('type'=>'usermsg', 'name'=>$user_name, 'message'=>$user_message, 'color'=>$user_color)));
-            send_message_to_specific_client($response_text, $changed_socket); // отправляем данные
+            $dataClient = json_decode($received_text); // декодируем json
+            switch ($dataClient->type) {
+                case "sendMessage":
+                    $chatResult = chat("send", $dataClient->data);
+                    if ($chatResult["result"] == "sendOK") {
+                        $dataSend = ["type" => "chat", "data" => ["result" => "sendOK"]];
+                        send_to_specific_client(mask(json_encode($dataSend)), $changed_socket);
+                        if (!$dataClient->data->ReplyMessageID) $dataClient->data->ReplyMessageID = "";
+                        if (!$dataClient->data->photoSRC) $dataClient->data->photoSRC = "";
+                        // Подготавливаем данные для отправки клиентам
+                        $dataSend = [
+                            "type" => "chat", "data" => [
+                                "result" => "getOk", "message" => [
+                                    [
+                                        "messageID" => $chatResult["messageID"],
+                                        "date" => date("Y-m-d"),
+                                        "time" => date("H:i:s"),
+                                        "ReplyMessageID" => $dataClient->data->ReplyMessageID,
+                                        "textMessage" => $dataClient->data->messageText,
+                                        "photoSRC" => $dataClient->data->photoSRC,
+                                        "userID" => $dataClient->data->userID,
+                                        "name" => $chatResult["name"]]]]];
+                        // Отправляем данные клиентам
+                        send(mask(json_encode($dataSend)), $clients);
+                    } else {
+                        $dataSend = ["type" => "chat", "data" => $chatResult];
+                        send_to_specific_client(mask(json_encode($dataSend)), $changed_socket);
+                    }
+                    break;
+                case "chatReg":
+                    $chatResult = chat("regUser", $dataClient->data);
+                    $dataSend = ["type" => "chat", "data" => $chatResult];
+                    send_to_specific_client(mask(json_encode($dataSend)), $changed_socket);
+                    break;
+                case "getChat":
+                    $dataSend = ["type" => "chat", "data" => chat("getChat", null)];
+                    send_to_specific_client(mask(json_encode($dataSend)), $changed_socket);
+                    break;
+            }
             break 2; // выходим из этого цикла
         }
 
-        $buf = @socket_read($changed_socket, 1024, PHP_NORMAL_READ);
+        $buf = @fread($changed_socket, 1024, PHP_NORMAL_READ);
         if ($buf === false) { // проверяем отключенного клиента
             // удаляем клиента из массива $clients
             $found_socket = array_search($changed_socket, $clients);
             unset($clients[$found_socket]);
         }
     }
+    $donateDate = donateRequest();
+    if ($donateDate["result"] == "message") {
+        send(mask(json_encode($donateDate["message"])), $clients); // отправляем данные
+    }
+    $fileTempWS = "temp/WS.json";
+    $TempWS = json_decode(file_get_contents($fileTempWS));
+    if (date("d.m.Y H:i:s") >= $TempWS->timeRequestTitle) {
+        $dataSend = ["type" => "title", "data" => getTitle()];
+        send(mask(json_encode($dataSend)), $clients); // отправляем данные
+        $dataSend = ["type" => "presenter", "data" => presenter()];
+        send(mask(json_encode($dataSend)), $clients); // отправляем данные
+        $date = date_create(date('d.m.Y H:i:s'));
+        date_modify($date, '+5 sec');
+        $TempWS->timeRequestTitle = date_format($date, "d.m.Y H:i:s");
+        file_put_contents($fileTempWS, json_encode($TempWS, JSON_UNESCAPED_UNICODE));
+    }
+
+    } catch (Exception $e) {
+        echo 'Произошла ошибка: ',  $e->getMessage(), "\n";
+    }
 }
 // закрываем слушающий сокет
-socket_close($socket);
+fclose($socket);
 
-function send_message_to_specific_client($msg, $client)
+
+function send($message, $clients)
 {
-    @socket_write($client,$msg,strlen($msg));
+    foreach ($clients as $client) {
+        fwrite($client, $message);
+    }
+}
+
+function send_to_specific_client($msg, $client)
+{
+    @fwrite($client, $msg, strlen($msg));
 }
 
 // Демаскируем входящее сообщение
-function unmask($text) {
+function unmask($text)
+{
     $length = ord($text[1]) & 127;
-    if($length == 126) {
+    if ($length == 126) {
         $masks = substr($text, 4, 4);
         $data = substr($text, 8);
-    }
-    elseif($length == 127) {
+    } elseif ($length == 127) {
         $masks = substr($text, 10, 4);
         $data = substr($text, 14);
-    }
-    else {
+    } else {
         $masks = substr($text, 2, 4);
         $data = substr($text, 6);
     }
     $text = "";
     for ($i = 0; $i < strlen($data); ++$i) {
-        $text .= $data[$i] ^ $masks[$i%4];
+        $text .= $data[$i] ^ $masks[$i % 4];
     }
     return $text;
 }
@@ -104,25 +177,23 @@ function mask($text)
     $b1 = 0x80 | (0x1 & 0x0f);
     $length = strlen($text);
 
-    if($length <= 125)
+    if ($length <= 125)
         $header = pack('CC', $b1, $length);
-    elseif($length > 125 && $length < 65536)
+    elseif ($length > 125 && $length < 65536)
         $header = pack('CCn', $b1, 126, $length);
-    elseif($length >= 65536)
+    elseif ($length >= 65536)
         $header = pack('CCNN', $b1, 127, $length);
-    return $header.$text;
+    return $header . $text;
 }
 
 // Рукопожатие с новым клиентом.
-function perform_handshaking($receved_header,$client_conn, $host, $port)
+function perform_handshaking($receved_header, $client_conn, $host, $port)
 {
     $headers = array();
     $lines = preg_split("/\r\n/", $receved_header);
-    foreach($lines as $line)
-    {
+    foreach ($lines as $line) {
         $line = chop($line);
-        if(preg_match('/\A(\S+): (.*)\z/', $line, $matches))
-        {
+        if (preg_match('/\A(\S+): (.*)\z/', $line, $matches)) {
             $headers[$matches[1]] = $matches[2];
         }
     }
@@ -130,31 +201,33 @@ function perform_handshaking($receved_header,$client_conn, $host, $port)
     $secKey = $headers['Sec-WebSocket-Key'];
     $secAccept = base64_encode(pack('H*', sha1($secKey . '258EAFA5-E914-47DA-95CA-C5AB0DC85B11')));
     // Заголовок рукопожатия
-    $upgrade  = "HTTP/1.1 101 Web Socket Protocol Handshake\r\n" .
+    $upgrade = "HTTP/1.1 101 Web Socket Protocol Handshake\r\n" .
         "Upgrade: websocket\r\n" .
         "Connection: Upgrade\r\n" .
         "WebSocket-Origin: $host\r\n" .
-        "WebSocket-Location: ws://$host:$port/demo/shout.php\r\n".
+        "WebSocket-Location: ws://$host:$port/demo/shout.php\r\n" .
         "Sec-WebSocket-Accept:$secAccept\r\n\r\n";
-    socket_write($client_conn,$upgrade,strlen($upgrade));
+    fwrite($client_conn, $upgrade, strlen($upgrade));
 }
 
 // Обработчик ошибок
-function errorHandler($errno, $errstr, $errfile, $errline) {
+function errorHandler($errno, $errstr, $errfile, $errline)
+{
     global $received_text, $response_text; // Добавляем глобальные переменные
 
     if (!(error_reporting() & $errno)) {
-        // Этот код ошибки не включен в error_reporting
         return;
     }
 
-    $logPath = "../log/web_socket_server_error.log";
+    echo "\n***************************\n";
+    echo "*Ошибка: Подробности ниже.*\n";
+    echo "***************************\n\n";
+
+    $logPath = "log/web_socket_server_error.log";
     $errorMessage = "Ошибка: [$errno] $errstr в файле $errfile на строке $errline\n";
     $errorMessage .= "Полученные данные: $received_text\n";
     $errorMessage .= "Отправленные данные: $response_text\n";
     file_put_contents($logPath, $errorMessage, FILE_APPEND);
 
-    echo "$errorMessage\nСервер остановлен из-за ошибки. Лог сохранён по пути: $logPath\n";
-
-    die();
+    echo "$errorMessage\nЛог сохранён по пути: $logPath\n";
 }

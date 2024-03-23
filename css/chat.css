@@ -33,8 +33,7 @@
 
 .messageBlockWrap{
 position: relative;
-  padding: 5px;
-height: 90%;
+height: 95%;
 }
 
 .messageBlock {
@@ -371,10 +370,6 @@ height: 90%;
   padding: 0px 3px;
 }
 
-.emoji-btn:hover, .send-btn:hover, .addFile-btn:hover, .buttonRepleyWrap:hover, .buttonAppleMusic:hover, .buttonDonat:hover, .deleteReplyWrap:hover, .photoMessage:hover {
-  cursor: pointer;
-}
-
 .addFile-btn {
   display: flex;
   justify-content: center;
@@ -391,13 +386,6 @@ height: 90%;
 
 .send-btn .emoji-btn {
   margin-right: 5px;
-}
-
-.buttonAppleMusic {
-  width: 130px;
-  height: 50px;
-  transition: 1s;
-  opacity: 0;
 }
 
 .buttonDonat {

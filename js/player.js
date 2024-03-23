@@ -44,7 +44,6 @@ buttonAppleMusicElement.addEventListener('click', AppleMusic)
 
 function buttonPlayPause() {
     if (buttonPlayPauseLock === false) {
-        get()
         if (audioObj.paused === true) {
             play()
         } else {
@@ -173,7 +172,11 @@ function getTitle(data) {
     }
     if (AppleMusicLink === "off") {
         buttonAppleMusicElement.style.opacity = 0
+        setTimeout(() => {
+            buttonAppleMusicElement.style.display = "none"
+        }, 1000)
     } else {
+        buttonAppleMusicElement.style.display = "block"
         buttonAppleMusicElement.style.opacity = 1
     }
     if (data["status"] === "off") {
@@ -235,6 +238,7 @@ function volumeLevelAppeared() {
 
 // Управление поведением текста в ".metaData"
 function ticker(element) {
+
     let titleWidth = element.offsetWidth
     let containerWidth = document.querySelector(".metaData").offsetWidth
     let surplus = titleWidth - containerWidth
@@ -250,6 +254,7 @@ function ticker(element) {
     }
 }
 
+// Смена картинки и текста в ".metaData"
 function Switch(data, elementOne, elementTwo, type) {
     if (iteration <= 2) {
         switchTwo()
@@ -315,11 +320,11 @@ function updateDeviceList() {
             const selectorElement = document.querySelector('.selectAudio');
             selectorElement.appendChild(deviceSelector);
             if (getCookieData("audioDevice") !== "") {
-                let element = document.querySelector("#" + getCookieData("audioDevice"))
-                    element.classList.add("clicked")
+                let element = document.querySelector("#default")
+                element.classList.add("clicked")
                 element.style.backgroundColor = "rgb(123 147 211)"
             } else {
-                let element = document.querySelector("#default")
+                let element = document.querySelector("#" + getCookieData("audioDevice"))
                 element.classList.add("clicked")
                 element.style.backgroundColor = "rgb(123 147 211)"
             }
@@ -398,27 +403,3 @@ function getMedia() {
                     });            }
         })
 }
-
-function getCookieData(name) {
-    var nameEQ = name + "=";
-    var ca = document.cookie.split(';');
-    for(var i=0;i < ca.length;i++) {
-        var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1,c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-    }
-    return null;
-}
-function createCookie(name, value, days) {
-    var expires;
-    if (days) {
-        var date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        expires = "; expires=" + date.toGMTString();
-    }
-    else {
-        expires = "";
-    }
-    document.cookie = name + "=" + value + expires + "; path=/";
-}
-

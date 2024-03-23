@@ -1,37 +1,49 @@
 <?php
-session_start();
-$data = json_decode(file_get_contents("php://input"));
+function chat ($comand, $data){
 $dataChat = [];
-$message = [];
-$userId = $_SESSION['userID'];
-switch ($data->chat->comand){
+$userId = $data->userID;
+$userCode = $data->userCode;
+    $message = [];
+switch ($comand){
     case "send":
         if ($userId == ""){
-
             $dataChat["result"] = "regUser";
-            $dataChat["comand"] = $data->chat->comand;
+            $dataChat["comand"] = $comand;
         } else {
-            $messageText = $data->chat->messageText;
-            $ReplyMessageID = $data->chat->ReplyMessageID;
-            $photoSRC = $data->chat->photoSRC;
-        $messageId = id(11032022);
-        $mysql->query("INSERT INTO `chat` (`messageID`, `userID`, `date`, `time`, `textMessage`, `ReplyMessageID`, `photoSRC`) VALUES ('$messageId', '$userId', CURDATE(), CURTIME(), '$messageText', '$ReplyMessageID', '$photoSRC')");
-        if ($mysql->error_list[0]["errno"] == null){
-            $dataChat['result'] = 'sendOK';
-            $dataChat["comand"] = $data->chat->comand;
-        } else {
-            $dataChat['result'] = 'error';
-            $dataChat["comand"] = $data->chat->comand;
-            $errorLog["dataChat"] = $dataChat;
-            $errorLog["mysql"]  = $mysql;
-            file_put_contents("../log/Error chat request " . date('d.m.Y H-i-s') . ".log", json_encode($errorLog, JSON_UNESCAPED_UNICODE));
+            include "WSDB-Config.php";
+            $user = $mysql->query("SELECT `name` FROM `user` WHERE `userID` = '$userId' and `code` = '$userCode'");
+            $userResult = $user->fetch_assoc()["name"];
+            $mysql->close();
+            if ($userResult) {
+                $messageText = $data->messageText;
+                $ReplyMessageID = $data->ReplyMessageID;
+                $photoSRC = $data->photoSRC;
+                $messageId = id(11032022);
+                include "WSDB-Config.php";
+                $mysql->query("INSERT INTO `chat` (`messageID`, `userID`, `date`, `time`, `textMessage`, `ReplyMessageID`, `photoSRC`) VALUES ('$messageId', '$userId', CURDATE(), CURTIME(), '$messageText', '$ReplyMessageID', '$photoSRC')");
+                if ($mysql->error_list[0]["errno"] == null){
+                    $dataChat['result'] = 'sendOK';
+                    $dataChat["comand"] = $comand;
+                    $dataChat["messageID"] = $messageId;
+                    $dataChat["name"] = $userResult;
+                } else {
+                    $dataChat['result'] = 'error';
+                    $dataChat["comand"] = $comand;
+                    $errorLog["dataChat"] = $dataChat;
+                    $errorLog["mysql"]  = $mysql;
+                    file_put_contents("log/Error chat request " . date('d.m.Y H-i-s') . ".log", json_encode($errorLog, JSON_UNESCAPED_UNICODE));
 
-        }
-
+                }
+                $mysql->close();
+            } else {
+                $dataChat['result'] = 'regUser';
+                $dataChat["comand"] = $comand;
+            }
         }
         break;
 
     case "getChat":
+        include "WSDB-Config.php";
        $chat = $mysql->query("SELECT `messageID`, `chat`.`userID`, `name`, `date`, `time`, `textMessage`, `ReplyMessageID`, `photoSRC` FROM `chat` LEFT JOIN `user` ON `chat`.`userID` = `user`.`userID` ORDER BY `date`, `time`");
         if ($mysql->error_list[0]["errno"] == null){
             while ($row = $chat->fetch_assoc()) {
@@ -40,67 +52,46 @@ switch ($data->chat->comand){
             $dataChat["userID"] = $userId;
             $dataChat["message"] = $message;
             $dataChat['result'] = "getOk";
-            $dataChat["comand"] = $data->chat->comand;
+            $dataChat["comand"] = $comand;
         } else {
             $dataChat['result'] = 'error';
-            $dataChat["comand"] = $data->chat->comand;
+            $dataChat["comand"] = $comand;
             $errorLog["dataChat"] = $dataChat;
             $errorLog["mysql"]  = $mysql;
-            file_put_contents("../log/Error chat request " . date('d.m.Y H-i-s') . ".log", json_encode($errorLog, JSON_UNESCAPED_UNICODE));
-        };
-        break;
-    case "getNewMessage":
-        $date = $data->chat->lastMessage->date;
-        $time = $data->chat->lastMessage->time;
-        $ID = $data->chat->lastMessage->ID;
-        $messageID = $data->chat->messageID;
-        $newMessage = $mysql->query("SELECT `messageID`, `chat`.`userID`, `name`, `date`, `time`, `textMessage`, `ReplyMessageID`, `photoSRC` FROM `chat` LEFT JOIN `user` ON `chat`.`userID` = `user`.`userID` WHERE  (`date` >= '$date' and `time` >= '$time') ORDER BY `date`, `time`");
-        if ($mysql->error_list[0]["errno"] == null){
-            while ($row = $newMessage->fetch_assoc()) {
-                $messageSend = false;
-                foreach ($messageID as $value) {
-                    if ($value === $row["messageID"]) {
-                        $messageSend = true;
-                        break; // Прерываем цикл, если значение найдено
-                    }
-                }
-                if (!$messageSend){
-                    array_push($message, $row);
-                }
-            }
-            $dataChat["userID"] = $userId;
-            $dataChat["message"] = $message;
-            $dataChat['result'] = "getOk";
-            $dataChat["comand"] = $data->chat->comand;
-        } else {
-            $dataChat['result'] = 'error';
-            $dataChat["comand"] = $data->chat->comand;
-            $errorLog["dataChat"] = $dataChat;
-            $errorLog["mysql"]  = $mysql;
-            file_put_contents("../log/Error chat request " . date('d.m.Y H-i-s') . ".log", json_encode($errorLog, JSON_UNESCAPED_UNICODE));
-        };
+            file_put_contents("log/Error chat request " . date('d.m.Y H-i-s') . ".log", json_encode($errorLog, JSON_UNESCAPED_UNICODE));
+        }
+        $mysql->close();
         break;
 
+
     case "regUser":
-        $username = $data->chat->name;
+        $username = $data->name;
         $id = id(40817);
-        $mysql->query("INSERT INTO `user` (`userID`, `name`) VALUES ('$id', '$username')") . ".log";
+        $salt = id(substr($id, -5));
+        $code = id(substr($salt, -5));
+        include "WSDB-Config.php";
+        $mysql->query("INSERT INTO user (`userID`, `code`, `name`) VALUES ('$id', '$code', '$username')");
         if ($mysql->error_list[0]["errno"] == null){
             $_SESSION['userID'] = $id;
             $dataChat['result'] = "regOK";
-            $dataChat["comand"] = $data->chat->comand;
+            $dataChat["comand"] = $comand;
+            $dataChat["userID"] = $id;
+            $dataChat["code"] = $code;
         } else {
             $dataChat['result'] = 'error';
-            $dataChat["comand"] = $data->chat->comand;
+            $dataChat["comand"] = $comand;
             $errorLog["dataChat"] = $dataChat;
             $errorLog["mysql"]  = $mysql;
-            file_put_contents("../log/Error chat request " . date('d.m.Y H-i-s') . ".log", json_encode($errorLog, JSON_UNESCAPED_UNICODE));
-        };
+            file_put_contents("log/Error chat request " . date('d.m.Y H-i-s') . ".log", json_encode($errorLog, JSON_UNESCAPED_UNICODE));
+        }
+        $mysql->close();
         break;
     default:
         $dataChat['result'] = "unknown";
-        $dataChat["comand"] = $data->chat->comand;
+        $dataChat["comand"] = $comand;
         $errorLog["dataChat"] = $dataChat;
-        file_put_contents("../log/Error chat request " . date('d.m.Y H-i-s') . ".log", json_encode($errorLog, JSON_UNESCAPED_UNICODE));
+        file_put_contents("log/Error chat request " . date('d.m.Y H-i-s') . ".log", json_encode($errorLog, JSON_UNESCAPED_UNICODE));
         break;
+}
+    return $dataChat;
 }

@@ -82,3 +82,7 @@ body {
     width: 100vw;
     height: 100vh;
 }
+
+.emoji-btn:hover, .send-btn:hover, .addFile-btn:hover, .buttonRepleyWrap:hover, .buttonAppleMusic:hover, .buttonDonat:hover, .deleteReplyWrap:hover, .photoMessage:hover, .buttonYandexMusic:hover, .buttonYoutubeMusic:hover {
+    cursor: pointer;
+}

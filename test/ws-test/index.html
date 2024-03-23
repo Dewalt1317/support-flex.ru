@@ -53,7 +53,7 @@
     const chatInput = document.querySelector('.chat-input');
     const chatInputForm = document.querySelector('.chat-input-form');
 
-    const socket = new WebSocket('ws://192.168.1.162:9000');
+    const socket = new WebSocket('wss://support-flex.ru:9000');
 
     socket.addEventListener('open', () => {
       console.log('Соединение установлено');
@@ -89,25 +89,6 @@
 
       chatInput.value = '';
     });
-    // let socket = new WebSocket('ws://localhost:9000 ');
-    //
-    // socket.onopen = function() {
-    //   console.log('Подключено к серверу');
-    //   console.log(socket)
-    // };
-    //
-    // socket.onmessage = function(event) {
-    //   console.log('Получено сообщение: ' + event.data);
-    // };
-    //
-    // socket.onclose = function() {
-    //   console.log('Соединение с сервером закрыто');
-    // };
-    //
-    // socket.onerror = function(error) {
-    //   console.log(error);
-    //   console.log(socket)
-    // };
 
   </script>
 </body>

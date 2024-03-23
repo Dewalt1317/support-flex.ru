@@ -1,6 +1,8 @@
 let buttonDonat = document.querySelector(".buttonDonat")
-let getTimeInterval = setInterval(() => {}, 0)
+let WSTimeout = setTimeout(()=> {}, 0);
 let WS
+let WSSrc
+let reConnect = 0
 let buttonChatHidden = document.querySelector(".chatHidden")
 let buttonMediaSelect = document.querySelector(".mediaSelector")
 let chatBlock = document.querySelector(".chat-wrapper")
@@ -42,10 +44,13 @@ SendRequest("POST", "php/connect.php", "", (data) => {
     switch (data["result"]) {
         case "connectOK":
             streamLink = data["streamLink"]
-            WS = new WebSocket(data["WSLink"])
+            WSSrc = data["WSLink"]
+            WS = new WebSocket(WSSrc)
+            WSTimeout = setTimeout(function() {
+                WS.close();
+                reconectWS()
+            }, 5000);
             socketStart()
-            get ()
-            getTimeInterval = setInterval(get, 5000)
             break
 
         case "connectFail":
@@ -65,9 +70,13 @@ function Connect(text) {
             switch (data["result"]) {
                 case "connectOK":
                     streamLink = data["streamLink"]
-                    WS = new WebSocket(data["WSLink"])
+                    WSSrc = data["WSLink"]
+                    WS = new WebSocket(WSSrc)
+                    WSTimeout = setTimeout(function() {
+                        WS.close();
+                        reconectWS()
+                    }, 5000);
                     socketStart()
-                    getTimeInterval = setInterval(get, 5000)
                     break
 
                 case "connectFail":
@@ -88,33 +97,62 @@ function Connect(text) {
 
 }
 function socketStart (){
-    console.log("test")
     WS.addEventListener('open', () => {
-        console.log('Соединение с сервером установлено');
-    });
-
+        clearTimeout(WSTimeout);
+        WS.send(JSON.stringify({"type":"getChat"}))
+    })
     WS.addEventListener('message', (event) => {
         const data = JSON.parse(event.data);
-        console.log(data)
-        if (data.type === 'usermsg') {
-            chatMessages.innerHTML += `<p>${data.message}</p>`;
-        } else if (data.type === 'error') {
-            alert(data.message);
+        switch (data["type"]) {
+            case "title":
+                getTitle(data["data"])
+                break
+            case "chat":
+                getChat(data["data"])
+                break
+            case "presenter":
+                updatePresentersData(data["data"])
+                break
+            default:
+                console.log("Неизвестный тип сообщения")
+                break
         }
+    });
+    WS.addEventListener('close', () => {
+        reconectWS()
     });
 }
 
-
-function get () {
-    dataSend = {"chat": dataChatSend, "title": dataTitleSend}
-
-
-
-    // SendRequest("POST", getLink, dataSend, (data) => {
-    //     data = JSON.parse(data)
-    //     getTitle(data["title"])
-    //     getChat(data["chat"])
-    // })
+function reconectWS () {
+    let playContinue = false
+    if (audioObj.paused === false) {
+        pause()
+        playContinue = true
+    }
+    createPopUp("connect_fail", "Подключение к радио", "Потеряно соеденение с сервером, попытка повторного подключения", null, null, null, null, document.body)
+    if (reConnect < 5){
+        reConnect++
+            WS = new WebSocket(WSSrc)
+            WSTimeout = setTimeout(function() {
+                WS.close();
+                reconectWS()
+            }, 5000);
+           WS.addEventListener('open', () => {
+               clearTimeout(WSTimeout)
+               socketStart()
+               document.querySelector(".pop-up-wrapper").remove();
+               if (playContinue === true) {
+                   play()
+               }
+               if (messageBlockElement.textContent === "") {
+                   WS.send(JSON.stringify({"type":"getChat"}))
+               }
+               reConnect = 0
+           })
+    } else {
+        document.querySelector(".pop-up-wrapper").remove();
+        createPopUp("connect_fail", "Ошибка", "Произошла какая-то ошибка, наши специалисты уже работают над её устранением", null, null, null, null, document.body)
+    }
 }
 
 // Добавление обработчиков событий для новых меню
@@ -196,4 +234,27 @@ function closeMenu (menuContainer, postClose) {
         openMenuList.style.display = 'none';
         if (postClose) postClose()
     }, 300);
+}
+
+function getCookieData(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
+function createCookie(name, value, days) {
+    var expires;
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toGMTString();
+    }
+    else {
+        expires = "";
+    }
+    document.cookie = name + "=" + value + expires + "; path=/";
 }
