@@ -45,18 +45,31 @@
 .listenOnButtonWrap {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     width: 100%;
     transition: 0.2s;
     margin-top: 10px;
 }
 
-.buttonAppleMusic {
+.buttonYoutubeMusicWrap,
+.buttonYandexMusicWrap,
+.buttonAppleMusicWrap {
+    text-align: center;
+    opacity: 1;
     width: 130px;
     height: 50px;
-    transition: 1s;
-    opacity: 0;
+    margin: 0px auto;
+    transition: width .5s;
 }
+
+.buttonAppleMusicWrap--hide,
+.buttonYoutubeMusicWrap--hide,
+.buttonYandexMusicWrap--hide {
+    overflow: hidden;
+    width: 0px;
+    margin: 0px;
+}
+
 
 .presenter-block{
     display: flex;

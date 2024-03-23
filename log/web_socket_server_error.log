@@ -2339,3 +2339,526 @@
 Ошибка: [2] file_get_contents(../config/isecast.conf): failed to open stream: No such file or directory в файле C:\OpenServer\domains\Support-flex\php\getTitle.php на строке 5
 Полученные данные: 
 Отправленные данные: 
+Ошибка: [2] mysqli::__construct(): (HY000/2002): ����������� �� �����������, �.�. �������� ��������� ������ ������ �� �����������.
+ в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 6
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 9
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 10
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 11
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 70
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] donateRequest(): Property access is not allowed yet в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 71
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::__construct(): (HY000/1045): Access denied for user 'SFS'@'localhost' (using password: YES) в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 6
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 9
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 10
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 11
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 70
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] donateRequest(): Property access is not allowed yet в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 71
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::__construct(): (HY000/1045): Access denied for user 'SFS'@'localhost' (using password: YES) в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 6
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 9
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 10
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 11
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 70
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] donateRequest(): Property access is not allowed yet в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 71
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::__construct(): (HY000/1045): Access denied for user 'SFS'@'localhost' (using password: YES) в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 6
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 9
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 10
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 11
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 70
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] donateRequest(): Property access is not allowed yet в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 71
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::__construct(): (HY000/1045): Access denied for user 'SFS'@'localhost' (using password: YES) в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 6
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 9
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 10
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 11
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 70
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] donateRequest(): Property access is not allowed yet в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 71
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::__construct(): (HY000/1045): Access denied for user 'SFS'@'localhost' (using password: YES) в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 6
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 9
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 10
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 11
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 70
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] donateRequest(): Property access is not allowed yet в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 71
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::__construct(): (HY000/1045): Access denied for user 'SFS'@'localhost' (using password: YES) в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 6
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 9
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 10
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 11
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 70
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] donateRequest(): Property access is not allowed yet в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 71
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::__construct(): (HY000/1045): Access denied for user 'SFS'@'localhost' (using password: YES) в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 6
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 9
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 10
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 11
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 70
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] donateRequest(): Property access is not allowed yet в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 71
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::__construct(): (HY000/1045): Access denied for user 'SFS'@'localhost' (using password: YES) в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 6
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 9
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 10
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 11
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 70
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] donateRequest(): Property access is not allowed yet в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 71
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::__construct(): (HY000/1045): Access denied for user 'SFS'@'localhost' (using password: YES) в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 6
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 9
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 10
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 11
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 70
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] donateRequest(): Property access is not allowed yet в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 71
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::__construct(): (HY000/1045): Access denied for user 'SFS'@'localhost' (using password: YES) в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 6
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 9
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 10
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 11
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 70
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] donateRequest(): Property access is not allowed yet в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 71
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::__construct(): (HY000/1045): Access denied for user 'SFS'@'localhost' (using password: YES) в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 6
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 9
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 10
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 11
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 70
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] donateRequest(): Property access is not allowed yet в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 71
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::__construct(): (HY000/1045): Access denied for user 'SFS'@'localhost' (using password: YES) в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 6
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 9
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 10
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 11
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 70
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] donateRequest(): Property access is not allowed yet в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 71
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::__construct(): (HY000/1045): Access denied for user 'SFS'@'localhost' (using password: YES) в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 6
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 9
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 10
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 11
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 70
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] donateRequest(): Property access is not allowed yet в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 71
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::__construct(): (HY000/1045): Access denied for user 'SFS'@'localhost' (using password: YES) в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 6
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 9
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 10
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 11
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 70
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] donateRequest(): Property access is not allowed yet в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 71
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::__construct(): (HY000/1045): Access denied for user 'SFS'@'localhost' (using password: YES) в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 6
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 9
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 10
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 11
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 70
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] donateRequest(): Property access is not allowed yet в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 71
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::__construct(): (HY000/1045): Access denied for user 'SFS'@'localhost' (using password: YES) в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 6
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 9
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 10
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 11
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 70
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] donateRequest(): Property access is not allowed yet в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 71
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::__construct(): (HY000/1045): Access denied for user 'SFS'@'localhost' (using password: YES) в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 6
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 9
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 10
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 11
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 70
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] donateRequest(): Property access is not allowed yet в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 71
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::__construct(): (HY000/1045): Access denied for user 'SFS'@'localhost' (using password: YES) в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 6
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 9
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 10
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 11
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 70
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] donateRequest(): Property access is not allowed yet в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 71
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::__construct(): (HY000/1045): Access denied for user 'SFS'@'localhost' (using password: YES) в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 6
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 9
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 10
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 11
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 70
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] donateRequest(): Property access is not allowed yet в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 71
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::__construct(): (HY000/1045): Access denied for user 'SFS'@'localhost' (using password: YES) в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 6
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 9
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 10
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 11
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 70
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] donateRequest(): Property access is not allowed yet в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 71
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::__construct(): (HY000/1045): Access denied for user 'SFS'@'localhost' (using password: YES) в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 6
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 9
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 10
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 11
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 70
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] donateRequest(): Property access is not allowed yet в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 71
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::__construct(): (HY000/1045): Access denied for user 'SFS'@'localhost' (using password: YES) в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 6
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 9
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 10
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 11
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 70
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] donateRequest(): Property access is not allowed yet в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 71
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::__construct(): (HY000/1045): Access denied for user 'SFS'@'localhost' (using password: YES) в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 6
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 9
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 10
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 11
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 70
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] donateRequest(): Property access is not allowed yet в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 71
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::__construct(): (HY000/1045): Access denied for user 'SFS'@'localhost' (using password: YES) в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 6
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 9
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 10
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 11
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 70
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] donateRequest(): Property access is not allowed yet в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 71
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::__construct(): (HY000/1045): Access denied for user 'SFS'@'localhost' (using password: YES) в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 6
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 9
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 10
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 11
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 70
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] donateRequest(): Property access is not allowed yet в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 71
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::__construct(): (HY000/1045): Access denied for user 'SFS'@'localhost' (using password: YES) в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 6
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 9
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 10
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 11
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 70
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] donateRequest(): Property access is not allowed yet в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 71
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::__construct(): (HY000/1045): Access denied for user 'SFS'@'localhost' (using password: YES) в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 6
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 9
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 10
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 11
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 70
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] donateRequest(): Property access is not allowed yet в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 71
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::__construct(): (HY000/1045): Access denied for user 'SFS'@'localhost' (using password: YES) в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 6
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 9
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 10
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\WSDB-Config.php на строке 11
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] mysqli::query(): Couldn't fetch mysqli в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 70
+Полученные данные: 
+Отправленные данные: 
+Ошибка: [2] donateRequest(): Property access is not allowed yet в файле C:\OSPanel\domains\support-flex.ru\php\donatRequest.php на строке 71
+Полученные данные: 
+Отправленные данные: 
