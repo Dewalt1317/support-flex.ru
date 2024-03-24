@@ -1,4 +1,4 @@
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .chat-wrapper {
     display: none !important;
   }
@@ -113,6 +113,18 @@ height: 95%;
 
 .youMessage {
   background-color: rgba(43, 82, 120, 0.7);
+}
+
+.presenterMessage {
+  background-color: rgb(151 183 229 / 70%);
+}
+
+.presenterMessage .username {
+  color: #ffffff;
+}
+
+.presenterMessage .messageTextMessage p {
+  color: rgb(0 0 0 / 80%);
 }
 
 .username {

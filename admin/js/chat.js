@@ -31,14 +31,6 @@ let chatDataMessage = {};
 // Последнее сообщение
 let lastMessage = {};
 
-let userID = getCookieData("userRegData")
-
-if (!userID) {
-    userID = {"userID": "0", "userCode": "0"}
-} else {
-    userID = JSON.parse(userID)
-}
-
 // Обработчик события клика по кнопке отправки сообщения
 buttonSend.addEventListener("click", send)
 
@@ -90,12 +82,6 @@ function getChat(data) {
                 dataChatSend["name"] = document.querySelector("#popup-input").value;
                 WS.send(JSON.stringify({"type":"chatReg", "data":dataChatSend}))
             }, "text", "Введите никнейм", "Отправить сообщение", document.querySelector(".chat-wrapper"));
-            break;
-
-        case "regOK":
-            userID = {"userID": data["userID"], "userCode": data["code"]}
-            createCookie("userRegData", JSON.stringify(userID), 30)
-            send();
             break;
 
         case "error":
@@ -190,13 +176,9 @@ function addMessage(data, array) {
     messageCreate.classList.add("messageWarp");
 
     let name = data["name"]
-    if (data["userID"] === userID["userID"]) {
+    if (data["userID"] === "40817Presenter") {
         name = ""
-        data["name"] = "Вы"
         data["class"] = "youMessage"
-    } else if (data["userID"] === "40817Presenter") {
-        name = "Ведущий"
-        data["class"] = "presenterMessage"
     } else {
         data["class"] = ""
     }
@@ -395,8 +377,8 @@ function send() {
         let message = inputMessage.textContent.replaceAll(/>/gi, "&gt;");
         message = message.replaceAll(/</gi, "&lt;");
         dataChatSend["messageText"] = message;
-        dataChatSend["userID"] = userID["userID"]
-        dataChatSend["userCode"] = userID["userCode"]
+        dataChatSend["userID"] = "40817Presenter"
+        dataChatSend["userCode"] = "40817Presenter"
         WS.send(JSON.stringify({"type":"sendMessage", "data":dataChatSend}))
     }
 }
@@ -448,7 +430,7 @@ function buttonScroll() {
 }
 
 function chatScroll(comand, messageUserID) {
-    if (messageUserID === userID["userID"] && comand !== "getChat") comand = "messageSend"
+    if (messageUserID === "40817Presenter" && comand !== "getChat") comand = "messageSend"
     let lastMessage = messageBlockElement.querySelector(".messageWarp:last-child")
     switch (comand) {
         case "getNewMessage":
@@ -468,17 +450,17 @@ function chatScroll(comand, messageUserID) {
                         top: lastMessage.offsetTop + lastMessage.clientHeight,
                         left: 0,
                         behavior: 'smooth'
-                })
+                    })
                 }, 10)
             }
             break
 
         case "messageSend":
-                messageBlockElement.scroll({
-                    top: lastMessage.offsetTop + lastMessage.clientHeight,
-                    left: 0,
-                    behavior: 'smooth'
-                })
+            messageBlockElement.scroll({
+                top: lastMessage.offsetTop + lastMessage.clientHeight,
+                left: 0,
+                behavior: 'smooth'
+            })
             break
 
         default:
@@ -532,37 +514,37 @@ fileInput.addEventListener("change", (event)=>{
                     if(type === "cancel") {
                         fileInput.value = ""
                     } else {
-                    let formData = new FormData()
-                    let file = input.files[0]
-                    formData.append(input.name, file);
-                    SendRequest("POST", "/php/uploadPhoto.php", formData, (data)=>{
-                        data = JSON.parse(data)
-                        switch (data["result"]) {
-                            case "error":
-                                createPopUp("message", "Ошибка", "Произошла какая-то ошибка, наши специалисты уже работают над её устранением", "", "", "", "Ок", document.querySelector(".chat-wrapper"));
-                                break
+                        let formData = new FormData()
+                        let file = input.files[0]
+                        formData.append(input.name, file);
+                        SendRequest("POST", "/php/uploadPhoto.php", formData, (data)=>{
+                            data = JSON.parse(data)
+                            switch (data["result"]) {
+                                case "error":
+                                    createPopUp("message", "Ошибка", "Произошла какая-то ошибка, наши специалисты уже работают над её устранением", "", "", "", "Ок", document.querySelector(".chat-wrapper"));
+                                    break
 
-                            case "bigSize":
-                                createPopUp("message", "Ошибка", "Фотография не отправлена. Снимок должен весить не больше 5 мегабайт", "", "", "", "Ок", document.querySelector(".chat-wrapper"));
-                                break
+                                case "bigSize":
+                                    createPopUp("message", "Ошибка", "Фотография не отправлена. Снимок должен весить не больше 5 мегабайт", "", "", "", "Ок", document.querySelector(".chat-wrapper"));
+                                    break
 
-                            case "fileTypeNotFound":
-                                createPopUp("message", "Ошибка", "Не допустимый формат файла. можно загрузить толко файлы форматов: .jpeg .png .gif .bmp .tiff .webp и .svg", "", "", "", "Ок", document.querySelector(".chat-wrapper"));
-                                break
+                                case "fileTypeNotFound":
+                                    createPopUp("message", "Ошибка", "Не допустимый формат файла. можно загрузить толко файлы форматов: .jpeg .png .gif .bmp .tiff .webp и .svg", "", "", "", "Ок", document.querySelector(".chat-wrapper"));
+                                    break
 
-                            case "saveOK":
-                                dataChatSend["photoSRC"] = "/src/userPhoto/" + data["src"]
-                                dataChatSend["messageText"] = response;
-                                dataChatSend["userID"] = userID["userID"]
-                                dataChatSend["userCode"] = userID["userCode"]
-                                WS.send(JSON.stringify({"type":"sendMessage", "data":dataChatSend}))
-                                fileInput.value = ""
-                                break
-                            default:
-                                createPopUp("message", "Ошибка", "Произошла какая-то ошибка, наши специалисты уже работают над её устранением", "", "", "", "Ок", document.querySelector(".chat-wrapper"));
-                                break
-                        }
-                    }, "file")
+                                case "saveOK":
+                                    dataChatSend["photoSRC"] = "/src/userPhoto/" + data["src"]
+                                    dataChatSend["messageText"] = response;
+                                    dataChatSend["userID"] = "40817Presenter"
+                                    dataChatSend["userCode"] = "40817Presenter"
+                                    WS.send(JSON.stringify({"type":"sendMessage", "data":dataChatSend}))
+                                    fileInput.value = ""
+                                    break
+                                default:
+                                    createPopUp("message", "Ошибка", "Произошла какая-то ошибка, наши специалисты уже работают над её устранением", "", "", "", "Ок", document.querySelector(".chat-wrapper"));
+                                    break
+                            }
+                        }, "file")
                     }
                 }, null, null, "Отправить", document.querySelector(".chat-wrapper"))
                 // Обработчик события клика по смайликам
@@ -912,18 +894,18 @@ function openPhoto (photoURL){
 
             }
         }
-            if (photoRect.width < window.innerWidth) {
-                transformOriginX = "center"
-                photo.style.transformOrigin = transformOriginY + " " + transformOriginX
-                photo.style.left = calculateAuto(photo)['left'] + "px"
-                photo.style.right = calculateAuto(photo)['right'] + "px"
-            }
-            if (photoRect.height < window.innerHeight) {
-                transformOriginY = "center"
-                photo.style.transformOrigin = transformOriginX + " " + transformOriginY
+        if (photoRect.width < window.innerWidth) {
+            transformOriginX = "center"
+            photo.style.transformOrigin = transformOriginY + " " + transformOriginX
+            photo.style.left = calculateAuto(photo)['left'] + "px"
+            photo.style.right = calculateAuto(photo)['right'] + "px"
+        }
+        if (photoRect.height < window.innerHeight) {
+            transformOriginY = "center"
+            photo.style.transformOrigin = transformOriginX + " " + transformOriginY
             photo.style.top = calculateAuto(photo)['top'] + "px"
             photo.style.bottom = calculateAuto(photo)['bottom'] + "px"
-            }
+        }
     });
 
     function calculateAuto(element) {
