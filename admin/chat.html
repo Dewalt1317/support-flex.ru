@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="js/check.js"></script>
+  <meta charset="UTF-8">
+  <title>Cтатистика</title>
+  <link rel="stylesheet" href="css/stat.css" />
+  <link rel="stylesheet" href="/css/pop-up.css" />
+  <link rel="stylesheet" href="css/chat.css" />
+  <link rel="stylesheet" href="css/chatPresenter.css" />
+</head>
+<body>
+<div class="buttonWrap">
+  <input class="back" type="button" value="Назад" />
+</div>
+<!-- ЧАТ -->
+<div class="chat-wrapper">
+  <div class="messageBlockWrap">
+    <div class="messageBlock"></div>
+    <div class="newMessage">
+      <img src="/src/ico/arrowDown.svg" alt="">
+    </div>
+  </div>
+  <div class="chat-footer">
+    <div class="chat-send-message">
+      <div class="chat-send-message-top"></div>
+      <div class="chat-send-message-bottom">
+        <div class="input__wrapper">
+          <input name="file" type="file" id="input__file" class="input input__file" accept="image/*">
+          <label for="input__file" class="input__file-button">
+                                <span class="input__file-icon-wrapper">
+                                    <div class="addFile-btn">
+                                    <img class="input__file-icon" src="/src/ico/addFile.svg" alt="Выбрать файл" width="25">
+                            </div>
+                                </span>
+          </label>
+        </div>
+        <div class="input-block" contenteditable="true" data-placeholder="Сообщение" data-input></div>
+        <div class="chat-btns">
+          <div class="emojiWrap menu-container">
+            <div class="emoji-btn menu-button">
+              <img src="/src/ico/emoji.svg" class="emoji-btn">
+            </div>
+            <div class="emojiMenuList menuList menuTop">
+            </div>
+          </div>
+          <div class="send-btn">
+            <img src="/src/ico/send.svg" class="send-btn">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ЧАТ -->
+</body>
+<script src="js/chatPresenter.js"></script>
+<script src="/js/popup.js"></script>
+<script src="js/chat.js"></script>
+<script src="/js/emoji.js"></script>
+</html>

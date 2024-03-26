@@ -1,0 +1,83 @@
+.chat-wrapper {
+    width: 100% !important;
+    height: 95vh !important;
+}
+
+/* Общие стили для страницы */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #3c3c3c;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+/* Стили для кнопок */
+input[type="button"],
+button {
+    cursor: pointer;
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+input[type="button"]:hover,
+button:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Стилизация кнопки "Назад" */
+.back {
+    background-color: #fda;
+}
+
+.menu-container {
+    position: relative;
+    display: inline-block;
+}
+
+.menuTop {
+    bottom: 100%;
+    margin-bottom: 5px;
+}
+
+.menuBottom {
+    top: 100%;
+    margin-top: 5px;
+}
+
+.menuList {
+    left: -250%;
+    background-color: rgba(53, 41, 58, 90%);
+    width: fit-content;
+    height: fit-content;
+    padding: 5px;
+    position: absolute;
+    transform: translateX(-50%);
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    z-index: 500;
+}
+
+.menuElement {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    min-width: max-content;
+    padding: 5px;
+}
+
+.menuElement img {
+    width: 25px;
+    height: 25px;
+    padding-right: 5px;
+}
+
+.menuElement:hover {
+    background-color: rgba(217, 217, 217, 50%);
+    cursor: pointer;
+}
