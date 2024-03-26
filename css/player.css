@@ -118,13 +118,15 @@
 }
 
 .coverBack {
-  width: 100%;
+  width: 300px;
+  height: 300px;
   box-shadow: 0px 0px 91px 34px rgba(0, 0, 0, 0.69);
   transition: 1s;
 }
 
 .cover {
-  width: 100%;
+  width: 300px;
+  height: 300px;
   box-shadow: 0px 0px 91px 34px rgba(0, 0, 0, 0.69);
   transition: 1s;
 }

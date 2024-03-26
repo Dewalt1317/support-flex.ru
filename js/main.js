@@ -100,6 +100,7 @@ function socketStart (){
     WS.addEventListener('open', () => {
         clearTimeout(WSTimeout);
         WS.send(JSON.stringify({"type":"getChat"}))
+        WS.send(JSON.stringify({"type":"getLatestTracks"}))
     })
     WS.addEventListener('message', (event) => {
         const data = JSON.parse(event.data);
@@ -112,6 +113,9 @@ function socketStart (){
                 break
             case "presenter":
                 updatePresentersData(data["data"])
+                break
+            case "latestTracks":
+                addTrackToBlock(data["data"], "start")
                 break
             default:
                 console.log("Неизвестный тип сообщения")
@@ -146,6 +150,9 @@ function reconectWS () {
                }
                if (messageBlockElement.textContent === "") {
                    WS.send(JSON.stringify({"type":"getChat"}))
+               }
+               if (lastTrackBlock.textContent === "") {
+                   WS.send(JSON.stringify({"type":"getLatestTracks"}))
                }
                reConnect = 0
            })

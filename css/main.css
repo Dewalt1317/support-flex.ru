@@ -23,6 +23,7 @@ body {
     overflow-y: hidden;
     transition: 1s;
 }
+
 .wrapContent {
     display: flex;
     justify-content: space-between;

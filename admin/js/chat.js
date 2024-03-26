@@ -178,6 +178,7 @@ function addMessage(data, array) {
     let name = data["name"]
     if (data["userID"] === "40817Presenter") {
         name = ""
+        data["name"] = "Вы"
         data["class"] = "youMessage"
     } else {
         data["class"] = ""

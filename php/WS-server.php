@@ -4,6 +4,7 @@ include "getTitle.php";
 include "chat.php";
 include "donatRequest.php";
 include "presenter.php";
+include "latestTracks.php";
 $host = '0.0.0.0'; // хост
 $port = '9000'; // порт
 $null = null;
@@ -102,6 +103,10 @@ while (true) {
                     $dataSend = ["type" => "chat", "data" => chat("getChat", null)];
                     send_to_specific_client(mask(json_encode($dataSend)), $changed_socket);
                     break;
+                    case "getLatestTracks":
+                        $dataSend = ["type" => "latestTracks", "data" => latestTracks()];
+                        send_to_specific_client(mask(json_encode($dataSend)), $changed_socket);
+                        break;
             }
             break 2; // выходим из этого цикла
         }

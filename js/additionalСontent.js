@@ -1,5 +1,6 @@
 let presentersData = {}; // Хранилище данных о ведущих
 let presenterBlock = document.querySelector('.presenter-block');
+let lastTrackBlock = document.querySelector('.lastTrack-block')
 
 function updatePresentersData(newPresenters) {
     if (!Array.isArray(newPresenters)) {
@@ -63,4 +64,36 @@ function removePresenterFromPage(name) {
         presenterBlock.removeChild(presenterOnAir);
     }
 }
+
+function addTrackToBlock(trackData, type) {
+    if (type === "start") {
+        trackData = trackData.reverse()
+        trackData.pop()
+    }
+    trackData.forEach(track => {
+        if (track.coverSRC === "off") {
+            track.coverSRC = "/src/image/Default%20cover.PNG"
+        }
+        // Создаем элементы
+        let trackBlock = document.createElement('div');
+        let timeElement = document.createElement('p');
+        let coverElement = document.createElement('img');
+        let titleElement = document.createElement('p');
+
+        // Устанавливаем содержимое и атрибуты
+        let timeWithoutSeconds = track.time.slice(0, -3); // Удаляем секунды из времени
+        timeElement.textContent = timeWithoutSeconds;
+        coverElement.src = track.coverSRC;
+        titleElement.textContent = track.title;
+
+        // Добавляем элементы в блок трека
+        trackBlock.appendChild(timeElement);
+        trackBlock.appendChild(coverElement);
+        trackBlock.appendChild(titleElement);
+
+        // Добавляем блок трека в начало lastTrack-block
+        lastTrackBlock.insertBefore(trackBlock, lastTrackBlock.firstChild);
+    });
+}
+
 

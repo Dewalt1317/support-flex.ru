@@ -38,7 +38,8 @@ function getTitle()
         file_put_contents($fileTemp, $data);
         include "WSDB-Config.php";
         $id = id(8443);
-        $mysql->query("INSERT INTO `treckHistory` (`treckHistoryID`, `title`, `coverSRC`, `link`, `listeners`, `data`, `time`) VALUES ('$id', '$title', '$cover', '$link', '$listeners', CURDATE(), CURTIME())");
+        $mysql->query("INSERT INTO `treckHistory` (`treckHistoryID`, `title`, `coverSRC`, `link`, `listeners`, `date`, `time`) VALUES ('$id', '$title', '$cover', '$link', '$listeners', CURDATE(), CURTIME())");
+        print_r($mysql);
         $mysql->close();
     }
     return $dataTitle;

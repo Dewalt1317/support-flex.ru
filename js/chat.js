@@ -196,6 +196,7 @@ function addMessage(data, array) {
         data["class"] = "youMessage"
     } else if (data["userID"] === "40817Presenter") {
         name = "Ведущий"
+        data["name"] = "Ведущий"
         data["class"] = "presenterMessage"
     } else {
         data["class"] = ""

@@ -19,8 +19,7 @@ let artistAlbumBackElement = document.querySelector(".artistBack")
 let listenersElement = document.querySelector(".listeners")
 let playTimeInterval = setInterval(() => {}, 0)
 let settingWrapElement = document.querySelector(".settingWrap")
-let settingMenuListElement =
-  settingWrapElement.querySelector(".settingMenuList")
+let settingMenuListElement = settingWrapElement.querySelector(".settingMenuList")
 let dataTitleSend = {}
 let coverSrc = "https://support-flex.ru/src/image/Default%20cover.PNG"
 let title = "Station - Support Flex"
@@ -162,6 +161,20 @@ function getTitle(data) {
   listenersElement.textContent = "Слушатели: " + listeners
   AppleMusicLink = data["link"]
   if (title !== data["title"]) {
+    if (state !== "off") {
+      let Data = new Date();
+      let Hour = Data.getHours();
+      let Minutes = Data.getMinutes();
+      if (Hour < 10) {
+        Hour = "0" + Hour;
+      }
+      if (Minutes < 10) {
+        Minutes = "0" + Minutes;
+      }
+      let time = Hour + ":" + Minutes + ":00";
+      let latestTracks = [{"title": title, "coverSRC": coverSrc, "time": time}];
+      addTrackToBlock(latestTracks);
+    }
     if (data["cover"] === "off") {
       coverSrc = "https://support-flex.ru/src/image/Default%20cover.PNG"
     } else {

@@ -83,7 +83,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 18px
+    font-size: larger;
 }
 
 .presenterPhotoWrap {
@@ -97,7 +97,7 @@
 }
 
 .presenterName {
-    margin-left: 5px;
+    margin-left: 10px;
 }
 
 .topDonation {
@@ -130,7 +130,49 @@
 .lastTrackWrap {
     margin-bottom: 10px;
     height: 100%;
+    overflow: hidden;
 }
 .lastTrack-block {
     height: 100%;
+    overflow: auto;
+}
+
+.lastTrack-block div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-top: 10px;
+    border-radius: 5px;
+}
+
+.lastTrack-block p {
+    margin: 0;
+    padding: 0 10px;
+    font-size: larger;
+}
+
+.lastTrack-block img {
+    width: 75px;
+    height: 75px;
+    border-radius: 5px;
+}
+
+.lastTrack-block::-webkit-scrollbar {
+width: 10px;
+height: 10px;
+}
+
+.lastTrack-block::-webkit-scrollbar-thumb {
+    background: #ffffff;
+    border-radius: 10px;
+}
+
+.lastTrack-block::-webkit-scrollbar-track {
+    background-color: rgba(44, 11, 58, 0.8);
+    border-radius: 10px;
+}
+
+.lastTrack-block::-webkit-scrollbar-button {
+    height: 0;
+    width: 0;
 }
