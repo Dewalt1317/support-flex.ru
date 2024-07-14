@@ -82,7 +82,8 @@ button:hover {
   font-size: 20px;
 }
 
-.titleUp, .titleDown {
+.titleUp,
+.titleDown {
   display: flex;
   width: 100%;
   justify-content: space-between;
@@ -120,7 +121,7 @@ button:hover {
 
 /* Стили кнопки "Сохранить" */
 .buttonSave {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
 }
 
@@ -144,7 +145,7 @@ input::placeholder {
   display: none !important;
 }
 
-.buttonWrap{
+.buttonWrap {
   display: flex;
   justify-content: space-between;
 }
@@ -241,7 +242,7 @@ audio {
   border-bottom-left-radius: 10px;
 }
 #player {
-width: 100%;
+  width: 100%;
 }
 #player::-webkit-media-controls-enclosure {
   background-color: #fafafa;
@@ -272,4 +273,57 @@ width: 100%;
 .selects {
   display: flex;
   justify-content: space-between;
+}
+
+/* Плитка обложек */
+.imagesContainer {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 517px; /*+17px scrollbar */
+  max-height: 480px;
+  margin: 0 auto;
+  overflow-y: scroll;
+}
+
+.imagesContainer > div {
+  cursor: pointer;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+  margin: 5px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 150px;
+  transition: background-size .3s;
+}
+
+.imagesContainer > div.selectedCover {
+  border: 3px solid #007bff;
+  background-size: 170px;
+}
+
+.uploadCoverBtn {
+  background-color: #392248;
+  cursor: pointer;
+  display: flex;
+  border: 3px dashed #bababa;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.uploadCoverBtn:hover {
+  background-color: #502d68;
+}
+
+.uploadCoverBtn > img {
+  width: 70%;
+}
+
+.uploadCoverBtn > p {
+  margin: 0px;
+  font-weight: 700;
 }
