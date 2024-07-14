@@ -84,4 +84,7 @@
 //        echo 'Произошла ошибка: ',  $e->getMessage(), "\n";
 //    }
 //}
-//?>
+        $dataTitle = ["title" => "test", "listeners" => "test", "cover" => "test", "link" => "test", "status" => "response"];
+        $data = json_encode($dataTitle, JSON_UNESCAPED_UNICODE);
+        file_put_contents("test.test", $data);
+?>

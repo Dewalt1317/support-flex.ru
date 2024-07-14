@@ -2,6 +2,7 @@ const $selectMood = document.querySelector(".selectMood")
 const $selectCategory = document.querySelector(".selectCategory")
 const $selectWrappers = document.querySelectorAll(".multiple_select_wrapper")
 let dataSend = {}
+let dataGet
 get("get")
 
 // test data
@@ -105,6 +106,7 @@ function generate() {
 
 // Функция добавления селекта
 function addSelect(contextEl, options, teg) {
+  console.log("rabotaet")
   let selectCount = contextEl.dataset.selectcount
   let selectName = contextEl.dataset.selectname
   let selectHeader = contextEl.dataset.selectheader
@@ -283,12 +285,12 @@ $addCatBlockBtn.addEventListener("click", () => {
     .insertAdjacentHTML("beforeend", selectsTemlate)
   addSelect(
     document.querySelector("#category-blocks div:last-child .selectCategory"),
-      options.category,
+      dataGet.category,
     "category"
   )
   addSelect(
     document.querySelector("#category-blocks div:last-child .selectMood"),
-      options.mood,
+      dataGet.mood,
     "mood"
   )
 })
@@ -307,6 +309,7 @@ function get(comand) {
       break
 
       case "getOK":
+        dataGet = data
         addSelect($selectMood, data.mood, "mood")
         addSelect($selectCategory, data.category, "category")
         break

@@ -4,12 +4,20 @@ let buttonLogin = document.querySelector(".buttonLogin")
 let dataSend = {}
 
 buttonLogin.addEventListener("click", get)
+document.addEventListener('keydown', function (event) {
+        switch (event.code) {
+            case "Enter":
+                get()
+                break
+        }
+})
 function get (){
     dataSend["login"] = loginInputElement.value
     dataSend["password"] = passwordInputElement.value
     SendRequest("POST", "php/authorization.php", dataSend, (data) => {
         data = JSON.parse(data)
         if (data["result"] === "loginOK") {
+            
             window.location.href = "/admin"
         } else if (data["result"] === "failed") {
             loginInputElement.style.borderColor = "#eb4034"

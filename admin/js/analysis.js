@@ -6,6 +6,7 @@ let getElement = document.querySelector(".get")
 let buttonGetWrapElement = document.querySelector(".buttonGetWrap")
 let wrapContentElement = document.querySelector(".wrapContent")
 let durationInputElement = document.querySelector(".durationInput")
+let selectCoverButton = document.querySelector(".selectCoverButton")
 let audioElement = document.querySelector("audio")
 const $selectArtist = document.querySelector(".selectArtist")
 const $selectCategory = document.querySelector(".selectCategory")
@@ -14,14 +15,54 @@ let buttonSaveElement = document.querySelector(".buttonSave")
 let buttonBack = document.querySelector(".back")
 let buttonSkippedQueue = document.querySelector(".skippedQueue")
 let buttonSkipElement = document.querySelector(".buttonSkip")
+let buttonDelElement = document.querySelector(".buttonDel")
+let fileInput = document.querySelector(".input__file")
+let coverContainer = document.querySelector(".cover")
 let treckID
 let SRC
 let Status
 
+nameTrackElement.addEventListener("input", ()=>{
+  searchTrack(nameTrackElement.value)
+})
 // Все поля для селектов
 const $selectWrappers = document.querySelectorAll(".multiple_select_wrapper")
 
 let dataSend = {}
+
+fileInput.addEventListener("change", (event)=>{
+  const selectImage = event.target.files;
+  if (selectImage.length > 0){
+      const [imageFile] = selectImage
+      const isImageType = imageFile.type.startsWith("image")
+
+      if (isImageType){
+          const fileReader = new FileReader()
+
+          fileReader.onload = ()=>{
+              const srcData = fileReader.result
+              coverContainer.src = srcData
+          }
+          fileReader.readAsDataURL(imageFile)
+      }
+
+  }
+})
+
+coverContainer.addEventListener("click", ()=>{
+  SendRequest("POST", "php/coverAPI.php", "", (data) => {
+    data = JSON.parse(data)
+ switch(data["result"]){
+  case "getOk":
+
+  break
+
+  case "error":
+
+  break
+ }
+  })
+})
 
 buttonBack.addEventListener("click", () => {
   window.location.href = "/admin"
@@ -44,6 +85,12 @@ buttonSkipElement.addEventListener("click", () => {
   })
 })
 
+buttonDelElement.addEventListener("click", () => {
+  if (confirm('Вы уверены что хотите удалить трек? Востоновить его не получиться')){
+    alert("test")
+  }
+})
+
 function get(comand) {
   dataSend["comand"] = comand
   SendRequest("POST", "php/analysis.php", dataSend, (data) => {
@@ -61,11 +108,18 @@ function get(comand) {
     } else {
       buttonGetWrapElement.classList.add("_hide")
       wrapContentElement.classList.remove("_hide")
+      document.querySelector(".operationButton").classList.remove("_hide")
       Status = "get"
       let tracName = data["name"].replace(".mp3", "")
       tracName = tracName.split(" - ")
-      nameTrackElement.value = tracName[1].trim()
-      nameArtistElement.value = tracName[0].trim()
+      try {
+        nameTrackElement.value = tracName[1].trim();
+        nameArtistElement.value = tracName[0].trim();
+        searchTrack(tracName[1].trim())
+      } catch (error) {
+        console.log("Нестандартное имя файла");
+        nameTrackElement.value = tracName;
+      }
       SRC = data["SRC"]
       fileNameElement.value = SRC.replace("/src/treck/", "")
       treckID = data["treckID"]
@@ -369,5 +423,208 @@ window.onbeforeunload = function () {
     dataSend = { comand: "out", id: treckID }
     SendRequest("POST", "php/analysis.php", dataSend)
     return "Данные не сохранены. Точно перейти?"
+  }
+}
+
+function responseHandler(response) {
+  const trackList = document.getElementById('trackList');
+  trackList.innerHTML = ''; // Очищаем список треков
+
+  response.forEach(track => {
+      const trackRow = document.createElement('div');
+      trackRow.classList.add('track-row');
+      trackRow.innerHTML = `
+          <div><span class="play-button" onclick="playTrack('${track.SRC}')">▶️</span></div>
+          <div>${track.name}</div>
+          <div>${track.artist}</div>
+          <div>${track.duration}</div>
+          <div>${track.treckID}</div>
+      `;
+      trackList.appendChild(trackRow);
+  });
+}
+
+function responseHandler(response) {
+  const trackList = document.getElementById('trackList');
+  trackList.innerHTML = ''; // Очищаем список треков
+  if (response.length !== 0) {
+    response.forEach(track => {
+        const trackRow = document.createElement('div');
+        trackRow.classList.add('track-row');
+        trackRow.innerHTML = `
+            <div><span class="play-button" onclick="playTrack('${track.SRC}')">▶️</span></div>
+            <div>${track.name}</div>
+            <div>${track.artist}</div>
+            <div>${track.duration}</div>
+            <div>${track.treckID}</div>
+        `;
+        trackList.appendChild(trackRow);
+    });
+  } else {
+    const trackRow = document.createElement('div');
+    trackRow.innerHTML = `<div class="duplicatesNoFound">Дублей не найдено</div>`
+    trackList.appendChild(trackRow);
+  }
+}
+
+function playTrack(src) {
+  const player = document.getElementById('player');
+  player.src = src;
+  player.play();
+}
+
+function searchTrack(trackName) {
+  const apiUrl = 'php/screch.php';
+  if (trackName !== ""){
+              // Отправка запроса на сервер
+              SendRequest('POST', apiUrl, trackName, (data)=>{
+                data = JSON.parse(data)
+                if(data["result"] !== "error") {
+                responseHandler(data["data"])
+              }
+});
+  }
+}
+
+let imageContainer = `
+
+`
+
+createPopUp("confirm", "Отправка фото", imageContainer, (type, response)=>{
+  let input = document.querySelector(".input__file")
+  if(type === "cancel") {
+      
+  } else {
+
+  }
+}, null, null, "Отправить", document.querySelector(".chat-wrapper"))
+
+function translitToRussian(text) {
+  const translitRules = {
+      'kh': 'х', 'jj': 'й', 'jo': 'ё', 'yo': 'ё', 'zh': 'ж', 'ch': 'ч', 'sh': 'ш', 
+      'shh': 'щ', 'yu': 'ю', 'ya': 'я', 'a': 'а', 'b': 'б', 'v': 'в', 
+      'g': 'г', 'd': 'д', 'e': 'е', 'z': 'з', 'i': 'и', 
+      'y': 'й', 'k': 'к', 'l': 'л', 'm': 'м', 'n': 'н', 'o': 'о', 
+      'p': 'п', 'r': 'р', 's': 'с', 't': 'т', 'u': 'у', 'f': 'ф', 
+      'h': 'х', 'c': 'ц', 'y`': 'ъ', '`': 'ь', 'e`': 'э',
+      // Добавляем заглавные буквы
+      'Kh': 'Х', 'Jj': 'Й', 'Jo': 'Ё', 'Yo': 'Ё', 'Zh': 'Ж', 'Ch': 'Ч', 'Sh': 'Ш', 
+      'Shh': 'Щ', 'Yu': 'Ю', 'Ya': 'Я', 'A': 'А', 'B': 'Б', 'V': 'В', 
+      'G': 'Г', 'D': 'Д', 'E': 'Е', 'Z': 'З', 'I': 'И', 
+      'Y': 'Й', 'K': 'К', 'L': 'Л', 'M': 'М', 'N': 'Н', 'O': 'О', 
+      'P': 'П', 'R': 'Р', 'S': 'С', 'T': 'Т', 'U': 'У', 'F': 'Ф', 
+      'H': 'Х', 'C': 'Ц', 'Y`': 'Ъ', 'E`': 'Э'
+  };
+
+  // Сортируем правила по длине ключа в обратном порядке
+  const sortedKeys = Object.keys(translitRules).sort((a, b) => b.length - a.length);
+
+  return text.split('').reduce((acc, char, index, array) => {
+      // Проверяем сочетания символов, начиная с самых длинных
+      for (const key of sortedKeys) {
+          if (array.slice(index, index + key.length).join('') === key) {
+              acc.push(translitRules[key]);
+              array.splice(index, key.length - 1); // Удаляем обработанные символы из массива
+              return acc;
+          }
+      }
+      // Если сочетание не найдено, добавляем одиночный символ
+      acc.push(translitRules[char] || char);
+      return acc;
+  }, []).join('');
+}
+
+
+
+
+function selectCover() {
+  createPopUp("image_send", "Выбор обложки", "", (type, response) => {}, null, null, "Выбрать", document.body);
+
+  let dataCover = {};
+  dataCover["Artist"] = nameArtistElement.value;
+  dataCover["Name"] = nameTrackElement.value;
+  SendRequestCover();
+
+  // Проверяем, существует ли элемент с классом messagePopUp
+  let messagePopUp = document.querySelector(".messagePopUp");
+
+  // Создаём контейнер для строки поиска
+  const searchContainer = document.createElement('div');
+  searchContainer.innerHTML = `
+      <div class="screchRow">
+          <input type="text" id="artistInput" class="nameArtist" placeholder="Артист" value="${dataCover["Artist"]}"/>
+          <input type="text" id="trackInput" class="nameTrack" placeholder="Название трека" value="${dataCover["Name"]}"/>
+          <button id="searchButton">Поиск</button>
+      </div>
+  `;
+  messagePopUp.appendChild(searchContainer);
+
+  // Создаём контейнер для изображений
+  const imagesContainer = document.createElement('div');
+  imagesContainer.className = 'imagesContainer';
+  messagePopUp.appendChild(imagesContainer);
+
+  // Добавляем сообщение "Загрузка..."
+  const loadingMessage = document.createElement('div');
+  loadingMessage.innerText = 'Загрузка...';
+  imagesContainer.appendChild(loadingMessage);
+
+  let searchButton = document.getElementById('searchButton');
+
+  searchButton.addEventListener('click', () => {
+      // Очищаем только div с изображениями и добавляем сообщение "Загрузка..."
+      imagesContainer.innerHTML = '';
+      imagesContainer.appendChild(loadingMessage);
+
+      // Обновляем данные для запроса
+      dataCover["Artist"] = document.getElementById('artistInput').value;
+      dataCover["Name"] = document.getElementById('trackInput').value;
+      SendRequestCover();
+  });
+
+  function SendRequestCover() {
+      SendRequest("POST", "php/coverAPI.php", dataCover, (data) => {
+          try {
+              data = JSON.parse(data);
+              console.log("Ответ JSON:", data);
+              switch (data["result"]) {
+                  case "getOk":
+                      console.log("Результат getOk");
+                      // Убираем сообщение "Загрузка..."
+                      imagesContainer.removeChild(loadingMessage);
+
+                      function createImageElement(src, caption) {
+                          return `
+                              <div>
+                                  <img src="${src}"/>
+                                  <div>${caption}</div>
+                              </div>
+                          `;
+                      }
+
+                      // Добавляем первое изображение
+                      imagesContainer.innerHTML += createImageElement('/src/image/Default cover.PNG', 'Default cover');
+
+                      // Добавляем остальные изображения из массива data
+                      for (const key in data) {
+                          if (key !== 'result' && data[key]) {
+                              let caption = key;
+                              if (key === 'localPath') {
+                                  caption = data[key].split('/').pop();
+                              }
+                              imagesContainer.innerHTML += createImageElement(data[key], caption);
+                          }
+                      }
+                      break;
+                  case "error":
+                      console.error("Ошибка: " + data["message"]);
+                      break;
+                  default:
+                      console.error("Неизвестный результат: " + data["result"]);
+              }
+          } catch (e) {
+              console.error("Ошибка при обработке ответа: " + e.message);
+          }
+      });
   }
 }

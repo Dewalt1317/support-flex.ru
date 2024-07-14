@@ -7,36 +7,102 @@
     <link rel="stylesheet" href="css/analysis.css" />
   </head>
   <body>
-  <input class="back" type="button" value="Назад" />
-  <div class="buttonGetWrap">
-    <input class="get" type="button" value="Получить трек" />
-  <input class="skippedQueue" type="button" value="Получить трек из пропущенных" />
-  </div>
+    <div class="buttonWrap">
+      <div class="startButton">
+        <input class="back" type="button" value="Назад" />
+        <div class="buttonGetWrap">
+          <input class="get" type="button" value="Получить трек" />
+          <input
+            class="skippedQueue"
+            type="button"
+            value="Получить трек из пропущенных"
+          />
+        </div>
+      </div>
+      <div class="operationButton _hide">
+        <button class="buttonSave">Сохранить</button>
+        <button class="buttonSkip">Пропустить трек</button>
+        <button class="buttonDel">Удалить трек</button>
+      </div>
+    </div>
     <div class="wrapContent _hide">
       <div class="title">
-        <h1 class="titleID">Трек ID:</h1><br>
-        <h1 class="fileName">
-          Файл:
-          <input placeholder="Название файла" class="fileNameInput" type="text" />
-          <h1 class="duration">
-            Длительностью:
+        <div class="metaWrap">
+          <h2 class="nameTrackH2">
+            Название трека
+            <input class="nameTrack" placeholder="Название трека" type="text" />
+          </h2>
+          <h2 class="nameArtistH2">
+            Исполнитель
+            <input class="nameArtist" placeholder="Исполнитель" type="text" />
+          </h2>
+          <h1 class="fileName">
+            Файл:
             <input
-              placeholder="Длительность"
-              class="durationInput"
-              type="time"
-              step="1"
-              value=""
+              placeholder="Название файла"
+              class="fileNameInput"
+              type="text"
             />
           </h1>
-        </h1>
+          <h1 class="duration">
+            Длительностью:
+            <input class="durationInput" type="time" step="1" value="" />
+          </h1>
+        </div>
+        <div class="CoverWrap">
+          <div class="input__wrapper">
+            <input
+              name="file"
+              type="file"
+              id="input__file"
+              class="input input__file"
+              accept="image/*"
+            />
+            <label for="input__file" class="input__file-button">
+              <span class="input__file-icon-wrapper">
+                <div class="addFile-btn">
+                  <div class="image-container">
+                    <img
+                      class="cover"
+                      src="/src/image/Default cover.PNG"
+                      alt="Описание изображения"
+                    />
+                    <button class="image-button">Загрузить фото</button>
+                  </div>
+                </div>
+              </span>
+            </label>
+          </div>
+          <p class="titleID">Трек ID:</p>
+        </div>
       </div>
-      <audio controls></audio>
+      <div class="linksWrap">
+        <div class="appleLink link">
+          <h2 class="AppleMusicLinkH2">Ссылка на Apple Music</h2>
+          <input
+            class="AppleMusicLink linksInput"
+            placeholder="Ссылка на Apple Music"
+            type="text"
+          />
+        </div>
+        <div class="yandexLink link">
+          <h2 class="YandexMusicLinkH2">Ссылка на Yandex Music</h2>
+          <input
+            class="YandexMusicicLink linksInput"
+            placeholder="Ссылка на Yandex Music"
+            type="text"
+          />
+        </div>
+        <div class="youtubeLink link">
+          <h2 class="YoutubeMusicLinkH2">Ссылка на Youtube Music</h2>
+          <input
+            class="YoutubeMusicLink linksInput"
+            placeholder="Ссылка на Youtube Music"
+            type="text"
+          />
+        </div>
+      </div>
       <div class="inputs">
-        <h2 class="nameTrackH2">Название трека</h2>
-        <input class="nameTrack" placeholder="Название трека" type="text" />
-        <h2 class="nameArtistH2">Исполнитель</h2>
-        <input class="nameArtist" placeholder="Исполнитель" type="text" />
-
         <!-- Выбор связанного исполнителя -->
         <div
           class="multiple_select_wrapper selectArtist"
@@ -53,15 +119,14 @@
         ></div>
         <!-- Выбор Настроения -->
         <div
-                class="multiple_select_wrapper selectMood"
-                data-selectcount="0"
-                data-selectname="Настроение"
-                data-selectheader="Выбор настроения"
+          class="multiple_select_wrapper selectMood"
+          data-selectcount="0"
+          data-selectname="Настроение"
+          data-selectheader="Выбор настроения"
         ></div>
-        <button class="buttonSave">Сохранить</button>
-        <button class="buttonSkip">Пропустить трек</button>
       </div>
+      <audio controls></audio>
     </div>
+    <script src="js/analysis.js"></script>
   </body>
-  <script src="js/analysis.js"></script>
 </html>

@@ -5,6 +5,13 @@ include "../../php/idGenerator.php";
 require_once('../../lib/php/getid3/getid3.php');
 require_once('../../lib/php/getid3/write.php'); // Добавлено для записи тегов
 
+session_start();
+
+function findFileByName($folder, $filename) {
+    $files = scandir($folder);
+    return in_array($filename, $files);
+}
+
 if ($mysql->connect_error) {
     die("Ошибка подключения к базе данных: " . $mysql->connect_error);
 }
@@ -22,6 +29,7 @@ if (isset($_FILES['files'])) {
             $filePath = $uploadDir . '/' . $fileName;
 
             if (move_uploaded_file($tmpFilePath, $filePath)) {
+                if (findFileByName($uploadDir, $fileName)){
                 $treckID = id(8000);
 
                 // Создаем новый экземпляр класса getID3
@@ -50,14 +58,18 @@ if (isset($_FILES['files'])) {
                 $seconds = $playTime % 60;
                 $duration = "0:" . $minutes . ":" . $seconds;
                 $filePath = "/src/treck" . '/' . $fileName;
+                $login = $_SESSION['user_name'];
 
-                $mysql->query("INSERT INTO treck (`treckID`, `name`, `SRC`, `duration`) VALUES ('$treckID', '$fileName', '$filePath', '$duration')");
+                $mysql->query("INSERT INTO treck (`treckID`, `name`, `SRC`, `duration`, `uploaded`) VALUES ('$treckID', '$fileName', '$filePath', '$duration', '$login')");
                 $mysql->close();
 
                 $data["uploadedFiles"] = "Файл " . $fileName . " Загружен";
             } else {
                 $data["error"] = "Ошибка при перемещении файла: " . $fileName;
             }
+        } else {
+            $data["error"] = "Файл " . $fileName . " Был загружен ранее";
+        }
         } else {
             $data["error"] = "Неподдерживаемый формат файла: " . $fileName;
         }

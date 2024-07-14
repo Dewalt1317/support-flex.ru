@@ -32,7 +32,6 @@ switch ($comand){
                     $errorLog["dataChat"] = $dataChat;
                     $errorLog["mysql"]  = $mysql;
                     file_put_contents("log/Error chat request " . date('d.m.Y H-i-s') . ".log", json_encode($errorLog, JSON_UNESCAPED_UNICODE));
-
                 }
                 $mysql->close();
             } else {

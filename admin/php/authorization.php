@@ -34,10 +34,10 @@ $passwd = md5($passwd . "matveeva");
 require "../../php/DB-Config.php";
 
 
-//Проверяем есть ли пользователь в таблице основных пользователей
+//Проверяем есть ли пользователь в таблице пользователей
 $result = $mysql->query("SELECT `login`, `pass` FROM `userAdmin` WHERE  `login` = '$login' and `pass` = '$passwd'");
 $user = $result->fetch_assoc();
-if ($user == null) { //Если нет в основных пользователях
+if ($user == null) { //Если нет в таблиице пользователях
     $user = ["result" => "failed"];
     systemResponse($user);
     $mysql->close();

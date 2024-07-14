@@ -34,7 +34,7 @@ let lastMessage = {};
 let userID = getCookieData("userRegData")
 
 if (!userID) {
-    userID = {"userID": "0", "userCode": "0"}
+    userID = {"userID": "", "userCode": ""}
 } else {
     userID = JSON.parse(userID)
 }

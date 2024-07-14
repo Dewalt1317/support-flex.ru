@@ -61,9 +61,19 @@ while (true) {
 
     // Проходим по всем подключенным сокетам
     foreach ($changed as $changed_socket) {
-
+    
         // Проверяем на входящие данные
-        while (($buf = fread($changed_socket, 1024)) !== '') {
+        while (true) {
+            $buf = fread($changed_socket, 1024);
+            if ($buf === false) { // проверяем на ошибку чтения
+                // удаляем клиента из массива $clients
+                $found_socket = array_search($changed_socket, $clients);
+                unset($clients[$found_socket]);
+                break;
+            } elseif ($buf === '') { // проверяем на пустую строку
+                break;
+            }
+    
             $received_text = unmask($buf); // демаскируем данные
             $dataClient = json_decode($received_text); // декодируем json
             switch ($dataClient->type) {
@@ -182,14 +192,17 @@ function mask($text)
     $b1 = 0x80 | (0x1 & 0x0f);
     $length = strlen($text);
 
-    if ($length <= 125)
+    if ($length <= 125) {
         $header = pack('CC', $b1, $length);
-    elseif ($length > 125 && $length < 65536)
+    } elseif ($length > 125 && $length < 65536) {
         $header = pack('CCn', $b1, 126, $length);
-    elseif ($length >= 65536)
-        $header = pack('CCNN', $b1, 127, $length);
+    } elseif ($length >= 65536) {
+        // Исправлено: разделение длины на два 32-битных числа
+        $header = pack('CCNN', $b1, 127, 0, $length);
+    }
     return $header . $text;
 }
+
 
 // Рукопожатие с новым клиентом.
 function perform_handshaking($receved_header, $client_conn, $host, $port)

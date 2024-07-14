@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="js/check.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поиск треков</title>
+    <link rel="stylesheet" href="css/screch.css">
+</head>
+<body>
+<div class="header">
+    <button class="back-button" onclick="goToAdminPage()">Назад</button>
+    <button class="get-selected-button" onclick="getSelectedTracks()">Получить выбранные треки</button>
+    <div class="search-form">
+        <input type="text" class="search-input" id="trackName" placeholder="Введите название трека">
+        <button class="search-button" onclick="searchTrack()">Поиск</button>
+    </div>
+    <div class="track-row header-row">
+      <div>Выбор</div>
+      <div>Воспроизведение</div>
+      <div>Название</div>
+      <div>Исполнитель</div>
+      <div>Длительность</div>
+      <div>Настроение</div>
+      <div>Категории</div>
+      <div>ID</div>
+    </div>
+  </div>
+    <div class="track-list" id="trackList"></div>
+    <div class="track-player">
+        <audio controls id="player"></audio>
+    </div>
+
+    <script src="js/screch.js"></script>
+</body>
+</html>

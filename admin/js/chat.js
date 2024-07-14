@@ -379,7 +379,7 @@ function send() {
         message = message.replaceAll(/</gi, "&lt;");
         dataChatSend["messageText"] = message;
         dataChatSend["userID"] = "40817Presenter"
-        dataChatSend["userCode"] = "40817Presenter"
+        dataChatSend["userCode"] = "ZXXdpboPdNvk8*!kfgwev54te"
         WS.send(JSON.stringify({"type":"sendMessage", "data":dataChatSend}))
     }
 }

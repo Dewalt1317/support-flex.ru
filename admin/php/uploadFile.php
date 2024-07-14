@@ -2,7 +2,7 @@
 include "../../php/response.php";
 $data = [];
 $uploadNum = 0;
-$uploadDir = '../file';
+$uploadDir = '../file/uploads';
 if (isset($_FILES['files'])) {
     $uploadedFiles = $_FILES['files'];
     foreach ($uploadedFiles['name'] as $key => $fileName) {
