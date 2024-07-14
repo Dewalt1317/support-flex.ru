@@ -40,6 +40,10 @@ buttonChatHidden.addEventListener("click", ()=> {
 })
 
 SendRequest("POST", "php/connect.php", "", (data) => {
+    if (data.includes(`{"result":"connectFail"}`)) {
+        Connect("Привет, ты точно сотрудник Озон? Введи пожалуйста кодовое слово)")
+        return
+    }
     data = JSON.parse(data)
     switch (data["result"]) {
         case "connectOK":
