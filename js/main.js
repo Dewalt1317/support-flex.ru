@@ -95,6 +95,15 @@ function Connect(text) {
         })
     }, "password", "Введите кодовое слово", "Подключиться", document.body)
 
+    // Реакция поп-апа на Enter
+    document.querySelector(".pop-up").addEventListener("keyup", (event) => {
+        // Если нажат Enter кликнем по кнопке "Подключится"
+        if (event.keyCode === 13) {
+            document.querySelector(".pop-up #pop-up-ok").click()
+        }
+
+    })
+
 }
 function socketStart (){
     WS.addEventListener('open', () => {
