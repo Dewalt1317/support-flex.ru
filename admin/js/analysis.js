@@ -8,6 +8,9 @@ let buttonGetWrapElement = document.querySelector(".buttonGetWrap")
 let wrapContentElement = document.querySelector(".wrapContent")
 let durationInputElement = document.querySelector(".durationInput")
 let selectCoverButton = document.querySelector(".selectCoverButton")
+let AppleMusicLink = document.querySelector(".AppleMusicLink")
+let YandexMusicicLink = document.querySelector(".YandexMusicicLink")
+let YoutubeMusicLink  = document.querySelector(".YoutubeMusicLink")
 let audioElement = document.querySelector("audio")
 const $selectArtist = document.querySelector(".selectArtist")
 const $selectCategory = document.querySelector(".selectCategory")
@@ -19,6 +22,10 @@ let buttonSkipElement = document.querySelector(".buttonSkip")
 let buttonDelElement = document.querySelector(".buttonDel")
 let fileInput = document.querySelector(".input__file")
 let coverContainer = document.querySelector(".cover")
+let ExplicitContent = document.querySelector(".ExplicitContent")
+let year = document.querySelector(".year")
+let hookIn = document.querySelector(".hookIn")
+let hookOut = document.querySelector(".hookOut")
 let treckID
 let SRC
 let Status
@@ -43,14 +50,48 @@ fileInput.addEventListener("change", (event) => {
 
     if (isImageType) {
       const fileReader = new FileReader()
-
-      fileReader.onload = () => {
-        const srcData = fileReader.result
-        coverContainer.src = srcData
-      }
       fileReader.readAsDataURL(imageFile)
     }
   }
+  let formData = new FormData()
+                    let input = fileInput
+                    let file = input.files[0]
+                    formData.append(input.name, file);
+                    SendRequest("POST", "php/uploadPhoto.php", formData, (data)=>{
+                        data = JSON.parse(data)
+                        switch (data["result"]) {
+                            case "error":
+                                createPopUp("message", "Ошибка", "Произошла какая-то ошибка, наши специалисты уже работают над её устранением", "", "", "", "Ок", document.body);
+                                fileInput.value = ""
+                                break
+
+                            case "bigSize":
+                                createPopUp("message", "Ошибка", "Фотография не отправлена. Снимок должен весить не больше 5 мегабайт", "", "", "", "Ок", document.body);
+                                fileInput.value = ""
+                                break
+
+                            case "fileTypeNotFound":
+                                createPopUp("message", "Ошибка", "Не допустимый формат файла. можно загрузить толко файлы форматов: .jpeg .png .gif .bmp .tiff .webp и .svg", "", "", "", "Ок", document.body);
+                                fileInput.value = ""
+                                break
+
+                            case "saveOK":
+                              let uploadDiv = document.querySelector(".uploadCoverBtn")
+                              uploadDiv.textContent = ""
+                              uploadDiv.classList.remove("uploadCoverBtn")
+                              uploadDiv.classList.add("imagesContainer-item")
+                              uploadDiv.classList.add("selectedCover")
+                              uploadDiv.dataset["type"] = "localPath"
+                              uploadDiv.dataset["coverurl"] = data["src"]
+                              document.querySelector(".selectedCover").style.cssText = `background-image: url("${data["src"]}");`
+                              console.log(data["src"])
+                              fileInput.value = ""
+                            default:
+                                createPopUp("message", "Ошибка", "Произошла какая-то ошибка, наши специалисты уже работают над её устранением", "", "", "", "Ок", document.body);
+                                fileInput.value = ""
+                                break
+                        }
+                    }, "file")
 })
 
 coverContainer.addEventListener("click", () => {
@@ -335,6 +376,14 @@ function save() {
     data["moodNew"] = moodNew
     data["artistLink"] = artist
     data["artistLinkNew"] = artistNew
+    data["cover"] = coverContainer.src
+    data["youtubeLink"] = YoutubeMusicLink.value
+    data["yandexLink"] = YandexMusicicLink.value
+    data["appleLink"] = AppleMusicLink.value
+    data["ExplicitContent"] = ExplicitContent.checked
+    data["year"] = year.value
+    data["hookIn"] = hookIn.value
+    data["hookOut"] = hookOut.value
     dataSend = { comand: "send", treck: data }
     SendRequest("POST", "php/analysis.php", dataSend, (data) => {
       data = JSON.parse(data)
@@ -460,6 +509,16 @@ function searchTrack(trackName) {
 
 let imageContainer = ``
 
+document
+  .querySelector(".nameTrackInputWrap .btnTranslit")
+  .addEventListener("click", () => {
+    let text = document.querySelector("input.nameTrack").value
+
+    if (!text) return
+
+    document.querySelector("input.nameTrack").value = translitToRussian(text)
+  })
+
 function translitToRussian(text) {
   const translitRules = {
     kh: "х",
@@ -564,6 +623,7 @@ function selectCover() {
     "",
     (type, response) => {
       if (type !== "Ok") {
+        fileInput.value = ""
         return
       } else if (
         document.querySelector("div.selectedCover").dataset["type"] ===
@@ -652,7 +712,7 @@ function selectCover() {
             }
 
             imagesContainer.innerHTML += `<div class="uploadCoverBtn">
-                                            <img src="/src/image/uploadCoverBtnImg.png" alt="Загрузить">
+                                            <img class="uploadCoverImg" src="/src/image/uploadCoverBtnImg.png" alt="Загрузить">
                                             <p>Загрузить</p>
                                           </div>`
 
@@ -683,9 +743,11 @@ function selectCover() {
             }
             break
           case "error":
+            loadingMessage.textContent = "Нет результатов"
             console.error("Ошибка: " + data["message"])
             break
           default:
+            loadingMessage.textContent = "Нет результатов"
             console.error("Неизвестный результат: " + data["result"])
         }
       } catch (e) {

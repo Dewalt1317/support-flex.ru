@@ -2,18 +2,10 @@
 include "../../php/response.php";
 $data = json_decode(file_get_contents("php://input"));
 
-function sanitize_filename($filename) {
-  return preg_replace('/[^ a-zа-я\\d.]/ui', '', $filename);
-}
-
-$result = resizeAndSaveImage($data);
-systemResponse(["url" => $result]);
-
-
 function resizeAndSaveImage($data)
 {
   $imageUrl = $data->url;
-  $fileName = sanitize_filename($data->name);
+  $fileName = $data->name;
   $savePath = '../../src/image/cover';
 
   // Получение информации о файле и его расширении
@@ -77,3 +69,6 @@ function resizeAndSaveImage($data)
   // Возвращение пути к файлу
   return $savePath . "/" . $finalFileName . $extension;
 }
+
+$result = resizeAndSaveImage($data);
+systemResponse(["url" => $result]);

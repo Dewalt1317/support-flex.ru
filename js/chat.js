@@ -541,14 +541,17 @@ fileInput.addEventListener("change", (event)=>{
                         switch (data["result"]) {
                             case "error":
                                 createPopUp("message", "Ошибка", "Произошла какая-то ошибка, наши специалисты уже работают над её устранением", "", "", "", "Ок", document.querySelector(".chat-wrapper"));
+                                fileInput.value = ""
                                 break
 
                             case "bigSize":
                                 createPopUp("message", "Ошибка", "Фотография не отправлена. Снимок должен весить не больше 5 мегабайт", "", "", "", "Ок", document.querySelector(".chat-wrapper"));
+                                fileInput.value = ""
                                 break
 
                             case "fileTypeNotFound":
                                 createPopUp("message", "Ошибка", "Не допустимый формат файла. можно загрузить толко файлы форматов: .jpeg .png .gif .bmp .tiff .webp и .svg", "", "", "", "Ок", document.querySelector(".chat-wrapper"));
+                                fileInput.value = ""
                                 break
 
                             case "saveOK":
@@ -561,6 +564,7 @@ fileInput.addEventListener("change", (event)=>{
                                 break
                             default:
                                 createPopUp("message", "Ошибка", "Произошла какая-то ошибка, наши специалисты уже работают над её устранением", "", "", "", "Ок", document.querySelector(".chat-wrapper"));
+                                fileInput.value = ""
                                 break
                         }
                     }, "file")

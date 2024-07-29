@@ -4,6 +4,10 @@ body {
   background-color: rgba(87, 95, 112, 1);
   margin: 0;
 }
+/* Ахтунг! не выключать - сломаются кнопки под полями */
+* { 
+  box-sizing: border-box;
+}
 
 /* Стили для кнопок */
 input[type="button"],
@@ -74,6 +78,7 @@ button:hover {
   justify-content: space-between;
   width: 49%;
   font-size: 20px;
+  margin-top: 30px;
 }
 
 .inputWrap input {
@@ -296,7 +301,7 @@ audio {
   background-position: center;
   background-repeat: no-repeat;
   background-size: 150px;
-  transition: background-size .3s;
+  transition: background-size 0.3s;
 }
 
 .imagesContainer > div.selectedCover {
@@ -326,4 +331,32 @@ audio {
 .uploadCoverBtn > p {
   margin: 0px;
   font-weight: 700;
+}
+
+.nameTrackInputWrap {
+  position: relative;
+  display: inline-block;
+  flex-grow: 1;
+  margin-left: 10px;
+  height: fit-content;
+}
+
+.nameTrackInputWrap > input {
+  width: 100%;
+}
+
+.nameTrackInputWrap .btnTranslit {
+  width: fit-content;
+  height: 28px;
+  background-color: #4c7faf;
+  color: #000;
+  border-radius: 0px 0px 3px 3px;
+  cursor: pointer;
+  font-size: .95em;
+  padding: 3px;
+  margin-left: auto;
+}
+
+.nameTrackInputWrap .btnTranslit:hover {
+  background-color: #649acc;
 }

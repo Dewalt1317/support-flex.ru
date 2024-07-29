@@ -7,6 +7,14 @@ require_once('../../lib/php/getid3/write.php'); // Добавлено для з�
 
 session_start();
 
+function sanitize_filename($filename) {
+  return preg_replace('/[^ a-zа-я\\d.]/ui', '', $filename);
+}
+
+$result = resizeAndSaveImage($data);
+systemResponse(["url" => $result]);
+
+
 function findFileByName($folder, $filename) {
     $files = scandir($folder);
     return in_array($filename, $files);

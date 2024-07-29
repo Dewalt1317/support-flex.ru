@@ -129,7 +129,7 @@ while (true) {
         }
     }
     $donateDate = donateRequest();
-    if ($donateDate["result"] == "message") {
+    if ($donateDate["result"] === "message") {
         send(mask(json_encode($donateDate["message"])), $clients); // отправляем данные
     }
     $fileTempWS = "temp/WS.json";

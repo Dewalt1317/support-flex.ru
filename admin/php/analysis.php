@@ -4,6 +4,7 @@ include "../../php/DB-Config.php";
 include "../../php/response.php";
 include "../../php/idGenerator.php";
 $data = json_decode(file_get_contents("php://input"));
+$sql;
 
 $id = session_id();
 $hor = date("H");
@@ -49,7 +50,7 @@ function SQLCollector($arr, $table, $add, $prefixID, $colum1, $colum2)
 
 switch ($data->comand) {
     case "get":
-        $mysql->query("UPDATE `treck` SET `selectIN` = CURTIME(), `sessionID` = '$id' WHERE `moodID` is NULL AND ((`selectIN` < '$time' or `selectIN` IS NULL) OR (`sessionID` = '$id' or `sessionID` IS NULL))limit 1");
+        $mysql->query("UPDATE `treck` SET `selectIN` = CURTIME(), `sessionID` = '$id' WHERE (`analysis` IS NULL OR `analysis` = 0) AND ((`selectIN` < '$time' or `selectIN` IS NULL) AND (`sessionID` = '$id' or `sessionID` IS NULL))limit 1");
         $mysql->multi_query("SELECT `treckID`, `name`, `SRC`, `duration` FROM `treck` WHERE `sessionID` = '$id' limit 1; SELECT `categoryID`, `category` FROM `category`; SELECT `artistLinkID`, `artistLink` FROM `artistLink`; SELECT `moodID`, `mood` FROM `mood`;");
         $data = [];
         do {
@@ -103,14 +104,35 @@ switch ($data->comand) {
             copy('../..'.$data->treck->SRC, '../..'.$data->treck->SRCNew);
             unlink('../..'.$data->treck->SRC);
         }
-        $name = $data->treck->name;
-        $artist = $data->treck->artist;
-        $SRC = $data->treck->SRCNew;
-        $duration = $data->treck->duration;
-        $treckID = $data->treck->treckID;
-        $sql = $sql . "UPDATE `treck` SET `selectIN` = NULL, `sessionID` = NULL, `name` = '$name', `artist` = '$artist', `SRC` = '$SRC', `duration` = '$duration', `moodID` = '$mood'  WHERE `treckID` = '$treckID';";
-        $test = $mysql->multi_query($sql);
-        $dataSend["result"] = "saveOK";
+        $name = mysqli_real_escape_string($mysql, addslashes($data->treck->name));
+        $artist = mysqli_real_escape_string($mysql, addslashes($data->treck->artist));
+        $SRC = mysqli_real_escape_string($mysql, addslashes($data->treck->SRCNew));
+        $duration = mysqli_real_escape_string($mysql, addslashes($data->treck->duration));
+        $treckID = mysqli_real_escape_string($mysql, addslashes($data->treck->treckID));
+        $appleLink = mysqli_real_escape_string($mysql, addslashes($data->treck->appleLink));
+        $yandexLink = mysqli_real_escape_string($mysql, addslashes($data->treck->yandexLink));
+        $youtubeLink = mysqli_real_escape_string($mysql, addslashes($data->treck->youtubeLink));
+        $cover = mysqli_real_escape_string($mysql, addslashes($data->treck->cover));
+        $year = mysqli_real_escape_string($mysql, addslashes($data->treck->year));
+        $hookIn = mysqli_real_escape_string($mysql, addslashes($data->treck->hookIn));
+        $hookOut = mysqli_real_escape_string($mysql, addslashes($data->treck->hookOut));
+        if($data->treck->ExplicitContent){
+            $ExplicitContent = 1;
+        } else {
+            $ExplicitContent = 0;
+        }
+        $login = mysqli_real_escape_string($mysql, addslashes($_SESSION['user_name']));
+        $sql = $sql . "UPDATE `treck` SET `selectIN` = NULL, `sessionID` = NULL, `name` = '$name', `artist` = '$artist', `SRC` = '$SRC', `duration` = '$duration', `moodID` = '$mood', `appleLink` = '$appleLink', `yandexLink` = '$yandexLink', `youtubeLink` = '$youtubeLink', `analysis` = '1', `analyzed` = '$login', `cover` = '$cover', `ExplicitContent` = '$ExplicitContent', `year` = '$year', `hookIn` = '$hookIn', `hookOut` = '$hookOut' WHERE `treckID` = '$treckID';";
+        $dataSend["sql"] = $sql;
+        $sql = $mysql->multi_query($sql);
+        if ($mysql->error_list[0]["errno"] == null){
+            $dataSend["result"] = "saveOK";
+            $dataSend["data"] = $data;
+        } else {
+            $dataSend['result'] = 'error';
+            $dataSend["data"] = $data;
+            $dataSend["sql"] = $sql;
+        }
         systemResponse($dataSend);
         break;
 

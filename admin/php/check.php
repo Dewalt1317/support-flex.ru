@@ -9,5 +9,5 @@ if ($_SESSION["user_name"] == "" || $_SESSION["session_time"] <= time()) {
 } else {
     $user = ["result" => "loginOK"];
     systemResponse($user);
-    $_SESSION["session_time"] = time() +900;
+    $_SESSION["session_time"] = time() + 1800;
 }
