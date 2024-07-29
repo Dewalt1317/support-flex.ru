@@ -95,6 +95,16 @@ buttonDelElement.addEventListener("click", () => {
   }
 })
 
+document
+  .querySelector(".nameTrackInputWrap .btnTranslit")
+  .addEventListener("click", () => {
+    let text = document.querySelector("input.nameTrack").value
+
+    if (!text) return
+
+    document.querySelector("input.nameTrack").value = translitToRussian(text)
+  })
+
 function get(comand) {
   dataSend["comand"] = comand
   SendRequest("POST", "php/analysis.php", dataSend, (data) => {
