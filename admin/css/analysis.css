@@ -26,7 +26,7 @@ button:hover {
 }
 
 .content {
-  padding: 20px;
+  padding: 0 20px;
 }
 
 /* Стилизация кнопки "Назад" */
@@ -56,7 +56,6 @@ button:hover {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  height: 400px;
 }
 
 .title {
@@ -65,7 +64,6 @@ button:hover {
   flex-direction: column;
   justify-content: space-between;
   align-items: start;
-  height: 400px;
 }
 
 .titleWrap {
@@ -359,4 +357,71 @@ audio {
 
 .nameTrackInputWrap .btnTranslit:hover {
   background-color: #649acc;
+}
+
+#selectMood {
+  padding-top: 45px;
+}
+.duplicatesContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.duplicatesShow-button {
+  font-size: 24px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.duplicatesHidden-content {
+  display: none;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.duplicatesShow-button:hover {
+  color: #007bff;
+}
+
+.opened.duplicatesHidden-content {
+  display: block;
+}
+.duplicatesShowWrap{
+  display: flex;
+  align-items: center;
+  transition: color 0.5s ease-in-out;
+}
+
+.blink{
+  color: red;
+}
+
+.ExplicitContentWrap {
+  display: flex;
+}
+
+.hook {
+  display: flex;
+  justify-content: center;
+}
+
+.hookInWrap, .hookOut, .yearWrap   {
+  display: flex;
+  flex-direction: column;
+  align-items: center;  
+  justify-content: center;
+}
+
+.analysisInfoWrap{
+  display: flex;
+  justify-content: center;
+}
+
+.analysisInfoWrap p {
+  height: fit-content;
+  padding: 5px;
+  margin: 0 5px 0 0;
+  color: #a0a0a0; 
 }

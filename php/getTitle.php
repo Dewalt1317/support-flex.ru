@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 function getTitle()
 {
     $fileTemp = "temp/TitleData.json";
@@ -10,13 +10,50 @@ function getTitle()
     $title = $data->icestats->source->title;
     $listeners = $data->icestats->source->listeners;
     $dataTitle = "";
-    if ($title == "") {
-        $dataTitle = ["title" => "Попробуйте зайти позже - Трансляция отключена", "listeners" => 0, "cover" => "off", "link" => "https://music.apple.com/ru/browse", "status" => "off"];
+
+    if (!$title) {
+        $dataTitle = ["name" => "Трансляция отключена", "artist" => "Попробуйте зайти позже", "listeners" => 0, "cover" => "off", "applelink" => "https://music.apple.com", "yandexlink" => "https://music.yandex.ru/", "youtubelink" => "https://music.youtube.com/", "status" => "off", "trackID" => "off"];
         file_put_contents($fileTemp, "");
-    } elseif ($title == $temp->title) {
-        $dataTitle = ["title" => $temp->title, "listeners" => $listeners, "cover" => $temp->cover, "link" => $temp->link, "status" => "no response"];
-    } else {
-        $search = str_replace(" ", "%20", str_replace(" - ", " ", str_replace("&", " ", $title)));
+        return $dataTitle;
+    }
+
+    $title = json_decode($title);
+
+    if ($title->trackID == $temp->trackID || $title->name == $temp->name) {
+        $dataTitle = ["name" => $temp->name, "artist" => $temp->artist, "listeners" => $listeners, "cover" => $temp->cover, "applelink" => $temp->applelink, "yandexlink" => $temp->yandexlink, "youtubelink" => $temp->youtubelink, "status" => "noResponse", "trackID" => $temp->trackID];
+        return $dataTitle;
+    } elseif ($title->trackID) {
+        $trackData = [];
+        include "WSDB-Config.php";
+        $track = $mysql->query("SELECT `name`, `artist`, `cover`, `appleLink`, `yandexLink`, `youtubeLink`, `analysis`, `ExplicitContent` FROM `treck` WHERE `treckID` = '$title->trackID'");
+        if ($mysql->error_list[0]["errno"] == null) {
+            while ($row = $track->fetch_assoc()) {
+                array_push($trackData, $row);
+            }
+            $mysql->close();
+            $trackData = $trackData[0];
+            if($trackData["analysis"] == true){
+                if(!$trackData["appleLink"]){
+                    $trackData["appleLink"] = "off";
+                }
+                if(!$trackData["yandexLink"]){
+                    $trackData["yandexLink"] = "off";
+                }
+                if(!$trackData["youtubeLink"]){
+                    $trackData["youtubeLink"] = "off";
+                }
+            $dataTitle = ["name" => $trackData["name"], "artist" => $trackData["artist"], "listeners" => $listeners, "cover" => $trackData["cover"], "applelink" => $trackData["appleLink"], "yandexlink" => $trackData["yandexLink"], "youtubelink" => $trackData["youtubeLink"], "status" => "responseFromDB", "trackID" => $title->trackID];
+        } else {
+            $trackData = "";
+        }
+        } else {
+            $trackData = "";
+        }
+    }
+
+    if (!$title->trackID || !$trackData) {
+        $search = str_replace(" ", "%20", str_replace(" - ", " ", str_replace("&", " ", $title->artist)));
+        $search = $search . "%20" . str_replace(" ", "%20", str_replace(" - ", " ", str_replace("&", " ", $title->name)));
         $link = "https://itunes.apple.com/search?term=" . $search;
         $data = file_get_contents($link);
         $data = json_decode($data);
@@ -30,17 +67,21 @@ function getTitle()
         if ($linkTrack == "") {
             $linkTrack = "off";
         }
-        if ($cover == "") {
-            $cover = "off";
-        }
-        $dataTitle = ["title" => $title, "listeners" => $listeners, "cover" => $cover, "link" => $linkTrack, "status" => "response"];
-        $data = json_encode($dataTitle, JSON_UNESCAPED_UNICODE);
-        file_put_contents($fileTemp, $data);
-        include "WSDB-Config.php";
-        $id = id(8443);
-        $mysql->query("INSERT INTO `treckHistory` (`treckHistoryID`, `title`, `coverSRC`, `link`, `listeners`, `date`, `time`) VALUES ('$id', '$title', '$cover', '$link', '$listeners', CURDATE(), CURTIME())");
-        print_r($mysql);
-        $mysql->close();
+
+        $dataTitle = ["name" => $title->name, "artist" => $title->artist, "listeners" => $listeners, "cover" => $cover, "applelink" => $linkTrack, "yandexlink" => "off", "youtubelink" => "off", "status" => "responseFromApple", "trackID" => id(404)];
     }
+    if(!$dataTitle["cover"]){
+        $dataTitle["cover"] = "off";
+    }
+    $cover = $dataTitle["cover"];
+    $data = json_encode($dataTitle, JSON_UNESCAPED_UNICODE);
+    file_put_contents($fileTemp, $data);
+    include "WSDB-Config.php";
+    $id = id(8443);
+    $title = $dataTitle["name"] . " - " .$dataTitle["artist"];
+    $mysql->query("INSERT INTO `treckHistory` (`treckHistoryID`, `title`, `coverSRC`, `link`, `listeners`, `date`, `time`) VALUES ('$id', '$title', '$cover', '$link', '$listeners', CURDATE(), CURTIME())");
+    print_r($mysql);
+    $mysql->close();
+
     return $dataTitle;
 }

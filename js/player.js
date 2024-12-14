@@ -1,9 +1,11 @@
 ﻿let bodyElement = document.querySelector("body")
 let audioObj = new Audio()
 let buttonAppleMusicElement = document.querySelector(".buttonAppleMusic")
-let buttonAppleMusicWrapElement = document.querySelector(
-  ".buttonAppleMusicWrap"
-)
+let buttonYandexMusicElement = document.querySelector(".buttonYandexMusic")
+let buttonYoutubeMusicElement = document.querySelector(".buttonYoutubeMusic")
+let buttonAppleMusicWrapElement = document.querySelector(".buttonAppleMusicWrap")
+let buttonYandexMusicWrapElement = document.querySelector(".buttonYandexMusicWrap")
+let buttonYoutubeMusicWrapElement = document.querySelector(".buttonYoutubeMusicWrap")
 let buttonPlayPauseElement = document.querySelector(".buttonPlayPause")
 let buttonVolumeElement = document.querySelector(".buttonVolume")
 let VolumeLevelControlElement = document.querySelector(".volumeLevelControl")
@@ -22,10 +24,11 @@ let settingWrapElement = document.querySelector(".settingWrap")
 let settingMenuListElement = settingWrapElement.querySelector(".settingMenuList")
 let dataTitleSend = {}
 let coverSrc = "https://support-flex.ru/src/image/Default%20cover.PNG"
-let title = "Station - Support Flex"
+let trackID = ""
 let AppleMusicLink = "off"
+let YandexMusicLink = "off"
+let YoutubeMusicLink = "off"
 let state = "off"
-let tracName = title.split(" - ")
 let buttonPlayPauseLock = false
 let volumeLevelHideLock = true
 let resizeOn = false
@@ -43,6 +46,8 @@ buttonPlayPauseElement.addEventListener("click", buttonPlayPause)
 buttonVolumeElement.addEventListener("click", volume)
 buttonVolumeElement.addEventListener("dblclick", volumeLevelComfort)
 buttonAppleMusicElement.addEventListener("click", AppleMusic)
+buttonYandexMusicElement.addEventListener("click", YandexMusic)
+buttonYoutubeMusicElement.addEventListener("click", YoutubeMusic)
 
 function buttonPlayPause() {
   if (buttonPlayPauseLock === false) {
@@ -159,9 +164,12 @@ function volume(event) {
 function getTitle(data) {
   listeners = data["listeners"]
   listenersElement.textContent = "Слушатели: " + listeners
-  AppleMusicLink = data["link"]
-  if (title !== data["title"]) {
+  AppleMusicLink = data["applelink"]
+  YandexMusicLink = data["yandexlink"]
+  YoutubeMusicLink = data["youtubelink"]
+  if (trackID !== data["trackID"]) {
     if (state !== "off") {
+      trackID = data["trackID"]
       let Data = new Date();
       let Hour = Data.getHours();
       let Minutes = Data.getMinutes();
@@ -171,26 +179,19 @@ function getTitle(data) {
       if (Minutes < 10) {
         Minutes = "0" + Minutes;
       }
+      if (data["cover"] === "off") {
+        coverSrc = "https://support-flex.ru/src/image/Default%20cover.PNG"
+      } else {
+        coverSrc = data["cover"]
+      }
       let time = Hour + ":" + Minutes + ":00";
-      let latestTracks = [{"title": title, "coverSRC": coverSrc, "time": time}];
+      let latestTracks = [{"title": data["artist"] + " - " + data["name"], "coverSRC": coverSrc, "time": time}];
       addTrackToBlock(latestTracks);
-    }
-    if (data["cover"] === "off") {
-      coverSrc = "https://support-flex.ru/src/image/Default%20cover.PNG"
-    } else {
-      coverSrc = data["cover"]
     }
     Switch(coverSrc, coverElement, coverBackElement, "src")
     bodyElement.style.backgroundImage = "url(" + coverSrc + ")"
-    title = data["title"]
-    tracName = title.split(" - ")
-    Switch(tracName[1].trim(), titleElement, titleBackElement, "text")
-    Switch(
-      tracName[0].trim(),
-      artistAlbumElement,
-      artistAlbumBackElement,
-      "text"
-    )
+    Switch(data["name"], titleElement, titleBackElement, "text")
+    Switch(data["artist"], artistAlbumElement, artistAlbumBackElement, "text")
   }
   
   // Если трек недоступен на "AppleMusic"
@@ -200,6 +201,22 @@ function getTitle(data) {
     }
   } else {
     buttonAppleMusicWrapElement.classList.remove("buttonAppleMusicWrap--hide")
+  }
+
+  if (YandexMusicLink === "off") {
+    if (!buttonYandexMusicWrapElement.classList.contains("buttonYandexMusicWrap--hide")) {
+      buttonYandexMusicWrapElement.classList.add("buttonYandexMusicWrap--hide")
+    }
+  } else {
+    buttonYandexMusicWrapElement.classList.remove("buttonYandexMusicWrap--hide")
+  }
+
+  if (YoutubeMusicLink === "off") {
+    if (!buttonYoutubeMusicWrapElement.classList.contains("buttonYoutubeMusicWrap--hide")) {
+      buttonYoutubeMusicWrapElement.classList.add("buttonYoutubeMusicWrap--hide")
+    }
+  } else {
+    buttonYoutubeMusicWrapElement.classList.remove("buttonYoutubeMusicWrap--hide")
   }
 
   if (data["status"] === "off") {
@@ -213,6 +230,18 @@ function getTitle(data) {
 function AppleMusic() {
   if (AppleMusicLink !== "off") {
     window.open(AppleMusicLink)
+  }
+}
+
+function YandexMusic() {
+  if (YandexMusicLink !== "off") {
+    window.open(YandexMusicLink)
+  }
+}
+
+function YoutubeMusic() {
+  if (YoutubeMusicLink !== "off") {
+    window.open(YoutubeMusicLink)
   }
 }
 

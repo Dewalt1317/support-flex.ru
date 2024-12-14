@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sound Reactive Strobe Light</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background-color: black;
+            /* transition: background-color 0.1s ease; */
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // Проверяем поддержку API
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const analyser = audioContext.createAnalyser();
+                const microphone = audioContext.createMediaStreamSource(stream);
+                const scriptProcessor = audioContext.createScriptProcessor(2048, 1, 1);
+
+                analyser.smoothingTimeConstant = 0.8;
+                analyser.fftSize = 1024;
+
+                microphone.connect(analyser);
+                analyser.connect(scriptProcessor);
+                scriptProcessor.connect(audioContext.destination);
+
+                const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+                scriptProcessor.onaudioprocess = function() {
+                    analyser.getByteFrequencyData(dataArray);
+                    const maxVolume = Math.max(...dataArray);
+
+                    if (maxVolume > 75) { // Порог для срабатывания стробоскопа
+                        document.body.style.backgroundColor = "white";
+                    } else {
+                        document.body.style.backgroundColor = "black";
+                    }
+                };
+            }).catch(function(err) {
+                console.error('Ошибка доступа к микрофону: ', err);
+            });
+        } else {
+            alert('Ваш браузер не поддерживает Web Audio API');
+        }
+    </script>
+</body>
+</html>

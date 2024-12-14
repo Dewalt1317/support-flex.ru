@@ -5,17 +5,19 @@ function SendRequest(
   responseHandler = (response) => {
     console.log(`Нет обработчика данных. Ответ сервера: ${response}`)
   },
-  transform
+  transform,
+  sync = true
 ) {
   const xhr = new XMLHttpRequest()
   if (transform !== "file") {
     data = JSON.stringify(data)
   }
+  
   if (method === "POST") {
-    xhr.open(method, url, true)
+    xhr.open(method, url, sync)
     xhr.send(data)
   } else if (method === "GET") {
-    xhr.open(method, url, true)
+    xhr.open(method, url, sync)
     xhr.send()
   }
 
@@ -30,4 +32,5 @@ function SendRequest(
       responseHandler(xhr.responseText)
     }
   }
+  return xhr
 }

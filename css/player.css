@@ -11,6 +11,24 @@
 /*    width: 100% !important;*/
 /*  }*/
 /*}*/
+@media (max-width: 1210px) {
+  div.wrapPlayerBlock {
+    width: 100%;
+  }
+}
+@media (max-height: 750px) {
+  div.player {
+    margin-top: 0;
+  }
+  div.wrapCover {
+    margin-top: 15%;
+  }
+}
+@media (max-height: 590px) {
+  div.wrapCover {
+    margin-top: 5%;
+  }
+}
 @media (max-width: 400px) {
   div.wrapCover {
     width: 250px;

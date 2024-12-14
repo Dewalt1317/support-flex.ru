@@ -23,53 +23,63 @@ $time = $hor . ":" . $min . ":" . $sec;
 
 function SQLCollector($arr, $table, $add, $prefixID, $colum1, $colum2)
 {
+    $sqlf = "";
     if ($arr == null) {
         return;
-    } elseif ($add == "new") {
-        $newID = [];
-        $new = [];
-        foreach ($arr as $value) {
-
-                $id = id($prefixID);
-                $sql = $sql . "INSERT INTO $table ($colum1, $colum2) values('$id', '$value');";
-                array_push($newID, $id);
-            }
-        $new["sql"] = $sql;
-        $new["id"] = $newID;
-        return ($new);
-
     } elseif ($add == "add") {
         foreach ($arr as $value) {
             if ($value != "no") {
-                $sql = $sql . "INSERT INTO $table ($colum1, $colum2) values('$value', '$prefixID');";
+                $sqlf = $sqlf . "INSERT INTO $table ($colum1, $colum2) values('$value', '$prefixID');";
             }
         }
-        return ($sql);
+        return ($sqlf);
     }
 }
 
 switch ($data->comand) {
     case "get":
-        $mysql->query("UPDATE `treck` SET `selectIN` = CURTIME(), `sessionID` = '$id' WHERE (`analysis` IS NULL OR `analysis` = 0) AND ((`selectIN` < '$time' or `selectIN` IS NULL) AND (`sessionID` = '$id' or `sessionID` IS NULL))limit 1");
-        $mysql->multi_query("SELECT `treckID`, `name`, `SRC`, `duration` FROM `treck` WHERE `sessionID` = '$id' limit 1; SELECT `categoryID`, `category` FROM `category`; SELECT `artistLinkID`, `artistLink` FROM `artistLink`; SELECT `moodID`, `mood` FROM `mood`;");
-        $data = [];
-        do {
-            if ($result = $mysql->store_result()) {
-                array_push($data, $result->fetch_all(MYSQLI_ASSOC));
-                $result->free();
+            $myid = $data->id;
+            if($data->id){
+                $whire = " WHERE `treckID` = '$data->id' ";
+                $whire2 = " WHERE `treckID` = '$data->id' ";
+            } else {
+                $whire = " WHERE (`analysis` IS NULL OR `analysis` = 0) AND ((`selectIN` < '$time' or `selectIN` IS NULL) AND (`sessionID` = '$id' or `sessionID` IS NULL)) ";
+                $whire2 = " WHERE `sessionID` = '$id' ";
             }
-        } while ($mysql->more_results() && $mysql->next_result());
-        $data = ['name' => $data[0][0]['name'], 'treckID' => $data[0][0]['treckID'], 'SRC' => $data[0][0]['SRC'], 'duration' => $data[0][0]['duration'], 'artists' => $data[2], 'category' => $data[1], 'mood' => $data[3]];
+            $sql = "UPDATE `treck` SET `selectIN` = CURTIME(), `sessionID` = '$id'".$whire." LIMIT 1";
+            $mysql->query($sql);    
+            $sql = "SELECT `treckID`, `name`, `artist`, `SRC`, `cover`, `duration`, `moodID`, `appleLink`, `yandexLink`, `youtubeLink`, `uploaded`, `analyzed`, `ExplicitContent`, `year`, `hookIn`, `hookOut` FROM `treck`".$whire2."limit 1";
+            $result = $mysql->query($sql);
+            $row = $result->fetch_assoc();
+            $updated_id = $row['treckID'];
+            $mood_id = $row['moodID'];
+            $mysql->multi_query("SELECT c.categoryID, c.category FROM category c JOIN treckCategory tc ON c.categoryID = tc.categoryID WHERE tc.treckID = '$updated_id'; SELECT a.artistLinkID, a.artistLink FROM artistLink a JOIN treckArtistLink ta ON a.artistLinkID = ta.artistLinkID WHERE ta.treckID = '$updated_id'; SELECT `moodID`, `mood` FROM `mood` WHERE `moodID` = '$mood_id';");
+            $data = [];
+            do {
+                if ($result = $mysql->store_result()) {
+                    array_push($data, $result->fetch_all(MYSQLI_ASSOC));
+                    $result->free();
+                }
+            } while ($mysql->more_results() && $mysql->next_result());
+            if(!$row['analyzed']){
+                $analyzed = $_SESSION['user_name'];
+            } else {
+                $analyzed = $row['analyzed'];
+            }
+            $data = ['name' => $row['name'], 'artistText' => $row['artist'], 'treckID' => $row['treckID'], 'SRC' => $row['SRC'], 'cover' => $row['cover'], 'duration' => $row['duration'], 'moodID' => $row['moodID'], 'appleLink' => $row['appleLink'], 'yandexLink' => $row['yandexLink'], 'youtubeLink' => $row['youtubeLink'], 'uploaded' => $row['uploaded'], 'analyzed' => $analyzed, 'ExplicitContent' => $row['ExplicitContent'], 'year' => $row['year'], 'hookIn' => $row['hookIn'], 'hookOut' => $row['hookOut'], 'artists' => $data[1], 'category' => $data[0], 'mood' => $data[2]];
 
-        if ($data['treckID'] == null){
-            $data = ['status' => 'absent'];
-        }
-        systemResponse($data);
+            if ($data['treckID'] == null){
+                $data = ['status' => 'absent', 'data' => $myid];
+            }
+            systemResponse($data);
         break;
 
     case "getSkipped":
         $mysql->query("UPDATE `treck` SET `selectIN` = CURTIME(), `sessionID` = '$id' WHERE `sessionID` = 'skiped' limit 1");
-        $mysql->multi_query("SELECT `treckID`, `name`, `SRC`, `duration` FROM `treck` WHERE `sessionID` = '$id' limit 1; SELECT `categoryID`, `category` FROM `category`; SELECT `artistLinkID`, `artistLink` FROM `artistLink`; SELECT `moodID`, `mood` FROM `mood`;");
+        $result = $mysql->query("SELECT `treckID`, `name`, `artist`, `SRC`, `cover`, `duration`, `moodID`, `appleLink`, `yandexLink`, `youtubeLink`, `uploaded`, `analyzed`, `ExplicitContent`, `year`, `hookIn`, `hookOut` FROM `treck` WHERE `sessionID` = '$id' limit 1");
+        $row = $result->fetch_assoc();
+        $updated_id = $row['treckID'];
+        $mysql->multi_query("SELECT c.categoryID, c.category FROM category c JOIN treckCategory tc ON c.categoryID = tc.categoryID WHERE tc.treckID = '$updated_id'; SELECT a.artistLinkID, a.artistLink FROM artistLink a JOIN treckArtistLink ta ON a.artistLinkID = ta.artistLinkID WHERE ta.treckID = '$updated_id'; SELECT `moodID`, `mood` FROM `mood` WHERE `moodID` = '$updated_id';");
         $data = [];
         do {
             if ($result = $mysql->store_result()) {
@@ -77,7 +87,12 @@ switch ($data->comand) {
                 $result->free();
             }
         } while ($mysql->more_results() && $mysql->next_result());
-        $data = ['name' => $data[0][0]['name'], 'treckID' => $data[0][0]['treckID'], 'SRC' => $data[0][0]['SRC'], 'duration' => $data[0][0]['duration'], 'artists' => $data[2], 'category' => $data[1], 'mood' => $data[3]];
+        if(!$row['analyzed']){
+            $analyzed = $_SESSION['user_name'];
+        } else {
+            $analyzed = $row['analyzed'];
+        }
+        $data = ['name' => $row['name'], 'artistText' => $row['artist'], 'treckID' => $row['treckID'], 'SRC' => $row['SRC'], 'cover' => $row['cover'], 'duration' => $row['duration'], 'moodID' => $row['moodID'], 'appleLink' => $row['appleLink'], 'yandexLink' => $row['yandexLink'], 'youtubeLink' => $row['youtubeLink'], 'uploaded' => $row['uploaded'], 'analyzed' => $analyzed, 'ExplicitContent' => $row['ExplicitContent'], 'year' => $row['year'], 'hookIn' => $row['hookIn'], 'hookOut' => $row['hookOut'], 'artists' => $data[1], 'category' => $data[0], 'mood' => $data[2]];
         if ($data['treckID'] == null){
             $data = ['status' => 'absent'];
         }
@@ -85,14 +100,6 @@ switch ($data->comand) {
         break;
 
     case "send":
-        $newMood = SQLCollector($data->treck->moodNew, "mood", "new", 3009, "moodID", "mood");
-        $newCategory = SQLCollector($data->treck->categoryNew, "category", "new", 0307, "categoryID", "category");
-        $newArtist = SQLCollector($data->treck->artistLinkNew, "artistLink", "new", 2408, "artistLinkID", "artistLink");
-        $sql = $newMood["sql"];
-        $sql = $sql . $newCategory["sql"];
-        $sql = $sql . $newArtist["sql"];
-        $sql = $sql . SQLCollector($newCategory["id"], "treckCategory", "add", $data->treck->treckID, "categoryID", "treckID");
-        $sql = $sql . SQLCollector($newArtist["id"], "treckArtistLink", "add", $data->treck->treckID, "artistLinkID", "treckID");
         $sql = $sql . SQLCollector($data->treck->category, "treckCategory", "add", $data->treck->treckID, "categoryID", "treckID");
         $sql = $sql . SQLCollector($data->treck->artistLink, "treckArtistLink", "add", $data->treck->treckID, "artistLinkID", "treckID");
         if ($newMood["id"][0] == "") {
@@ -148,3 +155,4 @@ switch ($data->comand) {
         $mysql->query("UPDATE `treck` SET `selectIN` = NULL, `sessionID` = NULL WHERE `treckID` = '$id'");
         break;
 }
+$mysql->close();

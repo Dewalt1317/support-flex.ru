@@ -1,33 +1,31 @@
 <!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <script src="js/check.js"></script>
-    <meta charset="UTF-8" />
-    <title>Анализ треков</title>
-    <link rel="stylesheet" href="css/analysis.css" />
-    <link rel="stylesheet" href="/css/pop-up.css" />
-  </head>
-  <body>
-    <input
-      name="file"
-      type="file"
-      id="input__file"
-      class="input input__file"
-      accept="image/*"
-    />
 
-    <div class="content">
-      <div class="buttonWrap">
-        <div class="startButton">
-          <input class="back" type="button" value="Назад" />
-          <div class="buttonGetWrap">
-            <input class="get" type="button" value="Получить трек" />
-            <input
-              class="skippedQueue"
-              type="button"
-              value="Получить трек из пропущенных"
-            />
-          </div>
+<head>
+  <script src="js/check.js"></script>
+  <meta charset="UTF-8" />
+  <title>Анализ треков</title>
+  <link rel="stylesheet" href="css/analysis.css" />
+  <link rel="stylesheet" href="/css/pop-up.css" />
+  <link rel="stylesheet" href="css/multiInputs.css" />
+</head>
+
+<body>
+  <input name="file" type="file" id="input__file" class="input input__file" accept="image/*" />
+
+  <div class="content">
+    <div class="analysisInfoWrap">
+      <p class="allTracks">Всего треков: </p>
+      <p class="analysisTracks">Проанализировано: </p>
+      <p class="nonAnalysisTracks">Не проанализировано: </p>
+      <p class="skippedQueueTracks">Пропущено: </p>
+    </div>
+    <div class="buttonWrap">
+      <div class="startButton">
+        <input class="back" type="button" value="Назад" />
+        <div class="buttonGetWrap">
+          <input class="get" type="button" value="Получить трек" />
+          <input class="skippedQueue" type="button" value="Получить трек из пропущенных" />
         </div>
       </div>
       <div class="operationButton _hide">
@@ -35,150 +33,123 @@
         <button class="buttonSkip">Пропустить трек</button>
         <button class="buttonDel">Удалить трек</button>
       </div>
-      <div class="wrapContent _hide">
-        <audio controls></audio>
-        <div class="head">
-          <div class="title">
-            <div class="titleWrap">
-              <div class="titleUp">
-                <div class="inputWrap trackNameWrap">
-                  <p>Название трека</p>
-                  <div class="nameTrackInputWrap">
-                    <input
-                      class="nameTrack"
-                      placeholder="Название трека"
-                      type="text"
-                    />
-                    <div class="btnTranslit">
-                      Транслит
-                    </div>
+    </div>
+    <div class="wrapContent _hide">
+      <audio controls></audio>
+      <div class="head">
+        <div class="title">
+          <div class="titleWrap">
+            <div class="titleUp">
+              <div class="inputWrap trackNameWrap">
+                <p>Название</p>
+                <div class="nameTrackInputWrap">
+                  <input class="nameTrack" placeholder="Название трека" type="text" />
+                  <div class="btnTranslit">
+                    Транслит
                   </div>
                 </div>
-                <div class="inputWrap durationWrap">
-                  <p>Длительность</p>
-                  <input class="durationInput" type="time" step="1" value="" />
-                </div>
               </div>
-              <div class="titleDown">
-                <div class="inputWrap artistNameWrap">
-                  <p>Исполнитель</p>
-                  <input
-                    class="nameArtist"
-                    placeholder="Исполнитель"
-                    type="text"
-                  />
-                </div>
-                <div class="inputWrap fileNamrWrap">
-                  <p>Файл:</p>
-                  <input
-                    placeholder="Название файла"
-                    class="fileNameInput"
-                    type="text"
-                  />
-                </div>
+              <div class="inputWrap durationWrap">
+                <p>Длительность</p>
+                <input class="durationInput" type="time" step="1" value="" />
               </div>
             </div>
-            <div>Explicit Content
+            <div class="titleDown">
+              <div class="inputWrap artistNameWrap">
+                <p>Исполнитель</p>
+                <input class="nameArtist" placeholder="Исполнитель" type="text" />
+              </div>
+              <div class="inputWrap fileNamrWrap">
+                <p>Файл</p>
+                <input placeholder="Название файла" class="fileNameInput" type="text" />
+              </div>
+            </div>
+          </div>
+          <div class="links">
+            <div class="appleLink link">
+              <p class="AppleMusicLinkH2">Ссылка на Apple Music</p>
+              <input class="AppleMusicLink linksInput" placeholder="Ссылка на Apple Music" type="text" />
+            </div>
+            <div class="yandexLink link">
+              <p class="YandexMusicLinkH2">Ссылка на Yandex Music</p>
+              <input class="YandexMusicicLink linksInput" placeholder="Ссылка на Yandex Music" type="text" />
+            </div>
+            <div class="youtubeLink link">
+              <p class="YoutubeMusicLinkH2">Ссылка на Youtube Music</p>
+              <input class="YoutubeMusicLink linksInput" placeholder="Ссылка на Youtube Music" type="text" />
+            </div>
+          </div>
+        </div>
+        <div class="CoverWrap">
+          <div class="addFile-btn">
+            <div class="image-container">
+              <img class="cover" src="/src/image/Default cover.PNG" alt="Описание изображения" />
+              <button class="image-button">Загрузить фото</button>
+            </div>
+          </div>
+          <p class="titleID">Трек ID:</p>
+          <p class="uploadLogin">Загрузил:</p>
+          <p class="analysisLogin">Анализировал:</p>
+          <div class="additionalOptions">
+            <div class="hook">
+              <div class="hookInWrap">
+                <p>Hook in</p>
+                <input class="hookIn" type="time" step="1" value="" />
+              </div>
+              <div class="hookOutWrap">
+                <p>Hook out</p>
+                <input class="hookOut" type="time" step="1" value="" />
+              </div>
+            </div>
+            <div class="yearWrap">
+              <p>Год выпуска</p>
+              <input class="year" placeholder="Год выпуска" type="text">
+            </div>
+            <div class="ExplicitContentWrap">
+              <p>Explicit Content</p>
               <input type="checkbox" class="ExplicitContent">
             </div>
-            <div>Год выпуска
-              <input                     
-              class="year"
-              placeholder="Год выпуска"
-              type="text">
-            </div>
-            <div>Hook in
-              <input class="hookIn" type="time" step="1" value="" />
-            </div>
-            <div>
-              Hook out
-              <input class="hookOut" type="time" step="1" value="" />
-            </div>
-            <div class="links">
-              <div class="appleLink link">
-                <p class="AppleMusicLinkH2">Ссылка на Apple Music</p>
-                <input
-                  class="AppleMusicLink linksInput"
-                  placeholder="Ссылка на Apple Music"
-                  type="text"
-                />
-              </div>
-              <div class="yandexLink link">
-                <p class="YandexMusicLinkH2">Ссылка на Yandex Music</p>
-                <input
-                  class="YandexMusicicLink linksInput"
-                  placeholder="Ссылка на Yandex Music"
-                  type="text"
-                />
-              </div>
-              <div class="youtubeLink link">
-                <p class="YoutubeMusicLinkH2">Ссылка на Youtube Music</p>
-                <input
-                  class="YoutubeMusicLink linksInput"
-                  placeholder="Ссылка на Youtube Music"
-                  type="text"
-                />
-              </div>
-            </div>
-          </div>
-          <div class="CoverWrap">
-            <div class="addFile-btn">
-              <div class="image-container">
-                <img
-                  class="cover"
-                  src="/src/image/Default cover.PNG"
-                  alt="Описание изображения"
-                />
-                <button class="image-button">Загрузить фото</button>
-              </div>
-            </div>
-            <p class="titleID">Трек ID:</p>
-            <p class="uploadLogin">Загрузил:</p>
-            <p class="analysisLogin">Анализировал:</p>
           </div>
         </div>
-        <div class="duplicates">
-          <div class="track-row header-row">
-            <div>Воспроизведение</div>
-            <div>Название</div>
-            <div>Исполнитель</div>
-            <div>Длительность</div>
-            <div>ID</div>
-          </div>
-          <div class="track-list" id="trackList">
-            <div class="duplicatesNoFound">Дублей не найдено</div>
-          </div>
-          <div class="track-player">
-            <audio controls id="player"></audio>
-          </div>
+      </div>
+      <div class="selects">
+        <!-- Выбор связанного исполнителя -->
+        <div id="selectArtist"></div>
+        <!-- Выбор категории -->
+        <div id="selectCategory"></div>
+        <!-- Выбор Настроения -->
+        <div id="selectMood">
         </div>
-        <div class="selects">
-          <!-- Выбор связанного исполнителя -->
-          <div
-            class="multiple_select_wrapper selectArtist"
-            data-selectcount="0"
-            data-selectname="Связанный исполнитель"
-            data-selectheader="Выбор связанных исполнителей"
-          ></div>
-          <!-- Выбор категории -->
-          <div
-            class="multiple_select_wrapper selectCategory"
-            data-selectcount="0"
-            data-selectname="Категория"
-            data-selectheader="Выбор категорий"
-          ></div>
-          <!-- Выбор Настроения -->
-          <div
-            class="multiple_select_wrapper selectMood"
-            data-selectcount="0"
-            data-selectname="Настроение"
-            data-selectheader="Выбор настроения"
-          ></div>
+      </div>
+      <div class="duplicatesContainer">
+        <div class="duplicatesShowWrap">
+          <div class="duplicatesShow-button">+</div>
+          <p>Дубли: 0</p>
+        </div>
+        <div class="duplicatesHidden-content">
+          <div class="duplicates">
+            <div class="track-row header-row">
+              <div>Воспроизведение</div>
+              <div>Название</div>
+              <div>Исполнитель</div>
+              <div>Длительность</div>
+              <div>ID</div>
+            </div>
+            <div class="track-list" id="trackList">
+              <div class="duplicatesNoFound">Дублей не найдено</div>
+            </div>
+            <div class="track-player">
+              <audio controls id="player"></audio>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <script src="/js/request.js" defer></script>
-    <script src="/js/popup.js" defer></script>
-    <script src="js/analysis.js" defer></script>
-  </body>
+  </div>
+</body>
+<script src="js/multiInputs.js" defer></script>
+<script src="/js/request.js" defer></script>
+<script src="/js/popup.js" defer></script>
+<script src="js/analysis.js" defer></script>
+
 </html>

@@ -10,11 +10,11 @@ let durationInputElement = document.querySelector(".durationInput")
 let selectCoverButton = document.querySelector(".selectCoverButton")
 let AppleMusicLink = document.querySelector(".AppleMusicLink")
 let YandexMusicicLink = document.querySelector(".YandexMusicicLink")
-let YoutubeMusicLink  = document.querySelector(".YoutubeMusicLink")
+let YoutubeMusicLink = document.querySelector(".YoutubeMusicLink")
 let audioElement = document.querySelector("audio")
-const $selectArtist = document.querySelector(".selectArtist")
-const $selectCategory = document.querySelector(".selectCategory")
-const $selectMood = document.querySelector(".selectMood")
+const duplicatesShowButton = document.querySelector(".duplicatesShow-button");
+const duplicatesHiddenContent = document.querySelector(".duplicatesHidden-content");
+const duplicatesText = document.querySelector(".duplicatesShowWrap")
 let buttonSaveElement = document.querySelector(".buttonSave")
 let buttonBack = document.querySelector(".back")
 let buttonSkippedQueue = document.querySelector(".skippedQueue")
@@ -26,9 +26,56 @@ let ExplicitContent = document.querySelector(".ExplicitContent")
 let year = document.querySelector(".year")
 let hookIn = document.querySelector(".hookIn")
 let hookOut = document.querySelector(".hookOut")
+let analysisLogin = document.querySelector(".analysisLogin")
+let uploadLogin = document.querySelector(".uploadLogin")
 let treckID
 let SRC
 let Status
+let artists
+let categorys
+let moods
+let blinkText
+
+SendRequest("POST", "php/countTracks.php", null, (data) => {
+  data = JSON.parse(data)
+  switch (data["result"]) {
+    case "getOk":
+    document.querySelector(".allTracks").textContent = "Всего треков: " + data["data"]["total"]
+    document.querySelector(".analysisTracks").textContent = "Проанализировано: " + data["data"]["analyzed"]
+    document.querySelector(".nonAnalysisTracks").textContent = "Не проанализировано: " + data["data"]["notAnalyzed"]
+    document.querySelector(".skippedQueueTracks"). textContent = "Пропущено: " + data["data"]["skip"]
+      break
+    case "error":
+      document.querySelector(".allTracks").textContent = ""
+      document.querySelector(".analysisTracks").textContent = ""
+      document.querySelector(".nonAnalysisTracks").textContent = ""
+      document.querySelector(".skippedQueueTracks"). textContent = ""
+      break
+  }
+})
+
+const url = new URL(window.location.href);
+const id = url.searchParams.get('id');
+url.searchParams.delete('id');
+window.history.replaceState({}, '', url.href);
+
+if (id) {
+  setTimeout(() => {
+    document.querySelector(".buttonSkip").classList.add("_hide")
+    get("get")
+  }, 100);
+}
+
+duplicatesShowButton.addEventListener("click", function () {
+  duplicatesHiddenContent.classList.toggle("opened");
+  if (blinkText) {
+    clearInterval(blinkText)
+    blinkText = false
+  }
+  if (duplicatesText.classList.contains('blink')) {
+    duplicatesText.classList.remove('blink')
+  }
+});
 
 $imageContainer.addEventListener("click", () => {
   selectCover()
@@ -37,8 +84,6 @@ $imageContainer.addEventListener("click", () => {
 nameTrackElement.addEventListener("input", () => {
   searchTrack(nameTrackElement.value)
 })
-// Все поля для селектов
-const $selectWrappers = document.querySelectorAll(".multiple_select_wrapper")
 
 let dataSend = {}
 
@@ -54,44 +99,44 @@ fileInput.addEventListener("change", (event) => {
     }
   }
   let formData = new FormData()
-                    let input = fileInput
-                    let file = input.files[0]
-                    formData.append(input.name, file);
-                    SendRequest("POST", "php/uploadPhoto.php", formData, (data)=>{
-                        data = JSON.parse(data)
-                        switch (data["result"]) {
-                            case "error":
-                                createPopUp("message", "Ошибка", "Произошла какая-то ошибка, наши специалисты уже работают над её устранением", "", "", "", "Ок", document.body);
-                                fileInput.value = ""
-                                break
+  let input = fileInput
+  let file = input.files[0]
+  formData.append(input.name, file);
+  SendRequest("POST", "php/uploadPhoto.php", formData, (data) => {
+    data = JSON.parse(data)
+    switch (data["result"]) {
+      case "error":
+        createPopUp("message", "Ошибка", "Произошла какая-то ошибка, наши специалисты уже работают над её устранением", "", "", "", "Ок", document.body);
+        fileInput.value = ""
+        break
 
-                            case "bigSize":
-                                createPopUp("message", "Ошибка", "Фотография не отправлена. Снимок должен весить не больше 5 мегабайт", "", "", "", "Ок", document.body);
-                                fileInput.value = ""
-                                break
+      case "bigSize":
+        createPopUp("message", "Ошибка", "Фотография не отправлена. Снимок должен весить не больше 5 мегабайт", "", "", "", "Ок", document.body);
+        fileInput.value = ""
+        break
 
-                            case "fileTypeNotFound":
-                                createPopUp("message", "Ошибка", "Не допустимый формат файла. можно загрузить толко файлы форматов: .jpeg .png .gif .bmp .tiff .webp и .svg", "", "", "", "Ок", document.body);
-                                fileInput.value = ""
-                                break
+      case "fileTypeNotFound":
+        createPopUp("message", "Ошибка", "Не допустимый формат файла. можно загрузить толко файлы форматов: .jpeg .png .gif .bmp .tiff .webp и .svg", "", "", "", "Ок", document.body);
+        fileInput.value = ""
+        break
 
-                            case "saveOK":
-                              let uploadDiv = document.querySelector(".uploadCoverBtn")
-                              uploadDiv.textContent = ""
-                              uploadDiv.classList.remove("uploadCoverBtn")
-                              uploadDiv.classList.add("imagesContainer-item")
-                              uploadDiv.classList.add("selectedCover")
-                              uploadDiv.dataset["type"] = "localPath"
-                              uploadDiv.dataset["coverurl"] = data["src"]
-                              document.querySelector(".selectedCover").style.cssText = `background-image: url("${data["src"]}");`
-                              console.log(data["src"])
-                              fileInput.value = ""
-                            default:
-                                createPopUp("message", "Ошибка", "Произошла какая-то ошибка, наши специалисты уже работают над её устранением", "", "", "", "Ок", document.body);
-                                fileInput.value = ""
-                                break
-                        }
-                    }, "file")
+      case "saveOK":
+        let uploadDiv = document.querySelector(".uploadCoverBtn")
+        uploadDiv.textContent = ""
+        uploadDiv.classList.remove("uploadCoverBtn")
+        uploadDiv.classList.add("imagesContainer-item")
+        uploadDiv.classList.add("selectedCover")
+        uploadDiv.dataset["type"] = "localPath"
+        uploadDiv.dataset["coverurl"] = data["src"]
+        document.querySelector(".selectedCover").style.cssText = `background-image: url("${data["src"]}");`
+        console.log(data["src"])
+        fileInput.value = ""
+      default:
+        createPopUp("message", "Ошибка", "Произошла какая-то ошибка, наши специалисты уже работают над её устранением", "", "", "", "Ок", document.body);
+        fileInput.value = ""
+        break
+    }
+  }, "file")
 })
 
 coverContainer.addEventListener("click", () => {
@@ -148,6 +193,7 @@ document
 
 function get(comand) {
   dataSend["comand"] = comand
+  dataSend["id"] = id
   SendRequest("POST", "php/analysis.php", dataSend, (data) => {
     data = JSON.parse(data)
     if (data["status"] === "absent") {
@@ -173,6 +219,7 @@ function get(comand) {
         searchTrack(tracName[1].trim())
       } catch (error) {
         nameTrackElement.value = tracName
+        nameArtistElement.value = data["artistText"]
       }
       SRC = data["SRC"]
       fileNameElement.value = SRC.replace("/src/treck/", "")
@@ -180,178 +227,87 @@ function get(comand) {
       titleIDElement.textContent = "Трек ID:" + data["treckID"]
       durationInputElement.value = data["duration"]
       audioElement.src = SRC
-      addSelect($selectArtist, data.artists, "artist")
-      addSelect($selectCategory, data.category, "category")
-      addSelect($selectMood, data.mood, "mood")
+      if (data["cover"]) {
+        coverContainer.src = data["cover"]
+      }
+      uploadLogin.textContent = "Загрузил: " + data["uploaded"]
+      analysisLogin.textContent = "Анализировал: " + data["analyzed"]
+      AppleMusicLink.value = data["appleLink"]
+      YandexMusicicLink.value = data["yandexLink"]
+      YoutubeMusicLink.value = data["youtubeLink"]
+      hookIn.value = data["hookIn"]
+      hookOut.value = data["hookOut"]
+      year.value = data["year"]
+      if (data["ExplicitContent"] === 1) {
+        ExplicitContent.checked = true
+      } else {
+        ExplicitContent.checked = false
+      }
+      setTimeout(() => {
+        addMultiInput("inputArtist", "selectArtist", () => addMultiInptOptions("artists"), "Артист", (value) => { return createMultiInptOptions(value, "artist") }, true)
+        addMultiInput("inputCategory", "selectCategory", () => addMultiInptOptions("categorys"), "Категория", (value) => { return createMultiInptOptions(value, "category") }, true)
+        addMultiInput("inputMood", "selectMood", () => addMultiInptOptions("moods"), "Настроение", (value) => { return createMultiInptOptions(value, "mood") }, false)
+      }, 10)
     }
   })
 }
 
-document.querySelectorAll(".select").forEach((el) => {
-  el.addEventListener("click", (e) => {
-    if (e.target.tagName === "BUTTON") {
-      el.querySelector("ul").classList.toggle("on")
-    }
-    if (e.target.tagName === "LI") {
-      el.querySelector("input").value = e.target.textContent
-      el.querySelector("ul").classList.remove("on")
-    }
-  })
-})
-
-// Функция добавления селекта
-function addSelect(contextEl, options, teg) {
-  let selectCount = contextEl.dataset.selectcount
-  let selectName = contextEl.dataset.selectname
-  let selectHeader = contextEl.dataset.selectheader
-  let optionsStr
-
-  if (!options) {
-    optionsStr = contextEl.querySelector("select").innerHTML
-  }
-  let optionValue = ""
-  let optionName = ""
-  let no
-  let button
-  switch (teg) {
-    case "artist":
-      optionValue = "artistLinkID"
-      optionName = "artistLink"
-      no = '<option value="no">Нет</option>'
-      button = '<button class="add-select-btn">Добавить</button>'
-      break
-
-    case "category":
-      optionValue = "categoryID"
-      optionName = "category"
-      button = '<button class="add-select-btn">Добавить</button>'
-      break
-
-    case "mood":
-      optionValue = "moodID"
-      optionName = "mood"
-      button = ""
-      break
-  }
-
-  //   Если начальный селект
-  if (selectCount == 0) {
-    optionsStr = []
-    options.forEach((option) => {
-      optionsStr.push(
-        `<option value="${option[optionValue]}">${option[optionName]}</option>`
-      )
-    })
-    optionsStr =
-      `<option value="non">-----------</option>` +
-      no +
-      optionsStr.join("") +
-      `<option value="another">Свой вариант</option>`
-    contextEl.insertAdjacentHTML(
-      "beforeend",
-      `
-    <h2>${selectHeader}</h2>
-          <div class="select">
-            <p>${selectName}</p>
-            <select>
-            ${optionsStr}
-            </select>
-            <input
-              class="another_choise_inpt _hide"
-              type="text"
-              name="another_choise"
-              placeholder="Свой вариант"
-            />
-          </div>
-
-          <div class="btns">
-            ${button}
-            <button class="remove-select-btn _hide">Удалить</button>
-          </div>
-    `
-    )
-    selectCount++
-    contextEl.dataset.selectcount = selectCount
-    return
-  }
-
-  let $removeSelectBtn = contextEl.querySelector(".remove-select-btn")
-
-  contextEl.querySelector(".btns").insertAdjacentHTML(
-    "beforebegin",
-    `
-            <div class="select">
-          <p>${selectName} ${+selectCount + 1}</p>
-          <select>
-          ${optionsStr}
-          </select>
-          <input
-            class="another_choise_inpt _hide"
-            type="text"
-            name="another_choise"
-            placeholder="${selectName}"
-          />
-        </div>
-            `
-  )
-
-  selectCount++
-  contextEl.dataset.selectcount = selectCount
-
-  if (selectCount > 1) {
-    $removeSelectBtn.classList.remove("_hide")
-  } else {
-    $removeSelectBtn.classList.add("_hide")
-  }
-}
-
-// Функция удаления селекта
-function removeSelect(contextEl) {
-  let $removeSelectBtn = contextEl.querySelector(".remove-select-btn")
-  let selectCount = contextEl.dataset.selectcount
-
-  let $allSelects = contextEl.querySelectorAll(".select")
-  $allSelects[$allSelects.length - 1].remove()
-
-  selectCount--
-  contextEl.dataset.selectcount = selectCount
-
-  if (selectCount > 1) {
-    $removeSelectBtn.classList.remove("_hide")
-  } else {
-    $removeSelectBtn.classList.add("_hide")
-  }
-}
-
-// События кликов в полях выбора и по кнопкам
-$selectWrappers.forEach((el) => {
-  el.addEventListener("click", (event) => {
-    let eventTarget = event.target
-
-    switch (eventTarget.localName) {
-      case "select":
-        let $select = eventTarget.closest(".select")
-        let $another_choise_inpt = $select.querySelector(".another_choise_inpt")
-
-        if (eventTarget.value === "another") {
-          $another_choise_inpt.classList.remove("_hide")
-        } else {
-          $another_choise_inpt.classList.add("_hide")
-        }
+function createMultiInptOptions(value, option) {
+  let data = {}
+  data["comand"] = "create"
+  data["value"] = value
+  data["option"] = option
+  let result = JSON.parse(SendRequest("POST", "php/options.php", data, (data) => { }, null, false).responseText)
+  if (result) {
+    switch (result.result) {
+      case "createOk":
+        return result.id
         break
-      case "button":
-        switch (eventTarget.className) {
-          case "add-select-btn":
-            addSelect(eventTarget.closest(".multiple_select_wrapper"))
+      case "error":
+        createPopUp("message", "Ошибка", "Произошла какая-то ошибка, наши специалисты уже работают над её устранением", "", "", "", "Ок", document.body);
+        break
+    }
+  } else {
+    createPopUp("message", "Ошибка", "Произошла какая-то ошибка, наши специалисты уже работают над её устранением", "", "", "", "Ок", document.body);
+  }
+}
+
+
+function addMultiInptOptions(option) {
+  let data = {}
+  data["comand"] = "get"
+  data["option"] = option
+  let result = JSON.parse(SendRequest("POST", "php/options.php", data, (data) => { }, null, false).responseText)
+  if (result) {
+    switch (result.result) {
+      case "getOk":
+        switch (option) {
+          case "artists":
+            return result.options.map((element) => {
+              return { key: element["artistLinkID"], name: element["artistLink"] }
+            })
             break
-          case "remove-select-btn":
-            removeSelect(eventTarget.closest(".multiple_select_wrapper"))
+          case "categorys":
+            return result.options.map((element) => {
+              return { key: element["categoryID"], name: element["category"] }
+            })
+            break
+          case "moods":
+            return result.options.map((element) => {
+              return { key: element["moodID"], name: element["mood"] }
+            })
             break
         }
         break
+      case "error":
+        createPopUp("message", "Ошибка", "Произошла какая-то ошибка, наши специалисты уже работают над её устранением", "", "", "", "Ок", document.body);
+        break
     }
-  })
-})
+  } else {
+    createPopUp("message", "Ошибка", "Произошла какая-то ошибка, наши специалисты уже работают над её устранением", "", "", "", "Ок", document.body);
+  }
+}
+
 
 let dataCollector = []
 let dataCollectorNewOption = []
@@ -363,12 +319,12 @@ let moodNew
 let artist
 let artistNew
 function save() {
-  let allSelectCategory = $selectCategory.querySelectorAll("select")
-  let allSelectMood = $selectMood.querySelectorAll("select")
-  let allSelectArtistLink = $selectArtist.querySelectorAll("select")
-  categoryCollection(allSelectCategory)
-  moodCollection(allSelectMood)
-  artistLinkCollection(allSelectArtistLink)
+  let allSelectCategory = document.querySelectorAll("#selectCategory")
+  let allSelectMood = document.querySelectorAll("#selectMood")
+  let allSelectArtistLink = document.querySelectorAll("#selectArtist")
+  category = idCollection(allSelectCategory)
+  mood = idCollection(allSelectMood)
+  artist = idCollection(allSelectArtistLink)
   if (CollectorStatus === "stop") {
     CollectorStatus = ""
     return
@@ -381,11 +337,8 @@ function save() {
     data["SRCNew"] = "/src/treck/" + fileNameElement.value
     data["treckID"] = treckID
     data["category"] = category
-    data["categoryNew"] = categoryNew
     data["mood"] = mood
-    data["moodNew"] = moodNew
     data["artistLink"] = artist
-    data["artistLinkNew"] = artistNew
     data["cover"] = coverContainer.src
     data["youtubeLink"] = YoutubeMusicLink.value
     data["yandexLink"] = YandexMusicicLink.value
@@ -394,6 +347,10 @@ function save() {
     data["year"] = year.value
     data["hookIn"] = hookIn.value
     data["hookOut"] = hookOut.value
+    if (!durationInputElement.value || !nameTrackElement.value || !fileNameElement.value || !category || !mood || !artist || !year.value || !hookIn.value || !hookOut.value || category === "stop" || mood === "stop" || artist === "stop") {
+      alert("Заполните все поля!")
+      return
+    }
     dataSend = { comand: "send", treck: data }
     SendRequest("POST", "php/analysis.php", dataSend, (data) => {
       data = JSON.parse(data)
@@ -402,50 +359,6 @@ function save() {
         location.reload()
       }
     })
-  }
-}
-function categoryCollection(element) {
-  element.forEach(collector)
-  category = dataCollector
-  dataCollector = []
-  categoryNew = dataCollectorNewOption
-  dataCollectorNewOption = []
-}
-
-function moodCollection(element) {
-  element.forEach(collector)
-  mood = dataCollector
-  dataCollector = []
-  moodNew = dataCollectorNewOption
-  dataCollectorNewOption = []
-}
-
-function artistLinkCollection(element) {
-  element.forEach(collector)
-  artist = dataCollector
-  dataCollector = []
-  artistNew = dataCollectorNewOption
-  dataCollectorNewOption = []
-}
-function collector(index) {
-  if (CollectorStatus === "stop") {
-    return
-  } else if (index.value === "non") {
-    alert("Заполните все поля")
-    CollectorStatus = "stop"
-  } else if (index.value === "another") {
-    if (
-      index.closest("div").querySelector(".another_choise_inpt").value === ""
-    ) {
-      alert("Заполните все поля")
-      CollectorStatus = "stop"
-    } else {
-      dataCollectorNewOption.push(
-        index.closest("div").querySelector(".another_choise_inpt").value
-      )
-    }
-  } else {
-    dataCollector.push(index.value)
   }
 }
 
@@ -458,24 +371,7 @@ window.onbeforeunload = function () {
 }
 
 function responseHandler(response) {
-  const trackList = document.getElementById("trackList")
-  trackList.innerHTML = "" // Очищаем список треков
-
-  response.forEach((track) => {
-    const trackRow = document.createElement("div")
-    trackRow.classList.add("track-row")
-    trackRow.innerHTML = `
-          <div><span class="play-button" onclick="playTrack('${track.SRC}')">▶️</span></div>
-          <div>${track.name}</div>
-          <div>${track.artist}</div>
-          <div>${track.duration}</div>
-          <div>${track.treckID}</div>
-      `
-    trackList.appendChild(trackRow)
-  })
-}
-
-function responseHandler(response) {
+  let num = 0
   const trackList = document.getElementById("trackList")
   trackList.innerHTML = "" // Очищаем список треков
   if (response.length !== 0) {
@@ -490,11 +386,27 @@ function responseHandler(response) {
             <div>${track.treckID}</div>
         `
       trackList.appendChild(trackRow)
+      num++
     })
+    if (!blinkText) {
+      blinkText = setInterval(() => {
+        duplicatesText.classList.toggle('blink')
+
+      }, 500);
+    }
+    duplicatesText.querySelector("p").textContent = "Дубли: " + num
   } else {
     const trackRow = document.createElement("div")
     trackRow.innerHTML = `<div class="duplicatesNoFound">Дублей не найдено</div>`
     trackList.appendChild(trackRow)
+    if (blinkText) {
+      clearInterval(blinkText)
+      blinkText = false
+    }
+    if (duplicatesText.classList.contains('blink')) {
+      duplicatesText.classList.remove('blink')
+    }
+    duplicatesText.querySelector("p").textContent = "Дубли: 0"
   }
 }
 
@@ -650,9 +562,8 @@ function selectCover() {
           url: imagesContainer.querySelector("div.selectedCover").dataset[
             "coverurl"
           ],
-          name: `${document.querySelector("#artistInput").value} - ${
-            document.querySelector("#trackInput").value
-          }`,
+          name: `${document.querySelector("#artistInput").value} - ${document.querySelector("#trackInput").value
+            }`,
         },
         (response) => {
           let url = JSON.parse(response).url
