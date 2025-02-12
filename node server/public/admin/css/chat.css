@@ -1,0 +1,541 @@
+.chat-wrapper {
+    position: relative;
+    color: aliceblue;
+    width: 100%;
+    height: 65vh;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+}
+
+.messageBlockWrap{
+    position: relative;
+    height: 90%;
+}
+
+.messageBlock {
+    position: relative;
+    overflow-y: scroll;
+    height: 100%;
+    padding: 5px;
+}
+
+.messageBlock::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.messageBlock p {
+    display: inline;
+}
+
+.buttonRepleyWrap {
+    width: 15px;
+    height: 15px;
+    margin-left: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.buttonRepley {
+    width: 12px;
+}
+
+.messageWarp {
+    display: flex;
+    max-width: 100%;
+}
+
+.messageDateWrap {
+    width: 100%;
+}
+
+.messageDate {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(189 251 231 / 70%);
+    color: #000000;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    border-radius: 10px;
+    width: 95%;
+    padding: 5px;
+}
+
+.message {
+    display: inline-flex;
+    flex-direction: column;
+    background-color: rgb(189 189 189);
+    margin-top: 10px;
+    border-radius: 10px;
+    max-width: 80%;
+    padding: 5px;
+}
+
+.messageDonat {
+    display: inline-flex;
+    flex-direction: column;
+    background-color: rgba(25, 25, 25, 1);
+    margin-top: 10px;
+    border-radius: 10px;
+    max-width: 100%;
+    padding: 5px;
+}
+
+.messageWarp:has(.youMessage)  {
+    justify-content: end;
+}
+
+.youMessage {
+    background-color: rgba(203, 222, 255, 1);
+}
+
+.username {
+    display: inline;
+    color: rgb(0 0 0);
+    margin-bottom: 5px;
+    font-family: "Rubik", sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.usernameDonat {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    margin-bottom: 5px;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.usernameDonat img {
+
+}
+
+.username p {
+    font-size: 15px;
+}
+
+.messageTextMessage {
+    display: inline-flex;
+    flex-direction: column;
+    margin-left: 8px;
+    margin-right: 8px;
+    margin-bottom: 5px;
+}
+.messageTextMessage p {
+    display: inline;
+    color: rgb(0 0 0);
+    font-size: 18px;
+    font-family: "Rubik", sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.messageTextMessageDonat {
+    display: inline-flex;
+    flex-direction: column;
+    margin-left: 8px;
+    margin-right: 8px;
+    margin-bottom: 5px;
+}
+.messageTextMessageDonat p {
+    display: inline;
+    color: rgba(255, 255, 255, 1);
+    font-size: 20px;
+    font-family: "Rubik", sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.messageTextBot {
+    margin-left: 8px;
+    margin-right: 8px;
+    margin-bottom: 5px;
+}
+
+.amount {
+    color: rgba(245, 125, 7, 1) !important;
+}
+
+.messageTextBot p {
+    display: inline;
+    color: rgba(245, 156, 7, 1);
+    font-size: 20px;
+    font-family: "Rubik", sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.photoMessageWrap {
+    display: inline-block;
+}
+
+.photoMessage {
+    max-width: 100%;
+    max-height: 500px;
+    border-radius: 10px;
+}
+
+.messageBottom {
+    display: inline-flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    font-size: 15px;
+    color: #000000;
+}
+.timeMessage {
+    width: 35px;
+}
+
+.photoReplyWrap {
+    max-height: 50px;
+    max-width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 5px;
+    margin-right: 5px;
+}
+
+.photoReply {
+    height: 100%;
+}
+.replyWrap {
+    display: flex;
+    justify-content: space-between;
+    background-color: rgb(101 101 101 / 34%);
+    padding-right: 5px;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 5px;
+}
+.replyTrait {
+    height: 50px;
+    width: 3px;
+    background-color: #fafafa;
+    margin-right: 5px;
+    border-radius: 5px;
+}
+
+.reply {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.replyMessageTextMessage {
+    color: rgb(0 0 0);
+    font-size: 15px;
+    font-family: "Rubik", sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.replyUsername {
+    display: inline;
+    color: rgb(0 0 0);
+    font-size: 15px;
+    font-family: "Rubik", sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+/* Подвал блока ЧАТ */
+.chat-footer {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    flex-shrink: 1;
+    padding: 5px;
+    margin-top: 10px;
+}
+
+/* Поле для ввода нового сообщения с кнопкой emoji и "Отправить" */
+.chat-send-message {
+    background-color: rgb(189 251 231 / 70%);
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.chat-send-message-bottom {
+    display: flex;
+}
+
+.replySendWrap{
+    padding: 5px;
+}
+
+.deleteReplyWrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    padding: 0 5px;
+}
+.replyContent {
+    display: flex;
+    width: 95%;
+}
+
+.deleteReply {
+    width: 15px;
+    height: 15px;
+}
+
+.chat-send-message * {
+    box-sizing: border-box;
+}
+
+/* Редактируемый div для ввода сообщения */
+.input-block {
+    min-height: 30px;
+    max-height: 150px;
+    text-wrap: wrap;
+    color: rgba(0, 0, 0, 1);
+    font-size: 18px;
+    overflow-y: scroll;
+    padding: 5px;
+    flex-grow: 1;
+}
+.input-block::-webkit-scrollbar {
+    width: 0;
+}
+
+.input-block:active,
+:hover,
+:focus {
+    outline: 0;
+    outline-offset: 0;
+}
+
+/* Создание placeholder*/
+.input-block[contenteditable]:empty:before {
+    content: attr(data-placeholder);
+    color: rgba(0, 0, 0, 1);
+    display: inline-block;
+}
+
+/* Кнопки в поле для нового сообщения */
+.chat-btns {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.emoji-btn, .send-btn, .addFile-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 34px;
+    width: 34px;
+    padding: 0px 3px;
+}
+
+.addFile-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 19px;
+    margin-left: 5px;
+}
+
+.addFile-btn img {
+    height: 22px;
+    width: 19px;
+}
+
+.send-btn .emoji-btn {
+    margin-right: 5px;
+}
+
+.buttonDonat {
+    width: 130px;
+    height: 50px;
+}
+
+.buttonChatFooter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 50%;
+    margin-top: 10px;
+}
+
+.emojiMenuList {
+    display: none;
+    max-height: 250px;
+    border-radius: 10px;
+    overflow-y: scroll;
+}
+
+.emojiMenuList::-webkit-scrollbar {
+    width: 0;
+}
+
+.emojiMenuList td {
+    font-size: 25px;
+}
+
+.emojiMenuList td:hover {
+    background-color: rgba(217, 217, 217, 1);
+    cursor: pointer;
+}
+
+.newMessage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    background-color: #4C5B98;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.newMessage img {
+    width: 15px;
+    height: 21px;
+}
+
+.input__file {
+    display: none;
+}
+
+.imageConteiner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 400px;
+    max-height: 300px;
+    background-color: rgba(44, 11, 58, 1);
+}
+
+.imageConteiner img {
+    max-width: 400px;
+    max-height: 300px;
+}
+
+.wrapSendPopUp {
+    margin-left: 15px;
+}
+
+.wrapSendPopUp .emojiMenuList {
+    left: -100px;
+}
+
+.wrapSendPopUp .chat-send-message {
+    margin-top: 10px;
+}
+
+.photo-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.photo-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.photo {
+    position: absolute;
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    transition: transform 0.2s ease-in-out;
+}
+
+.zoom-wrap {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.zoom-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 300px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    margin-bottom: 50px;
+    padding: 5px;
+    z-index: 10;
+}
+
+.zoom-slider {
+    width: 100%;
+    margin: 0 10px;
+}
+
+.zoom-slider-input {
+    width: 100%;
+    height: 4px;
+    background-color: #ccc;
+    border: none;
+}
+
+.zoom-slider-thumb {
+    position: relative;
+    width: 10px;
+    height: 10px;
+    background-color: #000;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 10px;
+    z-index: 1000;
+}

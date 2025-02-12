@@ -1,0 +1,89 @@
+@media (max-width: 1000px) {
+    .wrapContent {
+        justify-content: center !important;
+    }
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: #0f111a;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url("/src/image/Default%20cover.PNG");
+    background-size: cover;
+    backdrop-filter: blur(90px);
+    overflow-x: hidden;
+    overflow-y: hidden;
+    transition: 1s;
+}
+
+.wrapContent {
+    display: flex;
+    justify-content: space-between;
+}
+
+.menu-container {
+    position: relative;
+    display: inline-block;
+}
+
+.menuTop {
+    bottom: 100%;
+    margin-bottom: 5px;
+}
+
+.menuBottom {
+    top: 100%;
+    margin-top: 5px;
+}
+
+.menuList {
+    background-color: rgba(53, 41, 58, 90%);
+    width: fit-content;
+    height: fit-content;
+    padding: 5px;
+    position: absolute;
+    transform: translateX(-50%);
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    z-index: 500;
+}
+
+.menuElement {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    min-width: max-content;
+    padding: 5px;
+}
+
+.menuElement img {
+    width: 25px;
+    height: 25px;
+    padding-right: 5px;
+}
+
+.menuElement:hover {
+  background-color: rgba(217, 217, 217, 50%);
+    cursor: pointer;
+}
+
+.Shadow {
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: -1000;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+}
+
+.emoji-btn:hover, .send-btn:hover, .addFile-btn:hover, .buttonRepleyWrap:hover, .buttonAppleMusic:hover, .buttonDonat:hover, .deleteReplyWrap:hover, .photoMessage:hover, .buttonYandexMusic:hover, .buttonYoutubeMusic:hover {
+    cursor: pointer;
+}

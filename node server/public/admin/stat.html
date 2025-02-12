@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <script src="js/check.js"></script>
+    <meta charset="UTF-8">
+    <title>Cтатистика</title>
+    <link rel="stylesheet" href="css/stat.css"/>
+    <link rel="stylesheet" href="/css/pop-up.css"/>
+    <link rel="stylesheet" href="css/chat.css"/>
+</head>
+<body>
+<div class="buttonWrap">
+    <input class="back" type="button" value="Назад"/>
+    <input class="chat" onclick="window.open('/admin/chat.html', '_self')" type="button" value="Чат ведущего"/>
+    <input class="stat" type="button" value="Статистика ведущего"/>
+</div>
+<div class="contentWrap">
+    <div class="chatAndPlayer">
+        <!-- ЧАТ -->
+        <div class="chat-wrapper">
+            <div class="messageBlockWrap">
+                <div class="messageBlock"></div>
+                <div class="newMessage">
+                    <img src="/src/ico/arrowDown.svg" alt="">
+                </div>
+            </div>
+            <div class="chat-footer">
+                <div class="chat-send-message">
+                    <div class="chat-send-message-top"></div>
+                    <div class="chat-send-message-bottom">
+                        <div class="input__wrapper">
+                            <input name="file" type="file" id="input__file" class="input input__file" accept="image/*">
+                            <label for="input__file" class="input__file-button">
+                                <span class="input__file-icon-wrapper">
+                                    <div class="addFile-btn">
+                                    <img class="input__file-icon" src="/src/ico/addFile.svg" alt="Выбрать файл"
+                                         width="25">
+                            </div>
+                                </span>
+                            </label>
+                        </div>
+                        <div class="input-block" contenteditable="true" data-placeholder="Сообщение" data-input></div>
+                        <div class="chat-btns">
+                            <div class="emojiWrap menu-container">
+                                <div class="emoji-btn menu-button">
+                                    <img src="/src/ico/emoji.svg" class="emoji-btn">
+                                </div>
+                                <div class="emojiMenuList menuList menuTop">
+                                </div>
+                            </div>
+                            <div class="send-btn">
+                                <img src="/src/ico/send.svg" class="send-btn">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ЧАТ -->
+        <div class="stream">
+            <div class="wrapCover">
+                <img class="cover" src="/src/image/Default%20cover.PNG"/>
+            </div>
+            <div class="player">
+                <div class="metaData">
+                    <div class="title">Support Flex</div>
+                    <div class="artist">Station</div>
+                </div>
+                <div class="control">
+                    <div class="listeners">Слушатели: </div>
+                    <img src="/src/ico/play.svg" alt="" class="buttonPlayPause"/>
+                    <div class="wrapVolume">
+                        <div class="wrapVolumeButton">
+                            <img src="/src/ico/audio.svg" alt="" class="buttonVolume"/>
+                            <div class="wrapVolumeLevelControl wrapVolumeLevelControl__hiden">
+                                <input
+                                        type="range"
+                                        class="volumeLevelControl"
+                                        min="0"
+                                        max="100"
+                                        value="100"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="js/stat.js"></script>
+<script src="/js/popup.js"></script>
+<script  src="js/player.js"></script>
+<script src="js/chat.js"></script>
+<script defer src="/js/emoji.js"></script>
+</html>

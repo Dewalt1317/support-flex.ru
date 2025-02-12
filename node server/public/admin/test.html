@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>test</title>
+  </head>
+  <body>
+    <style>
+      .select,
+      .multiple_select_wrapper {
+        width: 200px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .select {
+        margin-bottom: 20px;
+      }
+
+      .select > * {
+        margin-bottom: 10px;
+      }
+
+      ._hide {
+        display: none;
+      }
+
+      .multiple_select_wrapper .btns {
+        display: flex;
+        justify-content: space-between;
+      }
+    </style>
+
+    <div class="multiple_select_wrapper">
+      <div class="select">
+        <p>Выбор 1</p>
+        <select>
+          <option value="choise_1">Вариан 1</option>
+          <option value="choise_2">Вариан 2</option>
+          <option value="choise_3">Вариан 3</option>
+          <option value="another">Свой вариант</option>
+        </select>
+        <input
+          class="another_choise_inpt _hide"
+          type="text"
+          name="another_choise"
+          placeholder="Напишите свой вариант"
+        />
+      </div>
+
+      <div class="btns">
+        <button class="add-select-btn">Еще один выбор</button>
+        <button class="remove-select-btn _hide">Удалить</button>
+      </div>
+    </div>
+
+    <script>
+      const $addSelectBtn = document.querySelector(".add-select-btn")
+      const $removeSelectBtn = document.querySelector(".remove-select-btn")
+      const $selectWrapper = document.querySelector(".multiple_select_wrapper")
+      let $allSelects = document.querySelectorAll(".multiple_select_wrapper > .select")
+
+      $addSelectBtn.addEventListener("click", () => {
+        document.querySelector(".btns").insertAdjacentHTML(
+          "beforebegin",
+          `
+          <div class="select">
+        <p>Выбор N</p>
+        <select>
+          <option value="choise_1">Вариан 1</option>
+          <option value="choise_2">Вариан 2</option>
+          <option value="choise_3">Вариан 3</option>
+          <option value="another">Свой вариант</option>
+        </select>
+        <input
+          class="another_choise_inpt _hide"
+          type="text"
+          name="another_choise"
+        />
+      </div>
+          `
+        )
+
+        $allSelects = document.querySelectorAll(".multiple_select_wrapper > .select")
+        if ($allSelects.length > 1) {
+          $removeSelectBtn.classList.remove("_hide")
+        } else {
+          $removeSelectBtn.classList.add("_hide")
+        }
+
+      })
+
+      $removeSelectBtn.addEventListener("click", () => {
+        $allSelects = document.querySelectorAll(".multiple_select_wrapper > .select")
+        $allSelects[$allSelects.length - 1].remove()
+        $allSelects = document.querySelectorAll(".multiple_select_wrapper > .select")
+        if ($allSelects.length > 1) {
+          $removeSelectBtn.classList.remove("_hide")
+        } else {
+          $removeSelectBtn.classList.add("_hide")
+        }
+      })
+
+      $selectWrapper.addEventListener("click", (event) => {
+        if (!event.target.closest("select")) {
+          return
+        }
+
+        let $select = event.target.closest(".select")
+        let $another_choise_inpt = $select.querySelector(".another_choise_inpt")
+
+        if (event.target.value === "another") {
+          $another_choise_inpt.classList.remove("_hide")
+        } else {
+          $another_choise_inpt.classList.add("_hide")
+        }
+      })
+    
+      
+    </script>
+  </body>
+</html>
