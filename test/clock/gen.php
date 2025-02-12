@@ -94,8 +94,8 @@ function getTrackDetails($data) {
 
 // Пример использования функции
 $data = [
-    ["catrgory" => "199669da7b55bf132.46259488", "mood" => "3009657298650f5df1.19639936"],
-    ["catrgory" => "199669da7b55bf2c0.09335131", "mood" => "3009657298650f5df1.19639936"]
+    ["catrgory" => "199669db853d05a56.15727506", "mood" => "3009657298650f5df1.19639936"],
+    ["catrgory" => "199669db853d05202.52927627", "mood" => "3009657298650f5df1.19639936"]
 ];
     $validTimeIteration = 0;
     $validTime = 0;
@@ -234,13 +234,15 @@ function validTimeSubtract ($time) {
     }
 }
 
-function generateClock($name, $date, $time, $duration, $tracks, $stopCategories, $nonRepetitionRules, $previousTracks, $nextTracks) {
+function generateClock($name, $date, $time, $duration, $tracks, $stopCategories, $nonRepetitionRules, $previousTracks, $nextTracks, $maxEnumeration, $maxShortfall) {
   $stop = false;
   $trackAdd = true;
   $categoryID = "";
   $dur = "00:00:00";
   $clock = [];
-  while (manipulateDateTime($dur, $date, $duration, "0", 'clockCompare')["result"] !== "greater"){
+  $durationShortfall = manipulateDateTime($duration, $date, $maxShortfall, '0', 'clockSubtract')['time'];
+  $durationEnumeration = manipulateDateTime($duration, $date, $maxEnumeration, '0', 'clockAdd')['time'];
+  while (manipulateDateTime($dur, $date, $durationShortfall, "0", 'clockCompare')["result"] !== "greater"){
     foreach($tracks as  $key => $cat){
       if(!$trackAdd){
         if($categoryID !== $cat["categoryID"]){
@@ -254,7 +256,6 @@ function generateClock($name, $date, $time, $duration, $tracks, $stopCategories,
         $trackKey = array_key_first($cat["tracks"]);
         $trackClock = $cat["tracks"][$trackKey];
       if(!checkStopCategories($trackClock["categories"], $stopCategories)){
-        print_r("<br>"."Трек есть в стоп категориях"."<br>" . $cat["tracks"][$trackKey]["treckID"]."<br>");
         unset($cat["tracks"][$trackKey]);
         $tracks[$key]["tracks"] =  $cat["tracks"];
         $categoryID = $cat["categoryID"];
@@ -263,7 +264,6 @@ function generateClock($name, $date, $time, $duration, $tracks, $stopCategories,
       }
       $trackTimeDate = manipulateDateTime($time, $date, manipulateDateTime($dur, $date, $trackClock["duration"], "0", 'clockAdd')["time"], "0", 'add');
       if(!checkArtistStopAndTrackID($trackClock, $previousTracks, $nextTracks, $trackTimeDate, $nonRepetitionRules)){
-        print_r("<br>"."Трек есть в предыдущих или будующих треках"."<br>".$cat["tracks"][$trackKey]["treckID"]."<br>");
         unset($cat["tracks"][$trackKey]);
         $tracks[$key]["tracks"] =  $cat["tracks"];
         $categoryID = $cat["categoryID"];
@@ -272,9 +272,6 @@ function generateClock($name, $date, $time, $duration, $tracks, $stopCategories,
       }
 
       if(!checkArtistStopAndTrackIDForClock($trackClock, $clock, $trackTimeDate, $nonRepetitionRules)){
-        print_r("<br>"."Трек уже есть в клоке"."<br>".$cat["tracks"][$trackKey]["treckID"]."<br>");
-        print_r($cat["tracks"][$trackKey]["artistLinkIDs"]);
-        print_r("<br>");
         unset($cat["tracks"][$trackKey]);
         $tracks[$key]["tracks"] =  $cat["tracks"];
         $categoryID = $cat["categoryID"];
@@ -293,6 +290,7 @@ function generateClock($name, $date, $time, $duration, $tracks, $stopCategories,
         }
         unset($cat); 
    }
+   print_r(json_encode($clock));
    if($stop){
     return "Нам не хватило треков" . "<br>" . $dur;
    }
@@ -386,7 +384,9 @@ function checkArtistStopAndTrackIDForClock($TrackAnalysis, $tracksArr, $trackAna
 $name = "Morning Show";
 $date = "2024-07-17";
 $time = "01:00:00";
-$duration = "01:00:00"; // 1 час
+$maxShortfall = "00:00:10";
+$maxEnumeration = "00:00:30";
+$duration = "02:00:00"; // 1 час
 $tracks = getTrackDetails($data);
 $stopCategories = ["1996572cd54d8b498.20963332", "1996572cd54d8b468.24089727"];
 $nonRepetitionRules = ["artist" => "02:00:00", "track" => "06:00:00"];
@@ -443,4 +443,4 @@ $nextTracks = [
     ]
 ];
 
-print_r(generateClock($name, $date, $time, $duration, $tracks, $stopCategories, $nonRepetitionRules, $previousTracks, $nextTracks));
+print_r(generateClock($name, $date, $time, $duration, $tracks, $stopCategories, $nonRepetitionRules, $previousTracks, $nextTracks, $maxEnumeration, $maxShortfall));
