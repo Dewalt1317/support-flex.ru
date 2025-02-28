@@ -31,9 +31,9 @@
   justify-content: end;
 }
 
-.messageBlockWrap{
-position: relative;
-height: 95%;
+.messageBlockWrap {
+  position: relative;
+  height: 95%;
 }
 
 .messageBlock {
@@ -107,7 +107,7 @@ height: 95%;
   padding: 5px;
 }
 
-.messageWarp:has(.youMessage)  {
+.messageWarp:has(.youMessage) {
   justify-content: end;
 }
 
@@ -149,7 +149,6 @@ height: 95%;
 }
 
 .usernameDonat img {
-
 }
 
 .username p {
@@ -312,7 +311,7 @@ height: 95%;
   display: flex;
 }
 
-.replySendWrap{
+.replySendWrap {
   padding: 5px;
 }
 
@@ -340,6 +339,8 @@ height: 95%;
 
 /* Редактируемый div для ввода сообщения */
 .input-block {
+  background-color: transparent;
+  border: none;
   min-height: 30px;
   max-height: 150px;
   text-wrap: wrap;
@@ -360,13 +361,6 @@ height: 95%;
   outline-offset: 0;
 }
 
-/* Создание placeholder*/
-.input-block[contenteditable]:empty:before {
-  content: attr(data-placeholder);
-  color: rgba(255, 255, 255, 70%);
-  display: inline-block;
-}
-
 /* Кнопки в поле для нового сообщения */
 .chat-btns {
   display: flex;
@@ -374,7 +368,9 @@ height: 95%;
   align-items: flex-end;
 }
 
-.emoji-btn, .send-btn, .addFile-btn {
+.emoji-btn,
+.send-btn,
+.addFile-btn {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -427,7 +423,7 @@ height: 95%;
 }
 
 .emojiMenuList td {
-font-size: 25px;
+  font-size: 25px;
 }
 
 .emojiMenuList td:hover {
@@ -445,7 +441,7 @@ font-size: 25px;
   width: 50px;
   height: 50px;
   border-radius: 100%;
-  background-color: #4C5B98;
+  background-color: #4c5b98;
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
 }
