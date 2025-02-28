@@ -130,6 +130,7 @@
     margin-bottom: 5px;
 }
 .messageTextMessage p {
+    user-select: text;
     display: inline;
     color: rgb(0 0 0);
     font-size: 18px;
