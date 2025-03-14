@@ -1,4 +1,4 @@
-let buttonDonat = document.querySelector(".buttonDonat")
+﻿let buttonDonat = document.querySelector(".buttonDonat")
 let WSTimeout = setTimeout(()=> {}, 0);
 let WS
 let WSSrc
@@ -39,7 +39,7 @@ buttonChatHidden.addEventListener("click", ()=> {
     }
 })
 
-SendRequest("POST", "php/connect.php", "", (data) => {
+SendRequest("POST", "php/connect.php", {"codeword": ""}, (data) => {
     if (data.includes(`{"result":"connectFail"}`)) {
         Connect("Привет, ты точно сотрудник Озон? Введи пожалуйста кодовое слово)")
         return
